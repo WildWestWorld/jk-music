@@ -66,7 +66,7 @@ WORKDIR /app
 COPY --from=build /app/target/jk-music-0.0.1.jar .
 
 # 暴露端口
-EXPOSE 9090
+EXPOSE 80
 
 # 执行启动命令
 CMD ["java", "-jar", "/app/jk-music-0.0.1.jar"]
