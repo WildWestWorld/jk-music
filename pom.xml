@@ -88,6 +88,11 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+<!--        通过SQL自动创建数据表的脚本 : flyway-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
 
     </dependencies>
 
