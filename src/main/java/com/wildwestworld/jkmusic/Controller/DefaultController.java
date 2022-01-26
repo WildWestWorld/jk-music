@@ -13,6 +13,7 @@ public class DefaultController {
     //get方法，请求hello然后返回字符串hello
     @GetMapping("")
     public String sayHello(){
+
         return "恭迎宗主回宗";
     }
 
