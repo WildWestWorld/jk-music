@@ -1,4 +1,4 @@
-package com.wildwestworld.jkmusic.Controller;
+package com.wildwestworld.jkmusic.controller;
 
 
 import org.springframework.web.bind.annotation.CrossOrigin;
