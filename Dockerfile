@@ -29,7 +29,10 @@ COPY pom.xml /app
 
 #mvn clean 删除已有target目录
 #mvn package 使用maven进行打包
-RUN mvn -f /app/pom.xml clean package
+#我们默认设置的启动配置是dev
+# -Dspring.profiles.active=prod 让我们他启动prod
+#虽然我们没有prod但是可以注解掉我们dev
+RUN mvn -f /app/pom.xml clean package  -Dspring.profiles.active=prod
 
 #上面的操作都在打包
 
@@ -46,7 +49,7 @@ ENV MYSQL_HOST 10.0.224.2
 ENV MYSQL_USERNAME root
 ENV MYSQL_PASSWORD key,moling.6
 ENV DATABASE_NAME jk-music
-
+ENV APPLICATION_PORT 80
 
 # 安装依赖包，如需其他依赖包，请到alpine依赖包管理(https://pkgs.alpinelinux.org/packages?name=php8*imagick*&branch=v3.13)查找。
 # 选用国内镜像源以提高下载速度
