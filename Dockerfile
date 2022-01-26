@@ -32,7 +32,7 @@ COPY pom.xml /app
 #我们默认设置的启动配置是dev
 # -Dspring.profiles.active=prod 让我们他启动prod
 #虽然我们没有prod但是可以注解掉我们dev
-RUN mvn -f /app/pom.xml clean package  -Dspring.profiles.active=prod
+RUN mvn -f /app/pom.xml clean package
 
 #上面的操作都在打包
 
