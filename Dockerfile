@@ -32,7 +32,7 @@ COPY pom.xml /app
 #我们默认设置的启动配置是dev
 # -Dspring.profiles.active=prod 让我们他启动prod
 #虽然我们没有prod但是可以注解掉我们dev
-RUN mvn -f /app/pom.xml clean package
+RUN mvn -f /app/pom.xml clean package -Dspring.profiles.active=test
 
 #上面的操作都在打包
 
@@ -72,5 +72,5 @@ COPY --from=build /app/target/jk-music-0.0.1.jar .
 EXPOSE 80
 
 # 执行启动命令
-CMD ["java", "-jar", "/app/jk-music-0.0.1.jar"]
+CMD ["java", "-jar", "/app/jk-music-0.0.1.jar","--spring.profiles.active=test"]
 
