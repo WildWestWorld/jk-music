@@ -1,4 +1,4 @@
-package com.wildwestworld.jkmusic.Entity;
+package com.wildwestworld.jkmusic.entity;
 
 
 import com.baomidou.mybatisplus.annotation.FieldFill;

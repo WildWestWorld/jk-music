@@ -1,8 +1,8 @@
-package com.wildwestworld.jkmusic.Controller;
+package com.wildwestworld.jkmusic.controller;
 
-import com.wildwestworld.jkmusic.Mapper.UserMapper;
-import com.wildwestworld.jkmusic.Repository.UserRepository;
-import com.wildwestworld.jkmusic.Service.UserService;
+import com.wildwestworld.jkmusic.mapper.UserMapper;
+import com.wildwestworld.jkmusic.repository.UserRepository;
+import com.wildwestworld.jkmusic.service.UserService;
 
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
@@ -20,14 +20,14 @@ public class UserController {
     @Resource
     UserService userService;
     @Resource
-    UserMapper userMapper;
+    UserRepository userRepository;
 
 
     @GetMapping
    public List<UserVo> list(){
 
         List<UserDto> userDtoList = userService.list();
-        List<UserVo> userVoList = userDtoList.stream().map(userMapper::toVo).collect(Collectors.toList());
+        List<UserVo> userVoList = userDtoList.stream().map(userRepository::toVo).collect(Collectors.toList());
         return userVoList;
    }
 

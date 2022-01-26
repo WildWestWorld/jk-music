@@ -6,10 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
-
-
-@MapperScan(value = {"com.wildwestworld.jkmusic.Repository"})
-
+@MapperScan("com.wildwestworld.jkmusic.mapper")
 public class JkMusicApplication {
 
     public static void main(String[] args) {
