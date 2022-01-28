@@ -5,15 +5,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import com.wildwestworld.jkmusic.entity.User;
+import com.wildwestworld.jkmusic.exception.BizException;
+import com.wildwestworld.jkmusic.exception.ExceptionType;
 import com.wildwestworld.jkmusic.mapper.UserMapper;
 import com.wildwestworld.jkmusic.repository.UserRepository;
+import com.wildwestworld.jkmusic.transport.dto.UserCreateDto;
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
-
+//专门实现方法的地方
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -21,7 +28,8 @@ public class UserServiceImpl implements UserService{
     UserMapper userMapper;
     @Resource
     UserRepository userRepository;
-
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> list() {
@@ -36,6 +44,49 @@ public class UserServiceImpl implements UserService{
         //然后使用collect()结束掉steam 使用collections.toList 把单个的dto数据变成List
         List<UserDto> userDtoList = userList.stream().map(userRepository::toDto).collect(Collectors.toList());
         return userDtoList;
+    }
+
+
+    @Override
+    public UserDto create(UserCreateDto userCreateDto) {
+        checkUserName(userCreateDto.getUsername());
+        User user = userRepository.createEntity(userCreateDto);
+        //BCryptPasswordEncoder来自于来自于springSecurity
+        //使用BCryptPasswordEncoder给用户的密码加密
+        //encodePassword就是加密后的密码
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        //将密码设置为加密后的密码
+        user.setPassword(encodePassword);
+        //在数据库中创建
+        userMapper.insert(user);
+        //创建完了就传出来
+         UserDto userDto = userRepository.toDto(user);
+         return userDto;
+    }
+    //查询是否有相同的用户名
+    private void checkUserName(String username){
+        //新建一个查询器
+        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+        wrapper.eq(User::getUsername,username);
+        User user = userMapper.selectOne(wrapper);
+        if (user != null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(ExceptionType.User_Name_SAME);
+        }
+    }
+
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        //新建一个查询器
+        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+        wrapper.eq(User::getUsername,username);
+        User user = userMapper.selectOne(wrapper);
+        if(user == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(ExceptionType.User_NOT_FOUND);
+        }
+        return user;
     }
 
 }
