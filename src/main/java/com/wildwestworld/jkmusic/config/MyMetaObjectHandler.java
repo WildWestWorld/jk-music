@@ -16,6 +16,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("createdTime", new Date(), metaObject);
         this.setFieldValByName("updatedTime",new Date(), metaObject);
+        this.setFieldValByName("locked",false, metaObject);
+        this.setFieldValByName("enabled",true, metaObject);
     }
 
     @Override
