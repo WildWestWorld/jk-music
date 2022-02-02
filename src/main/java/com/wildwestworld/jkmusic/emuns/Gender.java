@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Gender {
-    FEMALE(0,"女"),
-    MALE(1,"男"),
-    UNKNOWN(2,"未知");
+    女(0,"女"),
+    男(1,"男"),
+    未知(2,"未知");
     //给数据库的数据
     @EnumValue
     private Integer key;

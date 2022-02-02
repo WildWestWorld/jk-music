@@ -1,10 +1,12 @@
 package com.wildwestworld.jkmusic.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.User;
-import com.wildwestworld.jkmusic.transport.dto.UserCreateDto;
+import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -19,8 +21,16 @@ public interface UserService extends UserDetailsService {
     List<UserDto> list();
 
 
-    UserDto create(UserCreateDto userCreateDto);
+    UserDto create(UserCreateByRequest userCreateByRequest);
 
     @Override
     User loadUserByUsername(String username) throws UsernameNotFoundException;
+
+    UserDto getUserByID(String id);
+
+    UserDto updateUserByID(String id, UserUpdateRequest userUpdateRequest);
+    void  deleteUserByID(String id);
+
+
+
 }

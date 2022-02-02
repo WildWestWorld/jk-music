@@ -10,6 +10,7 @@ import sun.security.util.Password;
 @Configuration
 public class WebConfig {
     @Bean
+    //密码加密，用于sql里面
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

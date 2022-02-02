@@ -32,6 +32,7 @@ public class User extends AbstractEntity implements UserDetails {
     private Gender gender;
 
     private  Boolean locked;
+    //这里放个Getter(value = AccessLevel.NONE)，是因为下面overwrite里面有一个了，所以和lombook说不要了
     @Getter(value = AccessLevel.NONE)
     private  Boolean enabled;
 
@@ -44,6 +45,7 @@ public class User extends AbstractEntity implements UserDetails {
 
 
 
+    //以下方法皆因UserDetails
     //后期会和role进行绑定
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

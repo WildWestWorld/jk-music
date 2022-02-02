@@ -6,11 +6,14 @@ import com.wildwestworld.jkmusic.exception.ErrorResponse;
 import com.wildwestworld.jkmusic.exception.ExceptionType;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.List;
 
 //Spring 中 @RestControllerAdvice 注解可以拦截并获取带有 @Controller 或 @RestController 注解类的异常，
 // 通过 @ExceptionHandler 注解设置捕获异常类型。
@@ -43,6 +46,7 @@ public class GlobalExceptionHandler {
 //    }
 //
 //
+//
 //    //捕获无权访问异常
 //    @ExceptionHandler(value = AccessDeniedException.class)
 //    //@ResponseStatus注解有两种用法，一种是加载自定义异常类上，一种是加在目标方法中
@@ -54,4 +58,22 @@ public class GlobalExceptionHandler {
 //        errorResponse.setMessage(ExceptionType.FORBIDDEN.getMessage());
 //        return errorResponse;
 //    }
+
+    //重定义 spring验证无效报错
+    //一定要引入import org.springframework.web.bind.MethodArgumentNotValidException;
+    //不要引入错了，不然那没法用
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public List<ErrorResponse> bizExceptionHandler(MethodArgumentNotValidException e) {
+        List<ErrorResponse> errorResponses = new ArrayList<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
+            errorResponse.setMessage(error.getDefaultMessage());
+            errorResponses.add(errorResponse);
+            System.out.println(errorResponses);
+        });
+        return errorResponses;
+    }
+
 }
