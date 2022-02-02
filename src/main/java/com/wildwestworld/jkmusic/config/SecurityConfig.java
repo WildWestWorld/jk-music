@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               //开启authorizeRequests，也就是鉴权请求
               .authorizeRequests()
               //antMatchers白名单 HttpMethod.POST：采用的方法是POST方法 白名单地址：SIGN_UP_URL   permitAll():可以被所有人访问
-              .antMatchers(SIGN_UP_URL).permitAll()
+              //注意这个白名单，少个/也认不出来，要反复核对
+              .antMatchers(SIGN_UP_URL,"/login","/users/*").permitAll()
               //anyRequest() 所有请求   authenticated()：必须鉴权才能用（除开白名单）
               .anyRequest().authenticated()
 

@@ -1,8 +1,7 @@
 package com.wildwestworld.jkmusic.repository;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wildwestworld.jkmusic.entity.User;
-import com.wildwestworld.jkmusic.transport.dto.UserCreateDto;
+import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import org.mapstruct.Mapper;
@@ -18,5 +17,5 @@ public interface UserRepository  {
     UserVo toVo(UserDto userDto);
 
     //将Dto转换为User实体类Entity
-    User createEntity (UserCreateDto userCreateDto);
+    User createEntity (UserCreateByRequest userCreateByRequest);
 }

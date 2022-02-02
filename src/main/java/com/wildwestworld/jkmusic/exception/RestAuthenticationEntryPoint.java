@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//记得加Component 不然在其他地方引入
+//记得加Component 不然无法在其他地方引入
 @Component
 //自定义前端错误显示
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
