@@ -1,6 +1,11 @@
 package com.wildwestworld.jkmusic.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wildwestworld.jkmusic.entity.User;
+import com.wildwestworld.jkmusic.mapper.UserMapper;
 import com.wildwestworld.jkmusic.repository.UserRepository;
 import com.wildwestworld.jkmusic.service.UserService;
 
@@ -24,7 +29,8 @@ public class UserController {
     UserService userService;
     @Resource
     UserRepository userRepository;
-
+    @Resource
+    UserMapper userMapper;
 
     @GetMapping
    public List<UserVo> list(){
@@ -62,5 +68,22 @@ public class UserController {
        return Result.success();
    }
 
+   @GetMapping("/pages")
+    Page<UserVo>  getPageByUsername (@RequestParam(defaultValue = "1") Integer pageNum,
+                            @RequestParam(defaultValue = "10") Integer pageSize,
+                            @RequestParam(defaultValue = "")String searchWord) {
+       Page<UserDto> userDtoPage = userService.getPage(pageNum, pageSize, searchWord);
 
+       List<UserDto> userDtoList = userDtoPage.getRecords();
+       List<UserVo> userVoList = userDtoList.stream().map(userRepository::toVo).collect(Collectors.toList());
+
+       Page<UserVo> userVoPage =new Page<>();
+       userVoPage.setRecords(userVoList);
+       userVoPage.setCurrent(userDtoPage.getCurrent());
+       userVoPage.setTotal(userVoList.size());
+       userVoPage.setSize(userDtoPage.getSize());
+       userVoPage.setSearchCount(userDtoPage.searchCount());
+
+       return userVoPage;
+   }
 }
