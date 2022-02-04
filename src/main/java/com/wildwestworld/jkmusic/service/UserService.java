@@ -31,6 +31,7 @@ public interface UserService extends UserDetailsService {
     UserDto updateUserByID(String id, UserUpdateRequest userUpdateRequest);
     void  deleteUserByID(String id);
 
+    Page<UserDto> getPage( Integer pageNum, Integer pageSize,String searchWord);
 
 
 }

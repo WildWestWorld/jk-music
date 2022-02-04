@@ -158,5 +158,30 @@ public class UserServiceImpl implements UserService{
         userMapper.deleteById(id);
     }
 
+    @Override
+    public Page<UserDto> getPage(Integer pageNum, Integer pageSize, String searchWord) {
 
+
+        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+
+        if (StrUtil.isNotBlank(searchWord)){
+            wrapper.like(User::getUsername,searchWord);
+        }
+
+        Page<User> userPage = userMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+
+        List<User> userList = userPage.getRecords();
+
+        List<UserDto> UserDtoList = userList.stream().map(userRepository::toDto).collect(Collectors.toList());
+
+        Page<UserDto> UserDtoPage =new Page<>();
+        UserDtoPage.setRecords(UserDtoList);
+        UserDtoPage.setCurrent(userPage.getCurrent());
+        UserDtoPage.setTotal(UserDtoList.size());
+        UserDtoPage.setSize(userPage.getSize());
+        UserDtoPage.setSearchCount(userPage.searchCount());
+
+
+        return UserDtoPage;
+    }
 }
