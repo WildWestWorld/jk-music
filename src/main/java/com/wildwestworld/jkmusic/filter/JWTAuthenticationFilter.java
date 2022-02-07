@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wildwestworld.jkmusic.config.SecurityConfig;
 import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.exception.BizException;
-import com.wildwestworld.jkmusic.exception.ExceptionType;
+import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,7 +62,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // 交给AuthenticationManager进行认证。认证成功后，调用三个参数的构造器，创建一个已认证的对象。
             return authenticationManager.authenticate(needVerifyUser);
         } catch (IOException e) {
-            throw new BizException(ExceptionType.FORBIDDEN);
+            throw new BizException(BizExceptionType.FORBIDDEN);
         }
 
     }
@@ -75,13 +75,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User saveUser = (User) authResult.getPrincipal();
         String saveUsername = saveUser.getUsername();
 
-        //withClaim("userName", saveUsername) 存放信息userName
-        String token = builder.withClaim("userName", saveUsername)
+        //withSubject("userName", saveUsername) 存放信息userName
+        String token = builder.withSubject(saveUsername)
                 //System.currentTimeMillis() 获得的是自1970-1-01 00:00:00.000 到当前时刻的时间距离,类型为long
                 //SecurityConfig.EXPIRATION_TIME来自于我们自定义的数据
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SecurityConfig.SECRET));
-// response.addHeader(参数1：在header里面token的名字,参数1：完整token);
+
+        // response.addHeader(参数1：在header里面token的名字,参数1：完整token);
         //把response中添加请求头
         response.addHeader(SecurityConfig.HEADER_STRING,SecurityConfig.TOKEN_PREFIX+token);
     }

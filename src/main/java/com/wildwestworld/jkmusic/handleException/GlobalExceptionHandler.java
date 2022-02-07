@@ -3,7 +3,7 @@ package com.wildwestworld.jkmusic.handleException;
 
 import com.wildwestworld.jkmusic.exception.BizException;
 import com.wildwestworld.jkmusic.exception.ErrorResponse;
-import com.wildwestworld.jkmusic.exception.ExceptionType;
+import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class GlobalExceptionHandler {
         List<ErrorResponse> errorResponses = new ArrayList<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setCode(ExceptionType.BAD_REQUEST.getCode());
+            errorResponse.setCode(BizExceptionType.BAD_REQUEST.getCode());
             errorResponse.setMessage(error.getDefaultMessage());
             errorResponses.add(errorResponse);
             System.out.println(errorResponses);

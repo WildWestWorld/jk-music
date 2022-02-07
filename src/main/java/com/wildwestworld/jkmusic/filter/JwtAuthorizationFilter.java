@@ -65,7 +65,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             //jwtVerifier.verify后我们能拿到解码后的token，此时的token我们可以拿到对应的信息
             DecodedJWT decodeToken = jwtVerifier.verify(trueToken);
 
-            String username = decodeToken.getClaim("userName").toString();
+            String username = decodeToken.getSubject();
             if (username != null){
                 //不同于上次的UsernamePasswordAuthenticationToken本次搞得UsernamePasswordAuthenticationToken没有密码鉴权
                 return new UsernamePasswordAuthenticationToken(username,null,new ArrayList<>());

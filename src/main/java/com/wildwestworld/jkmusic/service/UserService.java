@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.User;
+import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
 import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
@@ -34,4 +35,7 @@ public interface UserService extends UserDetailsService {
     Page<UserDto> getPage( Integer pageNum, Integer pageSize,String searchWord);
 
 
+    String createToken(TokenCreateRequest tokenCreateRequest);
+
+    UserDto getCurrentUser();
 }

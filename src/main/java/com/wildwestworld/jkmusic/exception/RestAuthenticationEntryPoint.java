@@ -2,7 +2,6 @@ package com.wildwestworld.jkmusic.exception;
 
 import cn.hutool.json.JSONUtil;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -25,8 +24,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setCode(ExceptionType.UNAUTHORIZED.getCode());
-        errorResponse.setMessage(ExceptionType.UNAUTHORIZED.getMessage());
+        errorResponse.setCode(BizExceptionType.UNAUTHORIZED.getCode());
+        errorResponse.setMessage(BizExceptionType.UNAUTHORIZED.getMessage());
         response.getWriter().println(JSONUtil.parse(errorResponse));
         response.getWriter().flush();
     }

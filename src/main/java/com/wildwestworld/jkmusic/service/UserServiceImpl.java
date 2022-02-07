@@ -2,26 +2,35 @@ package com.wildwestworld.jkmusic.service;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wildwestworld.jkmusic.config.SecurityConfig;
 import com.wildwestworld.jkmusic.emuns.Gender;
 import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.exception.BizException;
-import com.wildwestworld.jkmusic.exception.ExceptionType;
+import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import com.wildwestworld.jkmusic.mapper.UserMapper;
 import com.wildwestworld.jkmusic.repository.UserRepository;
+import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserDto;
 
 import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
-import com.wildwestworld.jkmusic.transport.vo.UserVo;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 //专门实现方法的地方
@@ -73,24 +82,78 @@ public class UserServiceImpl implements UserService{
         LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
         wrapper.eq(User::getUsername,username);
         User user = userMapper.selectOne(wrapper);
+
         if (user != null){
             //自定义的异常类  自定义的异常类的信息在exception里面
-            throw new BizException(ExceptionType.User_Name_SAME);
+            throw new BizException(BizExceptionType.User_Name_SAME);
         }
     }
 
-
+//根据用户名查询用户
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         //新建一个查询器
         LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
         wrapper.eq(User::getUsername,username);
         User user = userMapper.selectOne(wrapper);
-        if(user == null){
-            //自定义的异常类  自定义的异常类的信息在exception里面
-            throw new BizException(ExceptionType.User_NOT_FOUND);
-        }
+//        if(user == null){
+//            //自定义的异常类  自定义的异常类的信息在exception里面
+//            throw new BizException(BizExceptionType.User_NOT_FOUND);
+//        }
+
         return user;
+    }
+//创造token
+    @Override
+    public String createToken(TokenCreateRequest tokenCreateRequest) {
+        //首先先查询有没有这个用户名
+        //loadUserByUsername 自定义方法，就在此页面，有兴趣自己看
+        User user = loadUserByUsername(tokenCreateRequest.getUsername());
+        //匹配密码是否正确
+        //使用passwordEncoder的matches方法来匹配用户输出的密码和User的密码
+        //如果不匹配
+        if(!passwordEncoder.matches(tokenCreateRequest.getPassword(),user.getPassword())){
+            throw new BizException(BizExceptionType.User_PASSWORD_NOT_MATCH);
+        }
+        //如果用户是未启用的状态
+        if (!user.isEnabled()){
+            throw new BizException(BizExceptionType.User_NOT_ENABLED);
+        }
+        //如果用户不是 未锁定的状态 ，也就是用户处于锁定状态
+        if (!user.isAccountNonLocked()){
+            throw new BizException(BizExceptionType.User_LOCKED);
+        }
+
+
+        //创建token
+        //创建JWT的构造器
+        JWTCreator.Builder builder = JWT.create();
+
+        //withClaim("userName", saveUsername) 存放信息userName
+        String token = builder.withSubject(user.getUsername())
+                //System.currentTimeMillis() 获得的是自1970-1-01 00:00:00.000 到当前时刻的时间距离,类型为long
+                //SecurityConfig.EXPIRATION_TIME来自于我们自定义的数据
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SecurityConfig.SECRET));
+
+        return token;
+    }
+
+//获得当前用户
+    @Override
+    public UserDto getCurrentUser() {
+        //获得储存在SecurityContextHolder里面的token
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        //authentication 可以用getName/getPrincipal().toString()
+        // 是因为 我们在JWTAuthenticationFilter传入进去的，具体可以看filter里面的JWTAuthenticationFilter
+        //然后我们利用获得到的username 和自定义方法loadUserByUsername 获取到user
+        User currentUser = loadUserByUsername(authentication.getPrincipal().toString());
+
+        //最后把他转化为dto形式
+        UserDto currentUserDto = userRepository.toDto(currentUser);
+
+        return currentUserDto;
     }
 
     @Override
@@ -99,7 +162,7 @@ public class UserServiceImpl implements UserService{
         User user = userMapper.selectById(id);
         if(user == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
-            throw new BizException(ExceptionType.User_NOT_FOUND);
+            throw new BizException(BizExceptionType.User_NOT_FOUND);
         }
         return userRepository.toDto(user);
     }
@@ -110,7 +173,7 @@ public class UserServiceImpl implements UserService{
 
         if(user == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
-            throw new BizException(ExceptionType.User_NOT_FOUND);
+            throw new BizException(BizExceptionType.User_NOT_FOUND);
         }
 
         //如果userUpdateRequest的username不是空的
@@ -129,6 +192,7 @@ public class UserServiceImpl implements UserService{
             String gender = userUpdateRequest.getGender();
             //利用文字形式的gender和valueOf获取枚举形式的gender
             Gender updateGender = Gender.valueOf(gender);
+
             user.setGender(updateGender);
         }
 
@@ -151,7 +215,7 @@ public class UserServiceImpl implements UserService{
 
         if(user == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
-            throw new BizException(ExceptionType.User_NOT_FOUND);
+            throw new BizException(BizExceptionType.User_NOT_FOUND);
         }
 
         //根据id删除
@@ -184,4 +248,6 @@ public class UserServiceImpl implements UserService{
 
         return UserDtoPage;
     }
+
+
 }

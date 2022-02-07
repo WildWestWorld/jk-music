@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -49,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .authorizeRequests()
               //antMatchers白名单 HttpMethod.POST：采用的方法是POST方法 白名单地址：SIGN_UP_URL   permitAll():可以被所有人访问
               //注意这个白名单，少个/也认不出来，要反复核对
-              .antMatchers(SIGN_UP_URL,"/login","/users/*").permitAll()
+              .antMatchers(SIGN_UP_URL,"/login","/users/**","/tokens/**","/tokens").permitAll()
               //anyRequest() 所有请求   authenticated()：必须鉴权才能用（除开白名单）
               .anyRequest().authenticated()
 
@@ -68,7 +69,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .and()
               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
-//指定新的service，当他调用LoadUserByUsername的时候就会调用我们在自己service层写的那个方法了
+
+    //配置白名单，上面也能配置，但因为要配置太多了，不怎么优雅，所以改用这个方法
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/swagger**/**")
+                      .antMatchers("/webjars/**")
+                      .antMatchers("/webjars/**")
+                      .antMatchers( "/v3/**")
+                      .antMatchers("/doc.html");
+
+    }
+
+    //指定新的service，当他调用LoadUserByUsername的时候就会调用我们在自己service层写的那个方法了
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService);
