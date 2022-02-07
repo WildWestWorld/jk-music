@@ -86,4 +86,14 @@ public class UserController {
 
        return userVoPage;
    }
+
+   //获取当前用户
+   @GetMapping("/currentUser")
+    UserVo getCurrentUser(){
+       UserVo userVo = userRepository.toVo(userService.getCurrentUser());
+
+       return userVo;
+   }
+
 }
+

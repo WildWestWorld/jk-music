@@ -9,6 +9,7 @@ import com.github.ksuid.KsuidGenerator;
 //这次就当体验一下吧，下次可以用雪花算法重写id
 public class KsuidIdentifierGenerator implements IdentifierGenerator {
 
+    //重写下面这个方法前，得重写该方法才行
     @Override
     public Number nextId(Object entity) {
         return null;
