@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wildwestworld.jkmusic.mapper.UserMapper">
+
+
+    <resultMap id="userMap" type="com.wildwestworld.jkmusic.entity.User">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="gender" column="gender"/>
+        <result property="locked" column="locked"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+
+        <collection property="roles" javaType="ArrayList" ofType="com.wildwestworld.jkmusic.entity.Role">
+            <result property="id" column="r_id"  />
+            <result property="name" column="r_name"  />
+            <result property="title" column="r_title" />
+        </collection>
+    </resultMap>
+
+
+    <select id="userList" resultMap="userMap">
+        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
+        left join `user_role` as ur on user.id = ur.user_id
+        left join  `role` as r on ur.role_id =r.id
+
+    </select>
+
+    <select id="getPage" resultMap="userMap">
+        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
+        left join `user_role` as ur on user.id = ur.user_id
+        left join  `role` as r on ur.role_id =r.id
+        where `user`.username like concat('%',#{username},'%')
+    </select>
+
+    <select id="getCurrentUser" resultMap="userMap">
+        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
+        left join `user_role` as ur on user.id = ur.user_id
+        left join  `role` as r on ur.role_id =r.id
+        where `user`.username = concat(#{username})
+    </select>
+</mapper>
