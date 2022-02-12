@@ -5,12 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.wildwestworld.jkmusic.config.SecurityConfig;
+import com.wildwestworld.jkmusic.entity.User;
+import com.wildwestworld.jkmusic.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +25,15 @@ import java.util.ArrayList;
 
 //一定要去再次构造一次JwtAuthorizationFilter，因为父级也构造了，所以要构造一次
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    //参数:UserService userService 使我们自己加的
+    //原因:我们无法正常注入userService，正常注入的userService在下面的方法中无法使用，是空的
+    //this.userService =userService; 这句也是我们自己加的
+    //此外还要在SecurityConfig     加入（只有后面的最后的userService使我们自己加的）  .addFilter(new JwtAuthorizationFilter(authenticationManager(),userService))
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,UserService userService) {
         super(authenticationManager);
+        this.userService =userService;
     }
-
+        UserService userService;
     //在请求里面过滤
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -54,7 +61,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request,response);
     }
 
-    //检验token是否是有效的
+    //检验token是否是有效的,以及放入当前用户信息
     private UsernamePasswordAuthenticationToken getAuthentication(String token){
         if (token != null){
             //去除我们给token人工添加的字符
@@ -67,8 +74,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
             String username = decodeToken.getSubject();
             if (username != null){
+                //此处的userService是无法正常注入的最上面有解释
+                //目的:为了拿到当前用户，然后获得Role信息
+                //getAuthorities得到的就是变种的role，在entity User里面可以查看详细资料
+                User user = userService.loadUserByUsername(username);
                 //不同于上次的UsernamePasswordAuthenticationToken本次搞得UsernamePasswordAuthenticationToken没有密码鉴权
-                return new UsernamePasswordAuthenticationToken(username,null,new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(username,null,user.getAuthorities());
             }
         }
             return null;

@@ -7,6 +7,7 @@ import com.wildwestworld.jkmusic.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +21,9 @@ import javax.annotation.Resource;
 @Configuration
 //使其变Security成配置文件
 @EnableWebSecurity
+//开启用户的角色访问限制
+@EnableGlobalMethodSecurity(prePostEnabled=true,securedEnabled=true,jsr250Enabled=true)
+
 //extends WebSecurityConfigurerAdapter 是为了配置http请求
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //密匙，用于生成Token
@@ -60,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
               .addFilter(new JWTAuthenticationFilter(authenticationManager()))
               //JwtAuthorizationFilter token 过滤器
-              .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+              .addFilter(new JwtAuthorizationFilter(authenticationManager(),userService))
               //处理异常
               .exceptionHandling()
               //指定异常的处理方式

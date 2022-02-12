@@ -156,6 +156,14 @@
             <version>3.0.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.github.dreamyoung</groupId>
+            <artifactId>mprelation</artifactId>
+            <version>0.0.3.2-RELEASE</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.dreamyoung.mprelation.ServiceImpl;
 import com.wildwestworld.jkmusic.config.SecurityConfig;
 import com.wildwestworld.jkmusic.emuns.Gender;
 import com.wildwestworld.jkmusic.entity.User;
@@ -23,19 +24,23 @@ import com.wildwestworld.jkmusic.transport.dto.UserDto;
 import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 //专门实现方法的地方
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl  implements UserService{
 
     @Resource
     UserMapper userMapper;
@@ -46,12 +51,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserDto> list() {
-        //新建一个查询器
-        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
-        //获取所有的username ,从username里面筛选我们想要的结果，我们筛选条件是无，所以每一条数据我们都会获取到
-        wrapper.like(User::getUsername,"");
-        //使用selectList（我们定义好的查询器），我们就能获取数据库所有的对象了
-        List<User> userList = userMapper.selectList(wrapper);
+        List<User> userList = userMapper.userList();
+        System.out.println(userList);
         //这个步骤是把List<User>转化为List<UserDto>
         //stream（）把数据转化为流的形式，然后用map遍历所有的List 执行usermapper里面的方法toDto，让他们变成dto格式的属性
         //然后使用collect()结束掉steam 使用collections.toList 把单个的dto数据变成List
@@ -93,15 +94,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         //新建一个查询器
-        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
-        wrapper.eq(User::getUsername,username);
-        User user = userMapper.selectOne(wrapper);
+//        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+//        wrapper.eq(User::getUsername,username);
+//        User user = userMapper.selectOne(wrapper);
+
+        User currentUser = userMapper.getCurrentUser(username);
 //        if(user == null){
 //            //自定义的异常类  自定义的异常类的信息在exception里面
 //            throw new BizException(BizExceptionType.User_NOT_FOUND);
 //        }
-
-        return user;
+        System.out.println(currentUser);
+        return currentUser;
     }
 //创造token
     @Override
@@ -149,6 +152,7 @@ public class UserServiceImpl implements UserService{
         // 是因为 我们在JWTAuthenticationFilter传入进去的，具体可以看filter里面的JWTAuthenticationFilter
         //然后我们利用获得到的username 和自定义方法loadUserByUsername 获取到user
         User currentUser = loadUserByUsername(authentication.getPrincipal().toString());
+
 
         //最后把他转化为dto形式
         UserDto currentUserDto = userRepository.toDto(currentUser);
@@ -226,14 +230,13 @@ public class UserServiceImpl implements UserService{
     public Page<UserDto> getPage(Integer pageNum, Integer pageSize, String searchWord) {
 
 
-        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+//        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+//
+//        if (StrUtil.isNotBlank(searchWord)){
+//            wrapper.like(User::getUsername,searchWord);
+//        }
 
-        if (StrUtil.isNotBlank(searchWord)){
-            wrapper.like(User::getUsername,searchWord);
-        }
-
-        Page<User> userPage = userMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
-
+        Page<User> userPage = userMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
         List<User> userList = userPage.getRecords();
 
         List<UserDto> UserDtoList = userList.stream().map(userRepository::toDto).collect(Collectors.toList());
