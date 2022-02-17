@@ -81,8 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                       .antMatchers("/webjars/**")
                       .antMatchers("/webjars/**")
                       .antMatchers( "/v3/**")
-                      .antMatchers("/doc.html");
-
+                      .antMatchers("/doc.html")
+                      .antMatchers("/wechat/**");
     }
 
     //指定新的service，当他调用LoadUserByUsername的时候就会调用我们在自己service层写的那个方法了
