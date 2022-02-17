@@ -1,7 +1,7 @@
 package com.wildwestworld.jkmusic.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.dreamyoung.mprelation.IService;
+
 import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
