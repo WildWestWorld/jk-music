@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 //专门用于dto 和vo 的转化，和与sql语句无关的方法
 @Mapper(componentModel = "spring")
 public interface UserRepository  {
-    //将user类转化为toDto
+    //将user类转化为UserDto
     UserDto toDto(User user);
 
     //将dto转化为Vo
