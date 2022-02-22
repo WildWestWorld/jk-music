@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
+//用于请求 用于POST
 //文件用于token 传输
 @Data
 public class TokenCreateRequest {

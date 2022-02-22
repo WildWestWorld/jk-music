@@ -1,6 +1,8 @@
 package com.wildwestworld.jkmusic.exception;
 
 
+import com.wildwestworld.jkmusic.entity.Music;
+
 //枚举类型，用于标记错误类型
 public enum BizExceptionType {
         BAD_REQUEST(400,"请求错误"),
@@ -15,8 +17,9 @@ public enum BizExceptionType {
         User_NOT_FOUND(40401001,"用户未找到"),
 
         User_NOT_ENABLED(50001001,"该用户处于未启用状态"),
-        User_LOCKED(50001002,"该用户处于封禁状态"),;
+        User_LOCKED(50001002,"该用户处于封禁状态"),
 
+        Music_NOT_FOUND(40402001,"音乐未找到"),;
 
 
         private Integer code;

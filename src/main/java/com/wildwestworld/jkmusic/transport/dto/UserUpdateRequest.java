@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+//用于请求 用于POST
 @Data
 public class UserUpdateRequest {
     // @NotBlank 来自于spring-boot-starter-validation
