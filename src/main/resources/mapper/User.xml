@@ -14,32 +14,54 @@
         <result property="lastLoginIp" column="last_login_ip"/>
         <result property="lastLoginTime" column="last_login_time"/>
 
-        <collection property="roles" javaType="ArrayList" ofType="com.wildwestworld.jkmusic.entity.Role">
-            <result property="id" column="r_id"  />
-            <result property="name" column="r_name"  />
-            <result property="title" column="r_title" />
+        <collection property="roles" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
+<!--            分页查询无法嵌套，所以得用子查询-->
+<!--            <result property="id" column="r_id"  />-->
+<!--            <result property="name" column="r_name"  />-->
+<!--            <result property="title" column="r_title" />-->
         </collection>
     </resultMap>
 
-
-    <select id="userList" resultMap="userMap">
-        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
-        left join `user_role` as ur on user.id = ur.user_id
-        left join  `role` as r on ur.role_id =r.id
-
+    <select id="getPage" resultMap="userMap">
+        select * from  `user` where `user`.username like concat ('%',#{username},'%')
+   
+    </select>
+<!--    子查询-->
+    <select id="getRoleList" resultType="com.wildwestworld.jkmusic.entity.Role">
+        select *
+        from `role` as r left join `user_role` as ur on r.id =ur.role_id
+        where  ur.user_id =#{id}
     </select>
 
-    <select id="getPage" resultMap="userMap">
-        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
-        left join `user_role` as ur on user.id = ur.user_id
-        left join  `role` as r on ur.role_id =r.id
-        where `user`.username like concat('%',#{username},'%')
+
+    <select id="userList" resultMap="userMap">
+        select * from  `user`
+
     </select>
 
     <select id="getCurrentUser" resultMap="userMap">
-        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`
-        left join `user_role` as ur on user.id = ur.user_id
-        left join  `role` as r on ur.role_id =r.id
-        where `user`.username = concat(#{username})
+        select * from  `user` where `user`.username = (#{username})
+
     </select>
+
+<!--    <select id="userList" resultMap="userMap">-->
+<!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+<!--        left join `user_role` as ur on user.id = ur.user_id-->
+<!--        left join  `role` as r on ur.role_id =r.id-->
+
+<!--    </select>-->
+
+<!--    <select id="getPage" resultMap="userMap">-->
+<!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+<!--        left join `user_role` as ur on user.id = ur.user_id-->
+<!--        left join  `role` as r on ur.role_id =r.id-->
+<!--        where `user`.username like concat('%',#{username},'%')-->
+<!--    </select>-->
+
+<!--    <select id="getCurrentUser" resultMap="userMap">-->
+<!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+<!--        left join `user_role` as ur on user.id = ur.user_id-->
+<!--        left join  `role` as r on ur.role_id =r.id-->
+<!--        where `user`.username = concat(#{username})-->
+<!--    </select>-->
 </mapper>

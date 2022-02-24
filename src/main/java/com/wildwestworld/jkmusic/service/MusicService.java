@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wildwestworld.jkmusic.transport.dto.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.MusicUpdateRequest;
@@ -23,5 +24,6 @@ public interface MusicService {
 
     void changeMusicStateToWaited(String id);
 
+    IPage<MusicDto> getMusicPage(Integer pageNum, Integer pageSize, String searchWord);
 }
 

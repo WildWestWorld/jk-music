@@ -6,6 +6,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -227,7 +228,7 @@ public class UserServiceImpl  implements UserService{
     }
 
     @Override
-    public Page<UserDto> getPage(Integer pageNum, Integer pageSize, String searchWord) {
+    public IPage<UserDto> getPage(Integer PageNum, Integer pageSize, String searchWord) {
 
 
 //        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
@@ -236,18 +237,16 @@ public class UserServiceImpl  implements UserService{
 //            wrapper.like(User::getUsername,searchWord);
 //        }
 
-        Page<User> userPage = userMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+        IPage<User> userPage = userMapper.getPage(new Page<>(PageNum, pageSize), searchWord);
         List<User> userList = userPage.getRecords();
 
         List<UserDto> UserDtoList = userList.stream().map(userRepository::toDto).collect(Collectors.toList());
 
-        Page<UserDto> UserDtoPage =new Page<>();
+        IPage<UserDto> UserDtoPage =new Page<>(PageNum,pageSize);
         UserDtoPage.setRecords(UserDtoList);
         UserDtoPage.setCurrent(userPage.getCurrent());
-        UserDtoPage.setTotal(UserDtoList.size());
+        UserDtoPage.setTotal(userPage.getTotal());
         UserDtoPage.setSize(userPage.getSize());
-        UserDtoPage.setSearchCount(userPage.searchCount());
-
 
         return UserDtoPage;
     }

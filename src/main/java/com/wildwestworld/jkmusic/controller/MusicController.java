@@ -1,6 +1,8 @@
 package com.wildwestworld.jkmusic.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.repository.MusicRepository;
 import com.wildwestworld.jkmusic.service.MusicService;
@@ -31,8 +33,6 @@ public class MusicController {
         List<MusicVo> musicVoList = musicList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
         return musicVoList;
     }
-
-
 
 
     @PostMapping
@@ -71,10 +71,28 @@ public class MusicController {
         return Result.success();
     }
 
-    //根据ID修改music的state改为已下架状态
+    //根据ID修改music的state改为待上架状态
     @PostMapping("/{id}/waited")
     Result<?> changeMusicStateToWaited(@PathVariable String id){
         musicService.changeMusicStateToWaited(id);
         return Result.success();
+    }
+    //分页
+    @GetMapping("/pages")
+    public IPage<MusicVo> getMusicPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                       @RequestParam(defaultValue = "10") Integer pageSize,
+                                       @RequestParam(defaultValue = "")String searchWord){
+        IPage<MusicDto> musicDtoPage = musicService.getMusicPage(pageNum, pageSize, searchWord);
+
+        List<MusicDto> musicDtoList = musicDtoPage.getRecords();
+        List<MusicVo> musicVoList = musicDtoList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
+
+        IPage<MusicVo> musicVoPage =new Page<>(pageNum,pageSize);
+        musicVoPage.setRecords(musicVoList);
+        musicVoPage.setCurrent(musicDtoPage.getCurrent());
+        musicVoPage.setTotal(musicDtoPage.getTotal());
+        musicVoPage.setSize(musicDtoPage.getSize());
+
+        return  musicVoPage;
     }
 }

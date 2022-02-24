@@ -2,7 +2,9 @@ package com.wildwestworld.jkmusic.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.Gender;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.entity.Music;
@@ -143,5 +145,30 @@ public class MusicServiceImpl implements MusicService{
         music.setMusicState(musicState);
 
         musicMapper.updateById(music);
+    }
+
+
+    @Override
+    public IPage<MusicDto> getMusicPage(Integer pageNum, Integer pageSize, String searchWord) {
+        LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();
+        if (StrUtil.isNotBlank(searchWord)){
+            wrapper.eq(Music::getName,searchWord);
+        }
+
+        IPage<Music> musicPage = musicMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+
+        List<Music> musicList = musicPage.getRecords();
+
+        List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+
+        IPage<MusicDto> musicDtoPage = new Page<>(pageNum,pageSize);
+
+        musicDtoPage.setRecords(musicDtoList);
+
+        musicDtoPage.setCurrent(musicPage.getCurrent());
+        musicDtoPage.setTotal(musicPage.getTotal());
+        musicDtoPage.setSize(musicPage.getSize());
+
+        return musicDtoPage;
     }
 }
