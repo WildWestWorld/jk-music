@@ -1,6 +1,7 @@
 package com.wildwestworld.jkmusic.transport.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import lombok.Data;
 
@@ -16,7 +17,9 @@ public class MusicDto {
 
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 }

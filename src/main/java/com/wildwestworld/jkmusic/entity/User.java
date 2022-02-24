@@ -28,7 +28,6 @@ import java.util.List;
 
 public class User extends AbstractEntity implements UserDetails {
 
-
     private  String username;
 
     private  String nickname;

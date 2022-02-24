@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.User;
 
@@ -18,6 +19,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     List<User> userList ();
-    Page<User> getPage(Page<User> page ,@Param("username") String username);
+    IPage<User> getPage(Page<User> page , @Param("username") String username);
     User getCurrentUser (@Param("username") String username);
 }
