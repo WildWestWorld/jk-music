@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.TreeMap;
 
 @Service("Cors")
@@ -31,6 +32,9 @@ public class StorageCosImpl implements StorageService{
     @Override
     public FileUploadDto initFileUploadCos() throws IOException {
         try {
+            Long startTime = new Date().getTime();
+            Long expiredTime =new Date(startTime +1800*1000).getTime();
+
             Response response = CosStsClient.getCredential(getCosStsConfig());
 
 
@@ -40,6 +44,10 @@ public class StorageCosImpl implements StorageService{
             fileUploadDto.setSecretId(response.credentials.tmpSecretId);
             fileUploadDto.setHashKey(response.credentials.tmpSecretKey);
             fileUploadDto.setSessionToken(response.credentials.sessionToken);
+
+            fileUploadDto.setStartTime(startTime);
+            fileUploadDto.setExpiredTime(expiredTime);
+
             return fileUploadDto;
         }catch (Exception e){
             e.printStackTrace();

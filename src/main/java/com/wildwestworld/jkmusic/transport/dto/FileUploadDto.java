@@ -2,6 +2,8 @@ package com.wildwestworld.jkmusic.transport.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 //参考资料:https://cloud.tencent.com/document/product/436/14048
 //用于文件上传的身份验证的dto
 @Data
@@ -24,4 +26,9 @@ public class FileUploadDto {
 
     //存储桶所属地域，如 ap-guangzhou
     private String region;
+
+    private Long startTime;
+
+    private Long expiredTime;
+
 }
