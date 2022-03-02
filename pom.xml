@@ -156,13 +156,18 @@
             <version>3.0.0</version>
         </dependency>
 
-
+<!--直接用wx号登录-->
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-mp</artifactId>
             <version>4.2.0</version>
         </dependency>
-
+<!--临时token来拿取文件-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos-sts_api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
 
     </dependencies>
 
