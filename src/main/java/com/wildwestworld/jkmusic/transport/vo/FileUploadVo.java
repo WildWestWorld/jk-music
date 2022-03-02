@@ -1,6 +1,9 @@
 package com.wildwestworld.jkmusic.transport.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class FileUploadVo {
@@ -17,4 +20,8 @@ public class FileUploadVo {
     private String bucket;
 
     private String region;
+
+    private Long startTime;
+
+    private Long expiredTime;
 }

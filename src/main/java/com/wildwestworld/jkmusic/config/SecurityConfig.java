@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 //extends WebSecurityConfigurerAdapter 是为了配置http请求
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //密匙，用于生成Token
-    public static final String SECRET = "YuanLiMusic";
+    public static final String SECRET = "JKMusic";
     //过期时间
     public static final long EXPIRATION_TIME = 864000000; // 10 days
     //token的前缀，一般都是Bearer
@@ -82,7 +82,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                       .antMatchers("/webjars/**")
                       .antMatchers( "/v3/**")
                       .antMatchers("/doc.html")
-                      .antMatchers("/wechat/**");
+                      .antMatchers("/wechat/**")
+                      .antMatchers("/files/**");
+
     }
 
     //指定新的service，当他调用LoadUserByUsername的时候就会调用我们在自己service层写的那个方法了
