@@ -1,6 +1,5 @@
 package com.wildwestworld.jkmusic.service;
 
-import com.sun.xml.internal.ws.api.model.ExceptionType;
 import com.wildwestworld.jkmusic.emuns.FileStatus;
 import com.wildwestworld.jkmusic.emuns.FileType;
 import com.wildwestworld.jkmusic.emuns.Storage;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Map;
 
 @Service
 public class FileServiceImpl implements FileService{
