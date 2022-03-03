@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 //参考资料:https://cloud.tencent.com/document/product/436/14048
-//用于文件上传的身份验证的dto
+//用于文件上传的身份验证的dto，有关Cos的
 @Data
 public class FileUploadDto {
 //    临时密钥 Id，可用于计算签名
@@ -21,11 +21,7 @@ public class FileUploadDto {
     private String fileId;
 
 
-    //存储桶名称：bucketName-appid, 如 example-125000000
-    private String  bucket;
 
-    //存储桶所属地域，如 ap-guangzhou
-    private String region;
 
     private Long startTime;
 

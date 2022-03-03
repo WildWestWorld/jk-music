@@ -5,6 +5,7 @@ import com.wildwestworld.jkmusic.repository.FileRepository;
 import com.wildwestworld.jkmusic.repository.FileUploadRepository;
 import com.wildwestworld.jkmusic.service.FileService;
 import com.wildwestworld.jkmusic.transport.dto.FileDto;
+import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
 import com.wildwestworld.jkmusic.transport.dto.FileUploadRequest;
 import com.wildwestworld.jkmusic.transport.vo.FileUploadVo;
 import com.wildwestworld.jkmusic.transport.vo.FileVo;
@@ -27,7 +28,8 @@ public class FileController {
 
     @PostMapping("/upload_init")
     public FileUploadVo initUpload(@Validated @RequestBody FileUploadRequest fileUploadRequest) throws IOException {
-        return fileUploadRepository.FileUploadToVo(fileService.initUpload(fileUploadRequest));
+        FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
+        return fileUploadRepository.FileUploadToVo(fileUploadDto);
 
     }
 

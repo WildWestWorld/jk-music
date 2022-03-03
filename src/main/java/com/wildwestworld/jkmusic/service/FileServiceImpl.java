@@ -35,9 +35,9 @@ public class FileServiceImpl implements FileService{
     //为什么要加事务Transactional ，因为我们有两个命令需要执行或者说操作数据库，若是有一条执行不了可以回滚
     @Transactional
     public FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException {
-        //创建File实体
+        //创建File实体，并存入数据库
         File fileEntity = fileRepository.createFileEntity(fileUploadRequest);
-        //FileTypeTransformer来自util文件
+        //FileTypeTransformer来自util文件 使用后缀名判断文件类型
         FileType fileTypeFromExt = FileTypeTransformer.getFileTypeFromExt(fileUploadRequest.getExt());
 
         fileEntity.setStorage(Storage.COS);
@@ -47,11 +47,10 @@ public class FileServiceImpl implements FileService{
         fileMapper.insert(fileEntity);
 
 
-        //通过接口拿取SDS令牌
-        String storageName = getDefaultStorage().name();
-
+        //准备从腾讯云拿数据，通过接口拿取SDS令牌
 
 //        FileUploadDto fileUploadDto= this.storageService.get(storageName).initFileUploadCos();
+        //此时的fileUploadDto是装配好配置的dto
         FileUploadDto fileUploadDto= storageService.initFileUploadCos();
 
         fileUploadDto.setHashKey(fileEntity.getHashKey());
@@ -71,7 +70,7 @@ public class FileServiceImpl implements FileService{
     }
 
     //后台设置当前的Storage
-    private Storage getDefaultStorage(){
+    public Storage getDefaultStorage(){
         return Storage.COS;
     }
 

@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.util.Date;
 
+//参考资料:https://cloud.tencent.com/document/product/436/14048
+//用于文件上传的身份验证的dto，有关Cos的
 @Data
 public class FileUploadVo {
     private String secretId;
@@ -17,9 +19,6 @@ public class FileUploadVo {
 
     private String fileId;
 
-    private String bucket;
-
-    private String region;
 
     private Long startTime;
 
