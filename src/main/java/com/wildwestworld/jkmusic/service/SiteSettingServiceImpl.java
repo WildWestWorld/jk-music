@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import com.wildwestworld.jkmusic.emuns.Storage;
 import com.wildwestworld.jkmusic.transport.dto.SiteSettingDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class SiteSettingServiceImpl implements SiteSettingService{
         SiteSettingDto siteSettingDto = new SiteSettingDto();
         siteSettingDto.setBucket(bucket);
         siteSettingDto.setRegion(region);
-        siteSettingDto.setStorage(fileService.getDefaultStorage());
+        siteSettingDto.setStorage(Storage.COS);
         return siteSettingDto;
 
     }
