@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String HEADER_STRING = "Authorization";
     //登录的网页路径
     public static final String SIGN_UP_URL = "/users";
+    //站点信息获取的路径
+    public static final String SITE_SETTING_URL ="/setting/site";
 
     @Resource
     UserService userService;
@@ -54,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .authorizeRequests()
               //antMatchers白名单 HttpMethod.POST：采用的方法是POST方法 白名单地址：SIGN_UP_URL   permitAll():可以被所有人访问
               //注意这个白名单，少个/也认不出来，要反复核对
-              .antMatchers(SIGN_UP_URL,"/login","/users/**","/tokens/**","/tokens").permitAll()
+              .antMatchers(SIGN_UP_URL,"/login","/users/**","/tokens/**","/tokens",SITE_SETTING_URL).permitAll()
               //anyRequest() 所有请求   authenticated()：必须鉴权才能用（除开白名单）
               .anyRequest().authenticated()
 

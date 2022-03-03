@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import com.wildwestworld.jkmusic.emuns.Storage;
 import com.wildwestworld.jkmusic.transport.dto.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
 import com.wildwestworld.jkmusic.transport.dto.FileUploadRequest;
@@ -13,4 +14,6 @@ public interface FileService {
     FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException;
 
     FileDto finishUpload(String id);
+
+    Storage getDefaultStorage();
 }

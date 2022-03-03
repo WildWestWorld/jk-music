@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Date;
 import java.util.TreeMap;
-
+//初始化cos的
 @Service("Cors")
 public class StorageCosImpl implements StorageService{
     //从properties拿bucket参数
@@ -32,21 +32,19 @@ public class StorageCosImpl implements StorageService{
     @Override
     public FileUploadDto initFileUploadCos() throws IOException {
         try {
-            Long startTime = new Date().getTime();
-            Long expiredTime =new Date(startTime +1800*1000).getTime();
 
+            //此时我们就请求了腾讯的服务器，下面就是把请求后的数据给放进fileUploadDto里面
             Response response = CosStsClient.getCredential(getCosStsConfig());
 
 
             FileUploadDto fileUploadDto = new FileUploadDto();
-            fileUploadDto.setBucket(bucket);
-            fileUploadDto.setRegion(region);
+
             fileUploadDto.setSecretId(response.credentials.tmpSecretId);
-            fileUploadDto.setHashKey(response.credentials.tmpSecretKey);
+            fileUploadDto.setSecretKey(response.credentials.tmpSecretKey);
             fileUploadDto.setSessionToken(response.credentials.sessionToken);
 
-            fileUploadDto.setStartTime(startTime);
-            fileUploadDto.setExpiredTime(expiredTime);
+            fileUploadDto.setStartTime(response.startTime);
+            fileUploadDto.setExpiredTime(response.expiredTime);
 
             return fileUploadDto;
         }catch (Exception e){
@@ -57,6 +55,8 @@ public class StorageCosImpl implements StorageService{
     }
 
     //配置cosConfig
+    //写法来自腾讯云
+    //参考资料:https://cloud.tencent.com/document/product/436/14048
     private TreeMap<String, Object> getCosStsConfig() {
         TreeMap<String, Object> config = new TreeMap<String, Object>();
         config.put("secretId", secretId);
