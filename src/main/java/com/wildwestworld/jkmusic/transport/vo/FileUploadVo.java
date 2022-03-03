@@ -15,7 +15,7 @@ public class FileUploadVo {
 
     private String sessionToken;
 
-    private String key;
+    private String hashKey;
 
     private String fileId;
 
