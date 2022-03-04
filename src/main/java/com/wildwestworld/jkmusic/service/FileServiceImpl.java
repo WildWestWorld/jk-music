@@ -65,6 +65,7 @@ public class FileServiceImpl implements FileService{
             throw new BizException(BizExceptionType.File_NOT_FOUND);
         }
         file.setFileStatus(FileStatus.UPLOADED);
+        fileMapper.updateById(file);
         FileDto fileDto = fileRepository.fileToDto(file);
         return fileDto;
     }
