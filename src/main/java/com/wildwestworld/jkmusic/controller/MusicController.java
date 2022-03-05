@@ -85,7 +85,9 @@ public class MusicController {
         IPage<MusicDto> musicDtoPage = musicService.getMusicPage(pageNum, pageSize, searchWord);
 
         List<MusicDto> musicDtoList = musicDtoPage.getRecords();
+
         List<MusicVo> musicVoList = musicDtoList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
+
 
         IPage<MusicVo> musicVoPage =new Page<>(pageNum,pageSize);
         musicVoPage.setRecords(musicVoList);

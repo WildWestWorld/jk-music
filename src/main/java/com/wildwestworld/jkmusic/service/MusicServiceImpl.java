@@ -36,6 +36,7 @@ public class MusicServiceImpl implements MusicService{
     public MusicDto createMusic(MusicCreateRequest musicCreateRequest) {
         //先给他转化成Entity
         Music musicEntity = musicRepository.createMusicEntity(musicCreateRequest);
+        System.out.println(musicEntity);
         //放入枚举类型的state
         MusicState state = MusicState.valueOf("待上架");
         musicEntity.setMusicState(state);
@@ -155,11 +156,14 @@ public class MusicServiceImpl implements MusicService{
             wrapper.eq(Music::getName,searchWord);
         }
 
-        IPage<Music> musicPage = musicMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        IPage<Music> musicPage = musicMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+
 
         List<Music> musicList = musicPage.getRecords();
 
+
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+
 
         IPage<MusicDto> musicDtoPage = new Page<>(pageNum,pageSize);
 
