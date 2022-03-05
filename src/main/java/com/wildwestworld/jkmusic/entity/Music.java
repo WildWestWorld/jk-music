@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import lombok.Data;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 @Data
 @TableName("music")
@@ -18,5 +19,11 @@ public class Music extends AbstractEntity{
     private MusicState musicState;
 
     private String description;
+
+    @TableField("file_id")
+    private String fileId;
+
+    @TableField(exist = false)
+    private File file;
 
 }
