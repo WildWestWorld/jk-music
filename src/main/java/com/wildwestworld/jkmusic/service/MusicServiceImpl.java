@@ -82,7 +82,7 @@ public class MusicServiceImpl implements MusicService{
         //如果userUpdateRequest的FileId不是空的
         if (StrUtil.isNotEmpty(musicUpdateRequest.getFileId())) {
             //设置昵称
-            music.setDescription(musicUpdateRequest.getFileId());
+            music.setFileId(musicUpdateRequest.getFileId());
         }
 
         //更新user
