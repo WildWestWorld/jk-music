@@ -13,4 +13,7 @@ public class MusicUpdateRequest {
     private String description;
 
     private String musicState;
+
+    @NotBlank   
+    private String fileId;
 }

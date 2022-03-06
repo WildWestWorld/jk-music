@@ -35,7 +35,7 @@ public class MusicServiceImpl implements MusicService{
     @Override
     public MusicDto createMusic(MusicCreateRequest musicCreateRequest) {
         //先给他转化成Entity
-        Music musicEntity = musicRepository.createMusicEntity(musicCreateRequest);
+        Music musicEntity = musicRepository.    createMusicEntity(musicCreateRequest);
         System.out.println(musicEntity);
         //放入枚举类型的state
         MusicState state = MusicState.valueOf("待上架");
@@ -77,6 +77,12 @@ public class MusicServiceImpl implements MusicService{
         if (StrUtil.isNotEmpty(musicUpdateRequest.getDescription())) {
             //设置昵称
             music.setDescription(musicUpdateRequest.getDescription());
+        }
+
+        //如果userUpdateRequest的FileId不是空的
+        if (StrUtil.isNotEmpty(musicUpdateRequest.getFileId())) {
+            //设置昵称
+            music.setDescription(musicUpdateRequest.getFileId());
         }
 
         //更新user

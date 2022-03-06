@@ -16,7 +16,6 @@ public class MusicVo {
 
     private String description;
 
-    private String fileId;
 
 
     private FileVo file;
