@@ -58,7 +58,7 @@ public class MusicController {
     }
 
     //根据ID修改music的state改为已上架状态
-    @PostMapping("/{id}/pubilc")
+    @PostMapping("/{id}/public")
     Result<?> changeMusicStateToPublic(@PathVariable String id){
         musicService.changeMusicStateToPublic(id);
         return Result.success();
