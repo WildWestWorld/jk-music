@@ -29,7 +29,8 @@
 <!--    子查询-->
     <select id="getRoleList" resultType="com.wildwestworld.jkmusic.entity.Role">
         select *
-        from `role` as r left join `user_role` as ur on r.id =ur.role_id
+        from `role` as r
+        left join `user_role` as ur on r.id =ur.role_id
         where  ur.user_id =#{id}
     </select>
 

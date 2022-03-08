@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wildwestworld.jkmusic.mapper.PlayListMapper">
+
+
+    <resultMap id="PlayListMap" type="com.wildwestworld.jkmusic.entity.PlayList">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="playListState" column="playlist_state"/>
+        <result property="coverId" column="cover_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+        <association  property="cover"  column="cover_id"  select="getCoverFile">
+
+        </association >
+
+
+        <association  property="creator"  column="creator_id"  select="getCreatorUser">
+
+         </association >
+
+
+
+        <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">
+
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="userMap" type="com.wildwestworld.jkmusic.entity.User">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="gender" column="gender"/>
+        <result property="locked" column="locked"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+
+        <collection property="roles" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="musicMap" type="com.wildwestworld.jkmusic.entity.Music">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fileId" column="file_id"/>
+
+        <result property="description" column="description"/>
+        <result property="musicState" column="music_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <!--column="file_id"传入查询的参数，传入的参数得是原表的属性-->
+        <association  property="file"  column="file_id"  select="getFileList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </association >
+    </resultMap>
+
+    <!--    子查询-->
+    <select id="getFileList" resultType="com.wildwestworld.jkmusic.entity.File">
+        select *
+        from `file` as f
+        where  f.id =#{file_id}
+    </select>
+
+
+
+
+    <!--    子查询-->
+    <select id="getRoleList" resultType="com.wildwestworld.jkmusic.entity.Role">
+        select *
+        from `role` as r
+        left join `user_role` as ur on r.id =ur.role_id
+        where  ur.user_id =#{id}
+    </select>
+
+
+
+
+    <!--一对一查询子查询 getCoverFile-->
+    <select id="getCoverFile" resultType="com.wildwestworld.jkmusic.entity.File">
+        select *
+        from `file` as f
+        where  f.id =#{cover_id}
+    </select>
+
+
+    <!--一对一查询子查询 getCreatorUser-->
+    <select id="getCreatorUser" resultMap="userMap">
+        select *
+        from `user` as u
+        where  u.id =#{creator_id}
+    </select>
+
+    <!--    子查询 -->
+    <select id="getMusicList" resultMap="musicMap">
+        select *
+        from `music` as m
+        left join `file` as f on m.file_id=f.id
+        left join `playlist_music` as pm on m.id =pm.music_id
+        where  pm.playlist_id =#{id}
+    </select>
+
+
+<!--        以下是正常操作-->
+    <select id="getPage" resultMap="PlayListMap">
+        select * from  `playlist` where `playlist`.name like concat ('%',#{name},'%')
+
+    </select>
+
+
+    <!--    <select id="userList" resultMap="userMap">-->
+    <!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+    <!--        left join `user_role` as ur on user.id = ur.user_id-->
+    <!--        left join  `role` as r on ur.role_id =r.id-->
+
+    <!--    </select>-->
+
+    <!--    <select id="getPage" resultMap="userMap">-->
+    <!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+    <!--        left join `user_role` as ur on user.id = ur.user_id-->
+    <!--        left join  `role` as r on ur.role_id =r.id-->
+    <!--        where `user`.username like concat('%',#{username},'%')-->
+    <!--    </select>-->
+
+    <!--    <select id="getCurrentUser" resultMap="userMap">-->
+    <!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->
+    <!--        left join `user_role` as ur on user.id = ur.user_id-->
+    <!--        left join  `role` as r on ur.role_id =r.id-->
+    <!--        where `user`.username = concat(#{username})-->
+    <!--    </select>-->
+</mapper>
