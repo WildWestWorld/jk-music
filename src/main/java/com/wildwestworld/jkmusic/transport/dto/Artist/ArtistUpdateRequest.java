@@ -14,5 +14,5 @@ public class ArtistUpdateRequest {
     private String ArtistState;
 
     @NotBlank(message = "更新的封面文件/封面ID不能为空")
-    private String fileId;
+    private String photoId;
 }
