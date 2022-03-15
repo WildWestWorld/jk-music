@@ -76,9 +76,9 @@ public class ArtistServiceImpl implements ArtistService{
         }
 
         //如果userUpdateRequest的FileId不是空的
-        if (StrUtil.isNotEmpty(artistUpdateRequest.getFileId())) {
+        if (StrUtil.isNotEmpty(artistUpdateRequest.getPhotoId())) {
             //设置昵称
-            artist.setPhotoId(artistUpdateRequest.getFileId());
+            artist.setPhotoId(artistUpdateRequest.getPhotoId());
         }
 
         //更新user
