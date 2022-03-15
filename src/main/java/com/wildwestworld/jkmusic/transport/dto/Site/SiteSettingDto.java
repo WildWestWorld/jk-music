@@ -1,4 +1,4 @@
-package com.wildwestworld.jkmusic.transport.dto;
+package com.wildwestworld.jkmusic.transport.dto.Site;
 
 import com.wildwestworld.jkmusic.emuns.Storage;
 import lombok.Data;

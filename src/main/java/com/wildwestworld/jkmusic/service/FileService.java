@@ -1,11 +1,9 @@
 package com.wildwestworld.jkmusic.service;
 
 import com.wildwestworld.jkmusic.emuns.Storage;
-import com.wildwestworld.jkmusic.transport.dto.FileDto;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadRequest;
-import com.wildwestworld.jkmusic.transport.vo.FileVo;
-import org.springframework.stereotype.Service;
+import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadRequest;
 
 import java.io.IOException;
 

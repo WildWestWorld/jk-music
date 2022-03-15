@@ -18,24 +18,19 @@ import com.wildwestworld.jkmusic.exception.BizException;
 import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import com.wildwestworld.jkmusic.mapper.UserMapper;
 import com.wildwestworld.jkmusic.repository.UserRepository;
-import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.Token.TokenCreateRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserCreateByRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
 
-import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.wildwestworld.jkmusic.transport.dto.User.UserUpdateRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

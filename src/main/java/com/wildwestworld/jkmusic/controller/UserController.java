@@ -1,18 +1,14 @@
 package com.wildwestworld.jkmusic.controller;
 
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.mapper.UserMapper;
 import com.wildwestworld.jkmusic.repository.UserRepository;
 import com.wildwestworld.jkmusic.service.UserService;
 
-import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserDto;
-import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserCreateByRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.User.UserUpdateRequest;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import com.wildwestworld.jkmusic.utils.Result;
 import org.springframework.validation.annotation.Validated;

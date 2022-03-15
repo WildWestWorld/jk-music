@@ -1,6 +1,9 @@
-package com.wildwestworld.jkmusic.transport.dto;
+package com.wildwestworld.jkmusic.transport.dto.PlayList;
 
 import com.wildwestworld.jkmusic.emuns.PlayListState;
+import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
 import lombok.Data;
 
 import java.util.Date;

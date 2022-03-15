@@ -1,7 +1,7 @@
 package com.wildwestworld.jkmusic.controller;
 
 import com.wildwestworld.jkmusic.service.UserService;
-import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
+import com.wildwestworld.jkmusic.transport.dto.Token.TokenCreateRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

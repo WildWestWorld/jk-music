@@ -20,7 +20,8 @@ public enum BizExceptionType {
         User_LOCKED(50001002,"该用户处于封禁状态"),
 
         Music_NOT_FOUND(40402001,"音乐未找到"),
-        File_NOT_FOUND(40403001,"文件未找到"),;
+        File_NOT_FOUND(40403001,"文件未找到"),
+        Artist_NOT_FOUND(40404001,"歌手未找到");
 
         private Integer code;
 

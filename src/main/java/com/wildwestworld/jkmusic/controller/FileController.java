@@ -4,16 +4,15 @@ package com.wildwestworld.jkmusic.controller;
 import com.wildwestworld.jkmusic.repository.FileRepository;
 import com.wildwestworld.jkmusic.repository.FileUploadRepository;
 import com.wildwestworld.jkmusic.service.FileService;
-import com.wildwestworld.jkmusic.transport.dto.FileDto;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadRequest;
+import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadRequest;
 import com.wildwestworld.jkmusic.transport.vo.FileUploadVo;
 import com.wildwestworld.jkmusic.transport.vo.FileVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.io.IOException;
 
 @RestController
