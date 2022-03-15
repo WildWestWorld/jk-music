@@ -14,5 +14,5 @@ public class ArtistCreateRequest {
     private FileDto photo;
 
     @NotBlank(message = "封面文件/封面ID不能为空")
-    private String fileId;
+    private String photoId;
 }
