@@ -2,9 +2,8 @@ package com.wildwestworld.jkmusic.controller;
 
 import com.wildwestworld.jkmusic.repository.SiteSettingRepository;
 import com.wildwestworld.jkmusic.service.SiteSettingService;
-import com.wildwestworld.jkmusic.transport.dto.SiteSettingDto;
+import com.wildwestworld.jkmusic.transport.dto.Site.SiteSettingDto;
 import com.wildwestworld.jkmusic.transport.vo.SiteSettingVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

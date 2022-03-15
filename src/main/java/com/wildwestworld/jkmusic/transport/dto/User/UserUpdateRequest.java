@@ -1,4 +1,4 @@
-package com.wildwestworld.jkmusic.transport.dto;
+package com.wildwestworld.jkmusic.transport.dto.User;
 
 import lombok.Data;
 

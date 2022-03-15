@@ -1,10 +1,9 @@
 package com.wildwestworld.jkmusic.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.wildwestworld.jkmusic.transport.dto.MusicCreateRequest;
-import com.wildwestworld.jkmusic.transport.dto.MusicDto;
-import com.wildwestworld.jkmusic.transport.dto.MusicUpdateRequest;
-import com.wildwestworld.jkmusic.utils.Result;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
 
 import java.util.List;
 

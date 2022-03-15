@@ -1,8 +1,8 @@
 package com.wildwestworld.jkmusic.repository;
 
 import com.wildwestworld.jkmusic.entity.User;
-import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.User.UserCreateByRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import org.mapstruct.Mapper;
 

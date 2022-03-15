@@ -1,16 +1,5 @@
 package com.wildwestworld.jkmusic.service;
 
-import com.wildwestworld.jkmusic.emuns.FileStatus;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadRequest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 //@SpringBootTest
 class FileServiceTest {
 

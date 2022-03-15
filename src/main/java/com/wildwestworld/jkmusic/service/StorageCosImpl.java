@@ -6,12 +6,11 @@ import com.tencent.cloud.CosStsClient;
 import com.tencent.cloud.Response;
 import com.wildwestworld.jkmusic.exception.BizException;
 import com.wildwestworld.jkmusic.exception.BizExceptionType;
-import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.TreeMap;
 //初始化cos的
 @Service("Cors")

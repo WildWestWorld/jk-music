@@ -3,12 +3,12 @@ package com.wildwestworld.jkmusic.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.repository.MusicRepository;
 import com.wildwestworld.jkmusic.service.MusicService;
-import com.wildwestworld.jkmusic.transport.dto.*;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
 import com.wildwestworld.jkmusic.transport.vo.MusicVo;
-import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import com.wildwestworld.jkmusic.utils.Result;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

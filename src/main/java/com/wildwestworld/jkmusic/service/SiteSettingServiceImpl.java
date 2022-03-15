@@ -1,7 +1,7 @@
 package com.wildwestworld.jkmusic.service;
 
 import com.wildwestworld.jkmusic.emuns.Storage;
-import com.wildwestworld.jkmusic.transport.dto.SiteSettingDto;
+import com.wildwestworld.jkmusic.transport.dto.Site.SiteSettingDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

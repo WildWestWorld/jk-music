@@ -1,11 +1,9 @@
-package com.wildwestworld.jkmusic.transport.dto;
+package com.wildwestworld.jkmusic.transport.dto.User;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.wildwestworld.jkmusic.emuns.Gender;
-import com.wildwestworld.jkmusic.transport.vo.RoleVo;
-import lombok.AccessLevel;
+import com.wildwestworld.jkmusic.transport.dto.Role.RoleDto;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Date;
 import java.util.List;

@@ -1,15 +1,12 @@
 package com.wildwestworld.jkmusic.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.wildwestworld.jkmusic.entity.User;
-import com.wildwestworld.jkmusic.transport.dto.TokenCreateRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserCreateByRequest;
-import com.wildwestworld.jkmusic.transport.dto.UserDto;
-import com.wildwestworld.jkmusic.transport.dto.UserUpdateRequest;
-import com.wildwestworld.jkmusic.transport.vo.UserVo;
-import org.apache.ibatis.annotations.Param;
+import com.wildwestworld.jkmusic.transport.dto.Token.TokenCreateRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserCreateByRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.User.UserUpdateRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

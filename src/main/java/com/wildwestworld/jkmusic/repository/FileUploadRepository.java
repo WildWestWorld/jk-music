@@ -1,6 +1,6 @@
 package com.wildwestworld.jkmusic.repository;
 
-import com.wildwestworld.jkmusic.transport.dto.FileUploadDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileUploadDto;
 import com.wildwestworld.jkmusic.transport.vo.FileUploadVo;
 import org.mapstruct.Mapper;
 

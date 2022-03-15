@@ -2,7 +2,6 @@ package com.wildwestworld.jkmusic.transport.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
-import com.wildwestworld.jkmusic.transport.dto.FileDto;
 import lombok.Data;
 
 import java.util.Date;
