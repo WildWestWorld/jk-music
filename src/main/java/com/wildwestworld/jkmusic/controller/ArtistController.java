@@ -1,6 +1,7 @@
 package com.wildwestworld.jkmusic.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.entity.PlayList;
 import com.wildwestworld.jkmusic.repository.ArtistRepository;
@@ -20,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/artist")
@@ -75,12 +78,25 @@ public class ArtistController {
     }
 
     @GetMapping("/page")
-    public IPage<Artist> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
+    public IPage<ArtistVo> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                            @RequestParam(defaultValue = "10") Integer pageSize,
                                            @RequestParam(defaultValue = "") String searchWord)
     {
-        IPage<Artist> artistPage = artistService.getArtistPage(pageNum, pageSize, searchWord);
+        IPage<ArtistDto> artistDtoPage = artistService.getArtistPage(pageNum, pageSize, searchWord);
 
-        return artistPage;
+        List<ArtistDto> artistDtoList = artistDtoPage.getRecords();
+
+        List<ArtistVo> artistVoList = artistDtoList.stream().map(artistRepository::artistToVo).collect(Collectors.toList());
+
+
+        IPage<ArtistVo> artistVoPage =new Page<>(pageNum,pageSize);
+        artistVoPage.setRecords(artistVoList);
+        artistVoPage.setCurrent(artistDtoPage.getCurrent());
+        artistVoPage.setTotal(artistDtoPage.getTotal());
+        artistVoPage.setSize(artistDtoPage.getSize());
+
+
+
+        return artistVoPage;
     }
 }

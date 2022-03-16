@@ -11,6 +11,7 @@ import com.wildwestworld.jkmusic.exception.BizException;
 import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import com.wildwestworld.jkmusic.mapper.MusicMapper;
 import com.wildwestworld.jkmusic.repository.MusicRepository;
+import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
@@ -27,7 +28,8 @@ public class MusicServiceImpl implements MusicService{
     @Resource
     private MusicRepository musicRepository;
 
-
+    @Resource
+    private  StorageService storageService;
     //创建MUSIC
     @Override
     public MusicDto createMusic(MusicCreateRequest musicCreateRequest) {
@@ -159,6 +161,8 @@ public class MusicServiceImpl implements MusicService{
             wrapper.eq(Music::getName,searchWord);
         }
 
+
+
         IPage<Music> musicPage = musicMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
 
 
@@ -166,7 +170,13 @@ public class MusicServiceImpl implements MusicService{
 
 
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
-
+//        for (MusicDto musicDto : musicDtoList) {
+//            FileDto fileDto = musicDto.getFile();
+//            if (fileDto !=null){
+//                String hashKey = fileDto.getHashKey();
+//
+//            }
+//        }
 
         IPage<MusicDto> musicDtoPage = new Page<>(pageNum,pageSize);
 
