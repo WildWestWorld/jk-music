@@ -32,6 +32,6 @@ public class FileVo  extends BaseVo{
     //文件存放的仓库
     private Storage storage;
 
-
+    private String url;
 
 }

@@ -18,7 +18,6 @@ public class FileDto {
 
     private String hashKey;
 
-
     //文件的大小
     private Integer size;
 
@@ -34,6 +33,7 @@ public class FileDto {
     //文件存放的仓库
     private Storage storage;
 
+    private String url;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;
