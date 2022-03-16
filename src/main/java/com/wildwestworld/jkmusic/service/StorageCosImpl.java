@@ -126,7 +126,7 @@ public class StorageCosImpl implements StorageService{
         URL url = cosClient.generatePresignedUrl(bucketName, key, expirationDate, method, headers, params);
         //将Url转化为字符串形式
         String StringUrl=url.toString();
-        System.out.println(url.toString());
+//        System.out.println(url.toString());
 
 // 确认本进程不再使用 cosClient 实例之后，关闭之
         cosClient.shutdown();
