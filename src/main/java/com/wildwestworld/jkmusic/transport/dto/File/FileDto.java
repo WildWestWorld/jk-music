@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.FileStatus;
 import com.wildwestworld.jkmusic.emuns.FileType;
 import com.wildwestworld.jkmusic.emuns.Storage;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class FileDto {
@@ -34,6 +36,7 @@ public class FileDto {
     private Storage storage;
 
     private String url;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;

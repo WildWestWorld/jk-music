@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.FileStatus;
 import com.wildwestworld.jkmusic.emuns.FileType;
 import com.wildwestworld.jkmusic.emuns.Storage;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class FileVo  extends BaseVo{

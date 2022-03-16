@@ -13,6 +13,7 @@ import com.wildwestworld.jkmusic.exception.BizExceptionType;
 import com.wildwestworld.jkmusic.mapper.ArtistMapper;
 import com.wildwestworld.jkmusic.mapper.PlayListMapper;
 import com.wildwestworld.jkmusic.repository.ArtistRepository;
+import com.wildwestworld.jkmusic.repository.MusicRepository;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
@@ -20,6 +21,9 @@ import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
@@ -27,6 +31,8 @@ public class ArtistServiceImpl implements ArtistService{
     ArtistMapper artistMapper;
     @Resource
     ArtistRepository artistRepository;
+    @Resource
+    MusicRepository musicRepository;
 
 
     @Override
@@ -139,9 +145,34 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
-    public IPage<Artist> getArtistPage(Integer pageNum, Integer pageSize, String searchWord) {
-        IPage<Artist> artistPage = artistMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+    public IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord) {
 
-        return artistPage;
+
+
+        IPage<Artist> artistPage = artistMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+        List<Artist> artistList = artistPage.getRecords();
+        List<MusicDto> musicDtoList = new ArrayList<>();
+
+        List<ArtistDto> artistDtoList = artistList.stream().map(artistRepository::artistToDto).collect(Collectors.toList());
+
+
+        for (Artist artist : artistList) {
+            List<MusicDto> musicDtoListTest = artist.getMusicList().stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+            musicDtoList=musicDtoListTest;
+        }
+
+        for (ArtistDto artistDto : artistDtoList) {
+            artistDto.setMusicDtoList(musicDtoList);
+        }
+
+
+        IPage<ArtistDto> artistDtoPage = new Page<>(pageNum, pageSize);
+        artistDtoPage.setRecords(artistDtoList);
+
+        artistDtoPage.setCurrent(artistPage.getCurrent());
+        artistDtoPage.setTotal(artistPage.getTotal());
+        artistDtoPage.setSize(artistPage.getSize());
+
+        return artistDtoPage;
     }
 }
