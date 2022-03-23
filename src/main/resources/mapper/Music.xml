@@ -20,6 +20,13 @@
             <!--            <result property="name" column="r_name"  />-->
             <!--            <result property="title" column="r_title" />-->
         </association >
+
+        <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
     </resultMap>
 
     <select id="getPage" resultMap="musicMap">
@@ -37,6 +44,13 @@
     <select id="userList" resultMap="musicMap">
         select * from  `music`
 
+    </select>
+
+    <select id="getArtistList" resultType="com.wildwestworld.jkmusic.entity.Artist">
+        select *
+        from `artist` as a
+        left join `artist_music` as am on a.id =am.artist_id
+        where  am.music_id =#{id}
     </select>
 
 </mapper>

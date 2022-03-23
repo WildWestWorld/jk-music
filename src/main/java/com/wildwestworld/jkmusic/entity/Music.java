@@ -8,6 +8,8 @@ import com.wildwestworld.jkmusic.emuns.MusicState;
 import lombok.Data;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 
+import java.util.List;
+
 @Data
 @TableName("music")
 public class Music extends AbstractEntity{
@@ -26,4 +28,6 @@ public class Music extends AbstractEntity{
     @TableField(exist = false)
     private File file;
 
+    @TableField(exist = false)
+    private List<Artist> artistList;
 }
