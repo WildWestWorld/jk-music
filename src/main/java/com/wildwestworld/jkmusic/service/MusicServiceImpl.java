@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.MusicState;
+import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.exception.BizException;
 import com.wildwestworld.jkmusic.exception.BizExceptionType;
@@ -167,8 +168,9 @@ public class MusicServiceImpl implements MusicService{
 
 
         List<Music> musicList = musicPage.getRecords();
-
-
+        for (Music music : musicList) {
+            List<Artist> artistList = music.getArtistList();
+        }
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
 //        for (MusicDto musicDto : musicDtoList) {
 //            FileDto fileDto = musicDto.getFile();
