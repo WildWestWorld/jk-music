@@ -23,7 +23,7 @@ public class MusicVo {
 
     private FileVo file;
 
-    private List<Artist> artistVoList;
+    private List<ArtistVo> artistVoList;
 
 
     //      注解@JsonFormat主要是后台到前台的时间格式的转换
