@@ -29,6 +29,30 @@
         </collection>
     </resultMap>
 
+    <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
+        <result property="photoId" column="photo_id"/>
+        <result property="artistState" column="artist_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+
+
+
+
+<!--        <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">-->
+
+<!--        </collection>-->
+    </resultMap>
+
+
     <select id="getPage" resultMap="musicMap">
         select * from  `music` where `music`.name like concat ('%',#{name},'%')
 
@@ -40,13 +64,18 @@
         where  f.id =#{file_id}
     </select>
 
+    <select id="getPhotoFile" resultType="com.wildwestworld.jkmusic.entity.File">
+        select *
+        from `file` as f
+        where  f.id =#{photo_id}
+    </select>
 
     <select id="userList" resultMap="musicMap">
         select * from  `music`
 
     </select>
 
-    <select id="getArtistList" resultType="com.wildwestworld.jkmusic.entity.Artist">
+    <select id="getArtistList" resultMap="ArtistMap">
         select *
         from `artist` as a
         left join `artist_music` as am on a.id =am.artist_id

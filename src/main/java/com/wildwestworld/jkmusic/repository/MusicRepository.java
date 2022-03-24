@@ -5,10 +5,7 @@ import com.wildwestworld.jkmusic.mapper.FileMapper;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.vo.MusicVo;
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.*;
 
 //专门用于Music实体类的dto 和vo 的转化，和与sql语句无关的方法
 @Mapper(componentModel = "spring",uses = {FileRepository.class})
@@ -17,10 +14,15 @@ import org.mapstruct.NullValueMappingStrategy;
 
 public interface MusicRepository {
     //将Music类转化为MusicDto
+    @Mapping(target="artistDtoList",source="artistList")
+
     MusicDto musicToDto(Music music);
 
 
     //将dto转化为Vo
+    @Mapping(target="artistVoList",source="artistDtoList")
+
+
     MusicVo musicToVo(MusicDto musicDto);
 
     //将Dto转换为User实体类Entity
