@@ -57,6 +57,17 @@
         select * from  `music` where `music`.name like concat ('%',#{name},'%')
 
     </select>
+
+    <select id="getMusicList" resultMap="musicMap">
+        select * from  `music` where `music`.name like concat ('%',#{name},'%')
+
+    </select>
+
+    <select id="selectMusicById" resultMap="musicMap">
+        select * from  `music` where `music`.id =#{id}
+
+    </select>
+
     <!--    子查询-->
     <select id="getFileList" resultType="com.wildwestworld.jkmusic.entity.File">
         select *
@@ -81,5 +92,22 @@
         left join `artist_music` as am on a.id =am.artist_id
         where  am.music_id =#{id}
     </select>
+
+
+    <insert id="insertArtistMusic"  parameterType="com.wildwestworld.jkmusic.entity.Music">
+        insert into artist_music(artist_id, music_id) values
+        <foreach collection="artistList" item="item" separator=",">
+            ( #{item.id},#{id})
+        </foreach>
+    </insert>
+
+
+
+    <delete id="deleteAllById"  parameterType = "com.wildwestworld.jkmusic.entity.Music">
+        delete from `artist_music` where music_id = #{id} AND artist_id in
+        <foreach collection="artistList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 
 </mapper>

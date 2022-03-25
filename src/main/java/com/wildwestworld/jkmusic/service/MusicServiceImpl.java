@@ -35,13 +35,18 @@ public class MusicServiceImpl implements MusicService{
     @Override
     public MusicDto createMusic(MusicCreateRequest musicCreateRequest) {
         //先给他转化成Entity
-        Music musicEntity = musicRepository.    createMusicEntity(musicCreateRequest);
+        Music musicEntity = musicRepository.createMusicEntity(musicCreateRequest);
         System.out.println(musicEntity);
         //放入枚举类型的state
         MusicState state = MusicState.valueOf("待上架");
         musicEntity.setMusicState(state);
         //将实体类插入数据
         musicMapper.insert(musicEntity);
+
+        System.out.println(musicEntity.getId());
+
+
+        musicMapper.insertArtistMusic(musicEntity);
         //然后转化为Dto
         MusicDto musicDto = musicRepository.musicToDto(musicEntity);
         return musicDto;
@@ -50,7 +55,7 @@ public class MusicServiceImpl implements MusicService{
     //更新Music
     @Override
     public MusicDto updateMusicById(String id, MusicUpdateRequest musicUpdateRequest) {
-        Music music = musicMapper.selectById(id);
+        Music music = musicMapper.selectMusicById(id);
         if(music == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
             throw new BizException(BizExceptionType.Music_NOT_FOUND);
@@ -87,8 +92,18 @@ public class MusicServiceImpl implements MusicService{
 
         //更新user
         musicMapper.updateById(music);
+        if (musicUpdateRequest.getArtistIdList() !=null) {
+            if (music.getArtistList().size() !=0){
+                musicMapper.deleteAllById(music);
+            }
+
+            Music musicEntity = musicRepository.UpdateMusicEntity(musicUpdateRequest);
+            musicEntity.setId(id);
+
+            musicMapper.insertArtistMusic(musicEntity);
+        }
         //再次查询user
-        Music updateMusic = musicMapper.selectById(id);
+        Music updateMusic = musicMapper.selectMusicById(id);
 
         MusicDto musicDto = musicRepository.musicToDto(updateMusic);
         return musicDto;
@@ -103,10 +118,11 @@ public class MusicServiceImpl implements MusicService{
 
     //获取全部music
     @Override
-    public List<MusicDto> getMusicList() {
+    public List<MusicDto> getMusicList(String searchWord) {
         LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();
-        wrapper.like(Music::getName,"");
-        List<Music> musicList = musicMapper.selectList(wrapper);
+        wrapper.like(Music::getName,searchWord);
+
+        List<Music> musicList = musicMapper.getMusicList(searchWord);
 
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
         return musicDtoList;

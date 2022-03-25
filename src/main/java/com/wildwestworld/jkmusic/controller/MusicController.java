@@ -27,9 +27,9 @@ public class MusicController {
     private MusicRepository musicRepository;
 
     @GetMapping
-    public List<MusicVo> getMusicList(){
+    public List<MusicVo> getMusicList(@RequestParam(defaultValue = "")String searchWord){
 
-        List<MusicDto> musicList = musicService.getMusicList();
+        List<MusicDto> musicList = musicService.getMusicList(searchWord);
         List<MusicVo> musicVoList = musicList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
         return musicVoList;
     }
