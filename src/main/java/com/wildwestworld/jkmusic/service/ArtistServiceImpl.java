@@ -1,7 +1,9 @@
 package com.wildwestworld.jkmusic.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
 import com.wildwestworld.jkmusic.emuns.MusicState;
@@ -48,6 +50,17 @@ public class ArtistServiceImpl implements ArtistService{
         //然后转化为Dto
         ArtistDto artistDto = artistRepository.artistToDto(artistEntity);
         return artistDto;
+    }
+
+
+    @Override
+    public List<ArtistDto> getArtistList(String searchWord) {
+
+
+        List<Artist> artistList = artistMapper.getArtistList(searchWord);
+
+        List<ArtistDto> artistDtoList = artistList.stream().map(artistRepository::artistToDto).collect(Collectors.toList());
+        return artistDtoList;
     }
 
     @Override

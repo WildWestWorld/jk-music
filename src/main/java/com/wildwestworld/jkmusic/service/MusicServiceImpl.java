@@ -112,8 +112,12 @@ public class MusicServiceImpl implements MusicService{
     //删除Music
     @Override
     public void deleteMusicByID(String id) {
-        musicMapper.deleteById(id);
 
+        Music music = musicMapper.selectMusicById(id);
+        if (music.getArtistList().size() !=0){
+            musicMapper.deleteAllById(music);
+        }
+        musicMapper.deleteById(music);
     }
 
     //获取全部music

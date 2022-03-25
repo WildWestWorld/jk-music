@@ -10,8 +10,13 @@ import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
 
+import java.util.List;
+
 public interface ArtistService {
     IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord);
+
+    List<ArtistDto> getArtistList(String searchWord);
+
 
     ArtistDto createArtist(ArtistCreateRequest artistCreateRequest);
 
