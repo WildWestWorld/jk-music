@@ -15,7 +15,7 @@ public interface MusicService {
 
     MusicDto updateMusicById(String id, MusicUpdateRequest musicUpdateRequest);
 
-    List<MusicDto> getMusicList();
+    List<MusicDto> getMusicList(String searchWord);
 
     void changeMusicStateToPublic(String id);
 
