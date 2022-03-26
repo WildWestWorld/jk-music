@@ -50,7 +50,7 @@ public class ArtistController {
     }
 
     @PutMapping("/{id}")
-    public ArtistVo updateArtist(@Validated @PathVariable String id, @RequestBody ArtistUpdateRequest artistUpdateRequest){
+    public ArtistVo updateArtist( @PathVariable String id, @Validated @RequestBody ArtistUpdateRequest artistUpdateRequest){
         ArtistDto artistDto = artistService.updateArtistById(id, artistUpdateRequest);
         ArtistVo artistVo = artistRepository.artistToVo(artistDto);
         return artistVo;
