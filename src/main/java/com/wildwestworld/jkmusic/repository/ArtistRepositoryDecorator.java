@@ -31,8 +31,10 @@ public abstract class ArtistRepositoryDecorator implements ArtistRepository {
             return null;
         }
         List<Music> musicList = artist.getMusicList();
-        List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
-        artistDto.setMusicDtoList(musicDtoList);
+        if (musicList!=null) {
+            List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+            artistDto.setMusicDtoList(musicDtoList);
+        }
         return artistDto;
     }
 
@@ -43,8 +45,10 @@ public abstract class ArtistRepositoryDecorator implements ArtistRepository {
             return null;
         }
         List<MusicDto> musicDtoList = artistDto.getMusicDtoList();
-        List<MusicVo> musicVoList = musicDtoList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
-        artistVo.setMusicVoList(musicVoList);
+        if (musicDtoList!=null) {
+            List<MusicVo> musicVoList = musicDtoList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
+            artistVo.setMusicVoList(musicVoList);
+        }
         return artistVo;
     }
 }
