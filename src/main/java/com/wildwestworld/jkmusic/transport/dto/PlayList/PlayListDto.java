@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.transport.dto.PlayList;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.wildwestworld.jkmusic.emuns.PlayListState;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
@@ -30,6 +31,15 @@ public class PlayListDto {
     private UserDto creator;
 
     private List<MusicDto> musicList;
+
+    //    根据布尔值的真与假判断是否被推荐
+    private Boolean recommended;
+
+    //    推荐因子
+    private Integer recommendFactor;
+
+    //    根据布尔值的真与假判断是否被推荐
+    private Boolean special;
 
     private Date createdTime;
 

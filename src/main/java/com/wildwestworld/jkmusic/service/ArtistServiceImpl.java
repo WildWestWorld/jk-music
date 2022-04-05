@@ -18,6 +18,7 @@ import com.wildwestworld.jkmusic.repository.ArtistRepository;
 import com.wildwestworld.jkmusic.repository.MusicRepository;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
+import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import org.springframework.stereotype.Service;
@@ -155,6 +156,37 @@ public class ArtistServiceImpl implements ArtistService{
         artist.setArtistState(artistState);
 
         artistMapper.updateById(artist);
+    }
+
+
+    @Override
+    public ArtistDto changeToRecommend(String id, ArtistRecommendRequest artistRecommendRequest) {
+        Artist artist = artistMapper.selectById(id);
+        artist.setRecommended(true);
+        Integer recommendFactor = artistRecommendRequest.getRecommendFactor();
+        artist.setRecommendFactor(recommendFactor);
+
+
+        artistMapper.updateById(artist);
+
+        Artist artistAfterUpdate = artistMapper.selectById(id);
+        ArtistDto artistDto = artistRepository.artistToDto(artistAfterUpdate);
+        return artistDto;
+    }
+
+
+    @Override
+    public ArtistDto cancelRecommend(String id) {
+        Artist artist = artistMapper.selectById(id);
+        artist.setRecommended(false);
+        artist.setRecommendFactor(0);
+
+
+        artistMapper.updateById(artist);
+
+        Artist artistAfterUpdate = artistMapper.selectById(id);
+        ArtistDto artistDto = artistRepository.artistToDto(artistAfterUpdate);
+        return artistDto;
     }
 
     @Override

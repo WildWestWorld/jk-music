@@ -12,6 +12,8 @@
         <result property="artistState" column="artist_state"/>
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
 
         <association  property="photo"  column="photo_id"  select="getPhotoFile">
 

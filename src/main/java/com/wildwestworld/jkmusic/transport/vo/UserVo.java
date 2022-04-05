@@ -21,6 +21,5 @@ public class UserVo {
 
     private Boolean enabled;
 
-    @TableField(exist = false)
     private List<RoleVo> roles;
 }
