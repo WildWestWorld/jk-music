@@ -23,9 +23,13 @@ public class ArtistVo {
     private List<MusicVo> musicVoList;
 
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    //    根据布尔值的真与假判断是否被推荐
+    private Boolean recommended;
+
+    //    推荐因子
+    private Integer recommendFactor;
+
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 }

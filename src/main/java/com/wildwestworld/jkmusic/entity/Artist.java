@@ -24,4 +24,11 @@ public class Artist extends AbstractEntity{
     private List<Music> musicList;
 
 
+//    根据布尔值的真与假判断是否被推荐
+    private Boolean recommended;
+
+//    推荐因子
+    @TableField("recommend_factor")
+    private Integer recommendFactor;
+
 }

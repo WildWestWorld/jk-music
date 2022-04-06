@@ -38,11 +38,9 @@ public class FileDto {
     private String url;
 
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;
 
 
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updatedTime;
 }

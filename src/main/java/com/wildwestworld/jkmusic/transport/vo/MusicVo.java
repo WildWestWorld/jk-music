@@ -27,8 +27,6 @@ public class MusicVo {
 
 
     //      注解@JsonFormat主要是后台到前台的时间格式的转换
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 }

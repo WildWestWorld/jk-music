@@ -14,6 +14,10 @@
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
 
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+        <result property="special" column="special"/>
+
         <association  property="cover"  column="cover_id"  select="getCoverFile">
 
         </association >

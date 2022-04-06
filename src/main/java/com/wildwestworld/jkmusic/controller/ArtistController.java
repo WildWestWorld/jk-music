@@ -11,6 +11,8 @@ import com.wildwestworld.jkmusic.service.PlayListService;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
+
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
@@ -59,30 +61,48 @@ public class ArtistController {
 
     //Result文件在utils里面 就是个简单的返回值，无聊可以看看
     @DeleteMapping("/{id}")
-    Result<?> deleteMusicByID(@PathVariable String id){
+    public Result<?> deleteMusicByID(@PathVariable String id){
         artistService.deleteArtistByID(id);
         return Result.success();
     }
 
     //根据ID修改music的state改为已上架状态
     @PostMapping("/{id}/public")
-    Result<?> changeArtistStateToPublic(@PathVariable String id){
+    public Result<?> changeArtistStateToPublic(@PathVariable String id){
         artistService.changeArtistStateToPublic(id);
         return Result.success();
     }
 
     //根据ID修改music的state改为已上架状态
     @PostMapping("/{id}/closed")
-    Result<?> changeArtistStateToClosed(@PathVariable String id){
+    public Result<?> changeArtistStateToClosed(@PathVariable String id){
         artistService.changeArtistStateToClosed(id);
         return Result.success();
     }
 
     //根据ID修改music的state改为已上架状态
     @PostMapping("/{id}/waited")
-    Result<?> changeArtistStateToWaited(@PathVariable String id){
+    public Result<?> changeArtistStateToWaited(@PathVariable String id){
         artistService.changeArtistStateToWaited(id);
         return Result.success();
+    }
+
+    //根据ID修改artist的recommend为真
+    @PostMapping("/{id}/recommend")
+    public ArtistVo recommend(@PathVariable String id,@Validated @RequestBody ArtistRecommendRequest artistRecommendRequest){
+        ArtistDto artistDto = artistService.changeToRecommend(id, artistRecommendRequest);
+        ArtistVo artistVo = artistRepository.artistToVo(artistDto);
+
+        return artistVo;
+    }
+
+    //根据ID修改artist的recommend为真
+    @PostMapping("/{id}/cancel_recommend")
+    public ArtistVo cancelRecommend(@PathVariable String id){
+        ArtistDto artistDto = artistService.cancelRecommend(id);
+        ArtistVo artistVo = artistRepository.artistToVo(artistDto);
+
+        return artistVo;
     }
 
     @GetMapping("/page")
