@@ -13,6 +13,13 @@ public class ArtistUpdateRequest {
 
     private String ArtistState;
 
+    //    根据布尔值的真与假判断是否被推荐
+    private Boolean recommended;
+
+    //    推荐因子
+    private Integer recommendFactor;
+
+
     @NotBlank(message = "更新的封面文件/封面ID不能为空")
     private String photoId;
 }

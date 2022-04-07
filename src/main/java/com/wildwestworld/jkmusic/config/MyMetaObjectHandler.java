@@ -1,7 +1,11 @@
 package com.wildwestworld.jkmusic.config;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.qcloud.cos.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.util.DataUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +18,19 @@ import java.util.Date;
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.setFieldValByName("createdTime", new Date(), metaObject);
-        this.setFieldValByName("updatedTime",new Date(), metaObject);
+        DateTime date = DateUtil.date();
+        DateTime offsetDate = DateUtil.offsetHour(date, 8);
+
+        this.setFieldValByName("createdTime", offsetDate, metaObject);
+        this.setFieldValByName("updatedTime",offsetDate, metaObject);
         this.setFieldValByName("locked",false, metaObject);
         this.setFieldValByName("enabled",true, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("updatedTime",new Date(), metaObject);
+        DateTime date = DateUtil.date();
+        DateTime offsetDate = DateUtil.offsetHour(date, 8);
+        this.setFieldValByName("updatedTime",offsetDate, metaObject);
     }
 }
