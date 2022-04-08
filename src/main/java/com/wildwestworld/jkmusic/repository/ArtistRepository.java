@@ -14,16 +14,19 @@ import com.wildwestworld.jkmusic.transport.vo.ArtistVo;
 import com.wildwestworld.jkmusic.transport.vo.MusicVo;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",uses = FileRepository.class)
 @DecoratedWith(ArtistRepositoryDecorator.class)
 public interface ArtistRepository {
     //将Music类转化为MusicDto
+    @Mapping(target="musicDtoList",source="musicList")
     ArtistDto artistToDto(Artist artist);
 
 
 
     //将dto转化为Vo
+    @Mapping(target="musicVoList",source="musicDtoList")
     ArtistVo artistToVo(ArtistDto artistDto);
 
     //将Dto转换为User实体类Entity

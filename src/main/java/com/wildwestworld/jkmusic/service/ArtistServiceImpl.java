@@ -211,14 +211,14 @@ public class ArtistServiceImpl implements ArtistService{
         List<ArtistDto> artistDtoList = artistList.stream().map(artistRepository::artistToDto).collect(Collectors.toList());
 
 
-        for (Artist artist : artistList) {
-            List<MusicDto> musicDtoListTest = artist.getMusicList().stream().map(musicRepository::musicToDto).collect(Collectors.toList());
-            musicDtoList=musicDtoListTest;
-        }
-
-        for (ArtistDto artistDto : artistDtoList) {
-            artistDto.setMusicDtoList(musicDtoList);
-        }
+//        for (Artist artist : artistList) {
+//            List<MusicDto> musicDtoListTest = artist.getMusicList().stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+//            musicDtoList=musicDtoListTest;
+//        }
+//
+//        for (ArtistDto artistDto : artistDtoList) {
+//            artistDto.setMusicDtoList(musicDtoList);
+//        }
 
 
         IPage<ArtistDto> artistDtoPage = new Page<>(pageNum, pageSize);
