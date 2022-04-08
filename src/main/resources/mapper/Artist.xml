@@ -24,7 +24,7 @@
 
 
 
-        <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">
+        <collection property="musicList" javaType="ArrayList" column="id" select="getMusicList">
 
         </collection>
     </resultMap>
