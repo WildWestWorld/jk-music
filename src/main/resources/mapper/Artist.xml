@@ -118,10 +118,15 @@
     <!--        以下是正常操作-->
     <select id="getPage" resultMap="ArtistMap">
         select * from  `artist` where `artist`.name like concat ('%',#{name},'%')
-        <if test="#{orderRecommend}">
-            ORDER BY `artist`.recommend_factor DESC
-        </if>
 
+
+        <choose>
+            <when test="orderRecommend">
+                ORDER BY `artist`.recommend_factor DEC
+
+            </when>
+
+        </choose>
 
 
     </select>
