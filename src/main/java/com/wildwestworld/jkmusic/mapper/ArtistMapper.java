@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ArtistMapper extends BaseMapper<Artist> {
-    IPage<Artist> getPage(Page<Artist> page , @Param("name") String name);
+    IPage<Artist> getPage(Page<Artist> page , @Param("name") String name,@Param("orderRecommend") Boolean orderRecommend);
 
     List<Artist> getArtistList(@Param("name") String name);
 }

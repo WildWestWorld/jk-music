@@ -108,9 +108,10 @@ public class ArtistController {
     @GetMapping("/page")
     public IPage<ArtistVo> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                            @RequestParam(defaultValue = "10") Integer pageSize,
-                                           @RequestParam(defaultValue = "") String searchWord)
+                                           @RequestParam(defaultValue = "") String searchWord,
+                                           @RequestParam(defaultValue = "false") Boolean orderRecommend)
     {
-        IPage<ArtistDto> artistDtoPage = artistService.getArtistPage(pageNum, pageSize, searchWord);
+        IPage<ArtistDto> artistDtoPage = artistService.getArtistPage(pageNum, pageSize, searchWord,orderRecommend);
 
         List<ArtistDto> artistDtoList = artistDtoPage.getRecords();
 

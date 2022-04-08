@@ -14,7 +14,7 @@ import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
 import java.util.List;
 
 public interface ArtistService {
-    IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord);
+    IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend);
 
     List<ArtistDto> getArtistList(String searchWord);
 
