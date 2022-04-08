@@ -3,6 +3,7 @@ package com.wildwestworld.jkmusic.service;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
@@ -200,13 +201,12 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
-    public IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord) {
+    public IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend) {
 
 
 
-        IPage<Artist> artistPage = artistMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+        IPage<Artist> artistPage = artistMapper.getPage(new Page<>(pageNum, pageSize), searchWord,orderRecommend);
         List<Artist> artistList = artistPage.getRecords();
-        List<MusicDto> musicDtoList = new ArrayList<>();
 
         List<ArtistDto> artistDtoList = artistList.stream().map(artistRepository::artistToDto).collect(Collectors.toList());
 
@@ -227,6 +227,7 @@ public class ArtistServiceImpl implements ArtistService{
         artistDtoPage.setCurrent(artistPage.getCurrent());
         artistDtoPage.setTotal(artistPage.getTotal());
         artistDtoPage.setSize(artistPage.getSize());
+
 
         return artistDtoPage;
     }
