@@ -18,6 +18,15 @@ public class PlayListCreateRequest {
 
     private String description;
 
+    //    根据布尔值的真与假判断是否被推荐
+    private Boolean recommended=false;
+
+    //    推荐因子
+    private Integer recommendFactor =0;
+
+    //    根据布尔值的真与假判断是否为特色歌单
+    private Boolean special=false;
+
     @NotNull(message = "请上传封面")
     private String coverId;
 

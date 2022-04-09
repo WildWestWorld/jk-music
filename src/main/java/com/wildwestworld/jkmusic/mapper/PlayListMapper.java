@@ -9,6 +9,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface PlayListMapper extends BaseMapper<PlayList> {
 
-    IPage<PlayList> getPage(Page<PlayList> page , @Param("name") String name);
+    IPage<PlayList> getPage(Page<PlayList> page , @Param("name") String name,@Param("orderRecommend") Boolean orderRecommend);
 
 }

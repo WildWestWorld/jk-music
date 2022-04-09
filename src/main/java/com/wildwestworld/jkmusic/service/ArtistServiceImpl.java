@@ -98,18 +98,16 @@ public class ArtistServiceImpl implements ArtistService{
 
         //如果userUpdateRequest的FileId不是空的
         if (StrUtil.isNotEmpty(artistUpdateRequest.getPhotoId())) {
-            //设置昵称
             artist.setPhotoId(artistUpdateRequest.getPhotoId());
         }
 
-        //如果userUpdateRequest的FileId不是空的
+        //如果userUpdateRequest的RecommendFactor不是空的
         if (StrUtil.isNotEmpty(artistUpdateRequest.getRecommendFactor().toString())){
-            //设置昵称
             artist.setRecommendFactor(artistUpdateRequest.getRecommendFactor());
         }
+        //如果userUpdateRequest的Recommended不是空的
 
         if (StrUtil.isNotEmpty(artistUpdateRequest.getRecommended().toString())){
-            //设置昵称
             artist.setRecommended(artistUpdateRequest.getRecommended());
         }
         //更新user

@@ -122,6 +122,14 @@
     <select id="getPage" resultMap="PlayListMap">
         select * from  `playlist` where `playlist`.name like concat ('%',#{name},'%')
 
+        <choose>
+            <when test="orderRecommend">
+                ORDER BY `playlist`.recommend_factor DESC
+
+            </when>
+
+        </choose>
+
     </select>
 
 
