@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.PlayList;
 import com.wildwestworld.jkmusic.repository.PlayListRepository;
 import com.wildwestworld.jkmusic.service.PlayListService;
@@ -20,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/playlist")
@@ -93,13 +96,25 @@ public class PlayListController {
     }
 
     @GetMapping("/page")
-    public IPage<PlayList> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
+    public IPage<PlayListVo> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                     @RequestParam(defaultValue = "10") Integer pageSize,
                                     @RequestParam(defaultValue = "") String searchWord,
                                     @RequestParam(defaultValue = "false") Boolean orderRecommend){
-        IPage<PlayList> playListPage = playListService.getPlayListPage(pageNum, pageSize, searchWord,orderRecommend);
+        IPage<PlayListDto> playListDtpPage = playListService.getPlayListPage(pageNum, pageSize, searchWord,orderRecommend);
 
-        return playListPage;
+
+        List<PlayListDto> playListDtoList = playListDtpPage.getRecords();
+
+        List<PlayListVo> playListVoList = playListDtoList.stream().map(playListRepository::playListToVo).collect(Collectors.toList());
+
+
+        IPage<PlayListVo> playListVoPage =new Page<>(pageNum,pageSize);
+        playListVoPage.setRecords(playListVoList);
+        playListVoPage.setCurrent(playListDtpPage.getCurrent());
+        playListVoPage.setTotal(playListDtpPage.getTotal());
+        playListVoPage.setSize(playListDtpPage.getSize());
+
+        return playListVoPage;
 
     }
 
