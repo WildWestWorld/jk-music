@@ -30,5 +30,5 @@ public class PlayListCreateRequest {
     @NotNull(message = "请上传封面")
     private String coverId;
 
-
+    private List<String> musicIdList;
 }
