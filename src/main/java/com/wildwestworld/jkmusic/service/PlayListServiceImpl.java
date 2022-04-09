@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -83,7 +84,7 @@ public class PlayListServiceImpl implements PlayListService{
     @Override
     public PlayListDto updatePlayListById(String id, PlayListUpdateRequest playListUpdateRequest) {
 
-        PlayList playList = playListMapper.selectById(id);
+        PlayList playList = playListMapper.selectPlayListById(id);
         if(playList == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
             throw new BizException(BizExceptionType.PlayList_NOT_FOUND);
@@ -131,10 +132,46 @@ public class PlayListServiceImpl implements PlayListService{
         if (StrUtil.isNotEmpty(playListUpdateRequest.getSpecial().toString())){
             playList.setSpecial(playListUpdateRequest.getSpecial());
         }
+
+
+        //方案1:
+        //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+        List<String> originIdList = playList.getMusicList().stream().map(item -> item.getId()).collect(Collectors.toList());
+        //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+
+        //也就是需要新增的Id
+        //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+        //需要插入的Id数组
+        List<String> needInsertIdList = CollUtil.subtractToList(playListUpdateRequest.getMusicIdList(), originIdList);
+
+
+        //需要删除的Id数组
+        List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, playListUpdateRequest.getMusicIdList());
+
+
+        if (playListUpdateRequest.getMusicIdList() !=null) {
+            if (needDeleteIdList.size() !=0){
+                playListMapper.batchDeleteById(playList,needDeleteIdList);
+            }
+
+
+            if (needInsertIdList.size() !=0){
+                playListMapper.batchInsertPlayListMusic(playList,needInsertIdList);
+            }
+
+        }
+
+
+
+
         //更新user
         playListMapper.updateById(playList);
+
+
+
         //再次查询user
-        PlayList playListAfterUpdate = playListMapper.selectById(id);
+        PlayList playListAfterUpdate = playListMapper.selectPlayListById(id);
 
         PlayListDto playListDto = playListRepository.playListToDto(playListAfterUpdate);
         return playListDto;

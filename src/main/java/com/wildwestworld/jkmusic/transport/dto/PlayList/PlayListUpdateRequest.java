@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @Data
 public class PlayListUpdateRequest {
     @NotBlank(message = "更新的歌单名不能为空")
@@ -24,4 +26,6 @@ public class PlayListUpdateRequest {
 
     @NotNull(message = "更新的封面不能为空")
     private String coverId;
+
+    private List<String> musicIdList;
 }
