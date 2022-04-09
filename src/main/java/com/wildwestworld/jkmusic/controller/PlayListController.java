@@ -75,9 +75,9 @@ public class PlayListController {
     @GetMapping("/page")
     public IPage<PlayList> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                     @RequestParam(defaultValue = "10") Integer pageSize,
-                                    @RequestParam(defaultValue = "") String searchWord
-                                    ){
-        IPage<PlayList> playListPage = playListService.getPlayListPage(pageNum, pageSize, searchWord);
+                                    @RequestParam(defaultValue = "") String searchWord,
+                                    @RequestParam(defaultValue = "false") Boolean orderRecommend){
+        IPage<PlayList> playListPage = playListService.getPlayListPage(pageNum, pageSize, searchWord,orderRecommend);
 
         return playListPage;
 

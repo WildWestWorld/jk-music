@@ -143,10 +143,10 @@ public class PlayListServiceImpl implements PlayListService{
     }
 
     @Override
-    public IPage<PlayList> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord) {
+    public IPage<PlayList> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend) {
 
 
-        IPage<PlayList> playListPage = playListMapper.getPage(new Page<>(pageNum, pageSize), searchWord);
+        IPage<PlayList> playListPage = playListMapper.getPage(new Page<>(pageNum, pageSize), searchWord,orderRecommend);
         return playListPage;
     }
 
