@@ -48,7 +48,7 @@ public class PlayListController {
 
     //Result文件在utils里面 就是个简单的返回值，无聊可以看看
     @DeleteMapping("/{id}")
-    public Result<?> deleteMusicByID(@PathVariable String id){
+    public Result<?> deletePlayListByID(@PathVariable String id){
         playListService.deletePlayListByID(id);
         return Result.success();
     }
@@ -71,6 +71,26 @@ public class PlayListController {
         return playListVo;
     }
 
+    //根据ID修改music的state改为已上架状态
+    @PostMapping("/{id}/public")
+    Result<?> changePlayListStateToPublic(@PathVariable String id){
+        playListService.changePlayListStateToPublic(id);
+        return Result.success();
+    }
+
+    //根据ID修改music的state改为已下架状态
+    @PostMapping("/{id}/closed")
+    Result<?> changePlayListStateToClosed(@PathVariable String id){
+        playListService.changePlayListStateToClosed(id);
+        return Result.success();
+    }
+
+    //根据ID修改music的state改为待上架状态
+    @PostMapping("/{id}/waited")
+    Result<?> changePlayListStateToWaited(@PathVariable String id){
+        playListService.changePlayListStateToWaited(id);
+        return Result.success();
+    }
 
     @GetMapping("/page")
     public IPage<PlayList> getPlayListPage(@RequestParam(defaultValue = "1") Integer pageNum,

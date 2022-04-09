@@ -20,7 +20,11 @@ public interface PlayListService {
 
      void deletePlayListByID(String id);
 
+     void changePlayListStateToPublic(String id);
 
+     void changePlayListStateToClosed(String id);
+
+     void changePlayListStateToWaited(String id);
 
      PlayListDto changeToRecommend(String id, PlayListRecommendRequest playListRecommendRequest);
 

@@ -4,8 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
+import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.emuns.PlayListState;
 import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.entity.PlayList;
 import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.exception.BizException;
@@ -96,6 +98,23 @@ public class PlayListServiceImpl implements PlayListService{
             playList.setCoverId(playListUpdateRequest.getCoverId());
         }
 
+        //如果playListUpdateRequest的RecommendFactor不是空的
+        if (StrUtil.isNotEmpty(playListUpdateRequest.getRecommendFactor().toString())){
+            playList.setRecommendFactor(playListUpdateRequest.getRecommendFactor());
+        }
+
+        //如果playListUpdateRequest的Recommended不是空的
+
+        if (StrUtil.isNotEmpty(playListUpdateRequest.getRecommended().toString())){
+            playList.setRecommended(playListUpdateRequest.getRecommended());
+        }
+
+
+        //如果playListUpdateRequest的special不是空的
+
+        if (StrUtil.isNotEmpty(playListUpdateRequest.getSpecial().toString())){
+            playList.setSpecial(playListUpdateRequest.getSpecial());
+        }
         //更新user
         playListMapper.updateById(playList);
         //再次查询user
@@ -109,6 +128,49 @@ public class PlayListServiceImpl implements PlayListService{
     @Override
     public void deletePlayListByID(String id) {
         playListMapper.deleteById(id);
+    }
+
+    @Override
+    public void changePlayListStateToPublic(String id) {
+        PlayList playList = playListMapper.selectById(id);
+        if(playList == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.PlayList_NOT_FOUND);
+        }
+        PlayListState musicState = PlayListState.valueOf("已上架");
+
+        playList.setPlayListState(musicState);
+
+        playListMapper.updateById(playList);
+    }
+
+    @Override
+    public void changePlayListStateToClosed(String id) {
+        PlayList playList = playListMapper.selectById(id);
+        if(playList == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.PlayList_NOT_FOUND);
+        }
+        PlayListState musicState = PlayListState.valueOf("已下架");
+
+        playList.setPlayListState(musicState);
+
+        playListMapper.updateById(playList);
+    }
+
+    @Override
+    public void changePlayListStateToWaited(String id) {
+
+        PlayList playList = playListMapper.selectById(id);
+        if(playList == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.PlayList_NOT_FOUND);
+        }
+        PlayListState musicState = PlayListState.valueOf("待上架");
+
+        playList.setPlayListState(musicState);
+
+        playListMapper.updateById(playList);
     }
 
     @Override
