@@ -12,7 +12,7 @@ import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListUpdateRequest;
 
 public interface PlayListService {
 
-     IPage<PlayList> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend);
+     IPage<PlayListDto> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend);
 
      PlayListDto createPlayList(PlayListCreateRequest playListCreateRequest);
 

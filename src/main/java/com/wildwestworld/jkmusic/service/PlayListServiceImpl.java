@@ -25,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayListServiceImpl implements PlayListService{
@@ -205,11 +207,22 @@ public class PlayListServiceImpl implements PlayListService{
     }
 
     @Override
-    public IPage<PlayList> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend) {
-
-
+    public IPage<PlayListDto> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend) {
         IPage<PlayList> playListPage = playListMapper.getPage(new Page<>(pageNum, pageSize), searchWord,orderRecommend);
-        return playListPage;
+
+        List<PlayList> playList = playListPage.getRecords();
+
+        List<PlayListDto> playListDtoList = playList.stream().map(playListRepository::playListToDto).collect(Collectors.toList());
+
+
+        IPage<PlayListDto> playListDtoPage = new Page<>(pageNum, pageSize);
+        playListDtoPage.setRecords(playListDtoList);
+
+        playListDtoPage.setCurrent(playListPage.getCurrent());
+        playListDtoPage.setTotal(playListPage.getTotal());
+        playListDtoPage.setSize(playListDtoPage.getSize());
+
+        return playListDtoPage;
     }
 
 

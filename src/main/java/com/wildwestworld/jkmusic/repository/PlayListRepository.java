@@ -12,7 +12,7 @@ import com.wildwestworld.jkmusic.transport.vo.PlayListVo;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = FileRepository.class)
 public interface PlayListRepository {
     //将user类转化为UserDto
     PlayListDto playListToDto(PlayList playList);
