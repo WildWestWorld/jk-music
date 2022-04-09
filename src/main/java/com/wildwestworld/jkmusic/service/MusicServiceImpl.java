@@ -188,9 +188,7 @@ public class MusicServiceImpl implements MusicService{
 
 
         List<Music> musicList = musicPage.getRecords();
-        for (Music music : musicList) {
-            List<Artist> artistList = music.getArtistList();
-        }
+
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
 //        for (MusicDto musicDto : musicDtoList) {
 //            FileDto fileDto = musicDto.getFile();
