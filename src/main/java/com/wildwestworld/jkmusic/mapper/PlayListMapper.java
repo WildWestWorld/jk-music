@@ -7,8 +7,11 @@ import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.entity.PlayList;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface PlayListMapper extends BaseMapper<PlayList> {
 
     IPage<PlayList> getPage(Page<PlayList> page , @Param("name") String name,@Param("orderRecommend") Boolean orderRecommend);
 
+    List<PlayList> getPlayList(@Param("name") String name);
 }

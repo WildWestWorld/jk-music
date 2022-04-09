@@ -10,11 +10,13 @@ import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListUpdateRequest;
 import com.wildwestworld.jkmusic.transport.vo.ArtistVo;
+import com.wildwestworld.jkmusic.transport.vo.MusicVo;
 import com.wildwestworld.jkmusic.transport.vo.PlayListVo;
 import com.wildwestworld.jkmusic.utils.Result;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +34,15 @@ public class PlayListController {
 
     @Resource
     PlayListRepository playListRepository;
+
+
+    @GetMapping
+    public List<PlayListVo> getPlayList(@RequestParam(defaultValue = "")String searchWord){
+
+        List<PlayListDto> playListDtoList = playListService.getPlayList(searchWord);
+        List<PlayListVo> playListVoList = playListDtoList.stream().map(playListRepository::playListToVo).collect(Collectors.toList());
+        return playListVoList;
+    }
 
     @PostMapping
     public PlayListVo createPlayList(@Validated @RequestBody PlayListCreateRequest playListCreateRequest){

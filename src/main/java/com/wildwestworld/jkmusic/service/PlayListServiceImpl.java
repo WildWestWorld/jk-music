@@ -1,7 +1,9 @@
 package com.wildwestworld.jkmusic.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
 import com.wildwestworld.jkmusic.emuns.MusicState;
@@ -16,6 +18,7 @@ import com.wildwestworld.jkmusic.mapper.PlayListMapper;
 import com.wildwestworld.jkmusic.repository.ArtistRepository;
 import com.wildwestworld.jkmusic.repository.PlayListRepository;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
+import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListRecommendRequest;
@@ -38,6 +41,17 @@ public class PlayListServiceImpl implements PlayListService{
     @Resource
     UserService userService;
 
+
+    @Override
+    public List<PlayListDto> getPlayList(String searchWord) {
+        LambdaQueryWrapper<PlayList> wrapper = Wrappers.<PlayList>lambdaQuery();
+        wrapper.like(PlayList::getName,searchWord);
+
+        List<PlayList> playList = playListMapper.getPlayList(searchWord);
+
+        List<PlayListDto> playListDtoList = playList.stream().map(playListRepository::playListToDto).collect(Collectors.toList());
+        return playListDtoList;
+    }
 
     @Override
     public PlayListDto createPlayList(PlayListCreateRequest playListCreateRequest) {
