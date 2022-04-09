@@ -26,7 +26,7 @@ public class PlayListDto {
 
     private FileDto cover;
 
-    private PlayListState status;
+    private PlayListState playListState;
 
     private UserDto creator;
 
