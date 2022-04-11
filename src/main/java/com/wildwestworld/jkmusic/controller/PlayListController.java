@@ -111,19 +111,19 @@ public class PlayListController {
                                     @RequestParam(defaultValue = "10") Integer pageSize,
                                     @RequestParam(defaultValue = "") String searchWord,
                                     @RequestParam(defaultValue = "false") Boolean orderRecommend){
-        IPage<PlayListDto> playListDtpPage = playListService.getPlayListPage(pageNum, pageSize, searchWord,orderRecommend);
+        IPage<PlayListDto> playListDtoPage = playListService.getPlayListPage(pageNum, pageSize, searchWord,orderRecommend);
 
 
-        List<PlayListDto> playListDtoList = playListDtpPage.getRecords();
+        List<PlayListDto> playListDtoList = playListDtoPage.getRecords();
 
         List<PlayListVo> playListVoList = playListDtoList.stream().map(playListRepository::playListToVo).collect(Collectors.toList());
 
 
         IPage<PlayListVo> playListVoPage =new Page<>(pageNum,pageSize);
         playListVoPage.setRecords(playListVoList);
-        playListVoPage.setCurrent(playListDtpPage.getCurrent());
-        playListVoPage.setTotal(playListDtpPage.getTotal());
-        playListVoPage.setSize(playListDtpPage.getSize());
+        playListVoPage.setCurrent(playListDtoPage.getCurrent());
+        playListVoPage.setTotal(playListDtoPage.getTotal());
+        playListVoPage.setSize(playListDtoPage.getSize());
 
         return playListVoPage;
 

@@ -20,7 +20,7 @@ import org.mapstruct.Mapping;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = FileRepository.class)
+@Mapper(componentModel = "spring",uses = {FileRepository.class,MusicRepository.class})
 public interface PlayListRepository {
     //将user类转化为UserDto
     PlayListDto playListToDto(PlayList playList);
