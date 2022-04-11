@@ -28,7 +28,7 @@ public class PlayListVo extends BaseVo  {
 
     private UserDto creator;
 
-    private List<MusicDto> musicList;
+    private List<MusicVo> musicList;
 
     //    根据布尔值的真与假判断是否被推荐
     private Boolean recommended;
