@@ -92,10 +92,16 @@ public class MusicServiceImpl implements MusicService{
 
 
         //如果userUpdateRequest的FileId不是空的
+        System.out.println(StrUtil.isNotEmpty(musicUpdateRequest.getPhotoId()));
         if (StrUtil.isNotEmpty(musicUpdateRequest.getPhotoId())) {
             //设置昵称
             music.setPhotoId(musicUpdateRequest.getPhotoId());
+        }else{
+            music.setPhotoId(musicUpdateRequest.getPhotoId());
+
         }
+
+
 
         //更新user
         musicMapper.updateById(music);

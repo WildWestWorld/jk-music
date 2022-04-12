@@ -1,9 +1,6 @@
 package com.wildwestworld.jkmusic.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import lombok.Data;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
@@ -22,7 +19,9 @@ public class Music extends AbstractEntity{
 
     private String description;
 
-    @TableField("photo_id")
+    @TableField(value = "photo_id",updateStrategy = FieldStrategy.IGNORED)
+
+
     private String photoId;
 
     @TableField(exist = false)
