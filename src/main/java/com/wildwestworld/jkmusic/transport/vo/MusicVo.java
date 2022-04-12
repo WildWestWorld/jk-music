@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
+import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,6 +21,8 @@ public class MusicVo {
     private String description;
 
 
+
+    private FileVo photo;
 
     private FileVo file;
 

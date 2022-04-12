@@ -26,6 +26,11 @@ public class MusicDto {
 
     private FileDto file;
 
+    private String photoId;
+
+    private FileDto photo;
+
+
     private List<ArtistDto> artistDtoList;
 
     private Date createTime;

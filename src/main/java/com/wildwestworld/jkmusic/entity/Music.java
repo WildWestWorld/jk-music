@@ -22,6 +22,12 @@ public class Music extends AbstractEntity{
 
     private String description;
 
+    @TableField("photo_id")
+    private String photoId;
+
+    @TableField(exist = false)
+    private File photo;
+
     @TableField("file_id")
     private String fileId;
 

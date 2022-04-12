@@ -21,6 +21,10 @@
             <!--            <result property="title" column="r_title" />-->
         </association >
 
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
         <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
             <!--            分页查询无法嵌套，所以得用子查询-->
             <!--            <result property="id" column="r_id"  />-->
