@@ -17,6 +17,9 @@ public class MusicUpdateRequest {
 
     private String musicState;
 
+    private String photoId;
+
+
     @NotBlank(message = "更新的歌曲文件/歌曲ID不能为空")
     private String fileId;
     @NotNull(message = "更新的歌手不能为空")
