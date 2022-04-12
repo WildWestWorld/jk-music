@@ -30,6 +30,6 @@ public class MusicVo {
 
 
     //      注解@JsonFormat主要是后台到前台的时间格式的转换
-    private Date createTime;
-    private Date updateTime;
+    private Date createdTime;
+    private Date updatedTime;
 }

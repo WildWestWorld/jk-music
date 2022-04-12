@@ -33,7 +33,7 @@ public class MusicDto {
 
     private List<ArtistDto> artistDtoList;
 
-    private Date createTime;
+    private Date createdTime;
 
-    private Date updateTime;
+    private Date updatedTime;
 }
