@@ -23,6 +23,9 @@ public interface MusicMapper extends BaseMapper<Music> {
     int insertArtistMusic(Music entity);
 
     int deleteAllById(Music entity);
+
+
+
     //获取插入后才能自动生成的id
     @Override
     @Options(useGeneratedKeys = true, keyProperty = "id")
