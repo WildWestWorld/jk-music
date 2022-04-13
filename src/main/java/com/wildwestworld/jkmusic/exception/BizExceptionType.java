@@ -22,8 +22,8 @@ public enum BizExceptionType {
         Music_NOT_FOUND(40402001,"音乐未找到"),
         File_NOT_FOUND(40403001,"文件未找到"),
         Artist_NOT_FOUND(40404001,"歌手未找到"),
-        PlayList_NOT_FOUND(40405001,"歌单未找到");
-
+        PlayList_NOT_FOUND(40405001,"歌单未找到"),
+        Album_NOT_FOUND(40406001,"专辑未找到");
 
     private Integer code;
 
