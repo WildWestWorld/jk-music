@@ -29,7 +29,6 @@ public class ArtistVo {
     //    推荐因子
     private Integer recommendFactor;
 
-    private Date createTime;
-
-    private Date updateTime;
+    private Date createdTime;
+    private Date updatedTime;
 }

@@ -1,6 +1,6 @@
-package com.wildwestworld.jkmusic.transport.dto.Artist;
+package com.wildwestworld.jkmusic.transport.dto.Album;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wildwestworld.jkmusic.emuns.AlbumState;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
@@ -10,14 +10,14 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class ArtistDto {
+public class AlbumDto {
     private String id;
 
     private  String name;
 
-    private ArtistState artistState;
+    private AlbumState albumState;
 
-    private String remark;
+    private String description;
 
     private String photoId;
 

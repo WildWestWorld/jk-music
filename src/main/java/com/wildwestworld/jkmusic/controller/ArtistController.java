@@ -32,10 +32,10 @@ public class ArtistController {
     @Resource
     ArtistService artistService;
     @Resource
-    private ArtistRepository artistRepository;
+    ArtistRepository artistRepository;
 
     @GetMapping
-    public List<ArtistVo> getMusicList(@RequestParam(defaultValue = "")String searchWord){
+    public List<ArtistVo> getArtistList(@RequestParam(defaultValue = "")String searchWord){
 
         List<ArtistDto> artistList = artistService.getArtistList(searchWord);
         List<ArtistVo> artistVoList = artistList.stream().map(artistRepository::artistToVo).collect(Collectors.toList());
