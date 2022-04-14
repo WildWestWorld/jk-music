@@ -160,13 +160,13 @@
 
 
     <!--        以下是正常操作-->
-    <select id="getPage" resultMap="ArtistMap">
-        select * from  `artist` where `artist`.name like concat ('%',#{name},'%')
+    <select id="getPage" resultMap="AlbumMap">
+        select * from  `album` where `album`.name like concat ('%',#{name},'%')
 
 
         <choose>
             <when test="orderRecommend">
-                ORDER BY `artist`.recommend_factor DESC
+                ORDER BY `album`.recommend_factor DESC
 
             </when>
 

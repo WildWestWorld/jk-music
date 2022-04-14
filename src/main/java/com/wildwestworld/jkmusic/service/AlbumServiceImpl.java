@@ -2,6 +2,8 @@ package com.wildwestworld.jkmusic.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.emuns.AlbumState;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
 import com.wildwestworld.jkmusic.emuns.PlayListState;
@@ -44,6 +46,8 @@ public class AlbumServiceImpl implements AlbumService{
         albumEntity.setAlbumState(albumState);
         //将实体类插入数据
         albumMapper.insert(albumEntity);
+
+        albumMapper.batchInsertAlbumMusic(albumEntity,albumCreateRequest.getMusicIdList());
         //然后转化为Dto
         AlbumDto albumDto = albumRepository.albumToDto(albumEntity);
         return albumDto;
@@ -159,9 +163,76 @@ public class AlbumServiceImpl implements AlbumService{
     @Override
     public void deleteAlbumByID(String id) {
         Album album = albumMapper.selectAlbumById(id);
-        if (album.getMusicList() !=null) {
+
+
+
+        if (album.getMusicList() !=null & !CollUtil.isEmpty(album.getMusicList()) ) {
             albumMapper.deleteAllAlbumMusicById(album);
         }
         albumMapper.deleteById(id);
     }
+
+    @Override
+    public void changeAlbumStateToPublic(String id) {
+        Album album = albumMapper.selectById(id);
+        if(album == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.Album_NOT_FOUND);
+        }
+        AlbumState musicState = AlbumState.valueOf("已上架");
+
+        album.setAlbumState(musicState);
+
+        albumMapper.updateById(album);
+    }
+
+    @Override
+    public void changeAlbumStateToClosed(String id) {
+        Album album = albumMapper.selectById(id);
+        if(album == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.Album_NOT_FOUND);
+        }
+        AlbumState musicState = AlbumState.valueOf("已下架");
+
+        album.setAlbumState(musicState);
+
+        albumMapper.updateById(album);
+    }
+
+    @Override
+    public void changeAlbumStateToWaited(String id) {
+
+        Album album = albumMapper.selectById(id);
+        if(album == null){
+            //自定义的异常类  自定义的异常类的信息在exception里面
+            throw new BizException(BizExceptionType.Album_NOT_FOUND);
+        }
+        AlbumState musicState = AlbumState.valueOf("待上架");
+
+        album.setAlbumState(musicState);
+
+        albumMapper.updateById(album);
+    }
+
+    @Override
+    public IPage<AlbumDto> getAlbumPage(Integer pageNum, Integer pageSize, String searchWord, Boolean orderRecommend) {
+        IPage<Album> albumPage = albumMapper.getPage(new Page<>(pageNum, pageSize), searchWord,orderRecommend);
+
+        List<Album> album = albumPage.getRecords();
+
+        List<AlbumDto> albumDtoList = album.stream().map(albumRepository::albumToDto).collect(Collectors.toList());
+
+
+        IPage<AlbumDto> albumDtoPage = new Page<>(pageNum, pageSize);
+        albumDtoPage.setRecords(albumDtoList);
+
+        albumDtoPage.setCurrent(albumPage.getCurrent());
+        albumDtoPage.setTotal(albumPage.getTotal());
+        albumDtoPage.setSize(albumDtoPage.getSize());
+
+        return albumDtoPage;
+    }
+
+
 }
