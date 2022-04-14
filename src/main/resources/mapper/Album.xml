@@ -29,6 +29,11 @@
         <collection property="musicList" javaType="ArrayList" column="id" select="getMusicList">
 
         </collection>
+
+
+        <collection property="albumArtistList" javaType="ArrayList" column="id" select="getAlbumArtistList">
+
+        </collection>
     </resultMap>
 
 
@@ -82,11 +87,18 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="fileId" column="file_id"/>
+        <result property="photoId" column="photo_id"/>
 
         <result property="description" column="description"/>
         <result property="musicState" column="music_state"/>
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
+
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
         <!--column="file_id"传入查询的参数，传入的参数得是原表的属性-->
         <association  property="file"  column="file_id"  select="getFileList">
             <!--            分页查询无法嵌套，所以得用子查询-->
@@ -139,11 +151,11 @@
         where  u.id =#{creator_id}
     </select>
 
-    <select id="getArtistList" resultMap="ArtistMap">
+    <select id="getAlbumArtistList" resultMap="ArtistMap">
         select *
         from `artist` as a
-        left join `artist_music` as am on a.id =am.artist_id
-        where  am.music_id =#{id}
+        left join `album_artist` as ala on a.id =ala.artist_id
+        where  ala.album_id =#{id}
     </select>
 
 
@@ -157,6 +169,12 @@
     </select>
 
 
+    <select id="getArtistList" resultMap="ArtistMap">
+        select *
+        from `artist` as a
+        left join `artist_music` as am on a.id =am.artist_id
+        where  am.music_id =#{id}
+    </select>
 
 
     <!--        以下是正常操作-->
@@ -185,6 +203,13 @@
 
     </select>
 
+    <insert id="batchInsertAlbumArtist"  >
+        insert into album_artist(album_id,artist_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{album.id},#{item})
+        </foreach>
+    </insert>
+
     <insert id="batchInsertAlbumMusic"  >
         insert into album_music(album_id, music_id) values
         <foreach collection="needInsertIdList" item="item" separator=",">
@@ -192,9 +217,15 @@
         </foreach>
     </insert>
 
-
     <delete id="batchDeleteById"  >
         delete from `album_music` where album_id = #{album.id} AND music_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="batchDeleteAlbumArtistById"  >
+        delete from `album_artist` where album_id = #{album.id} AND artist_id in
         <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -207,6 +238,16 @@
             #{item.id}
         </foreach>
     </delete>
+
+
+
+    <delete id="deleteAllAlbumArtistById"  >
+        delete from `album_artist` where album_id = #{album.id} AND artist_id in
+        <foreach collection="album.albumArtistList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
 
 
     <!--    <select id="userList" resultMap="userMap">-->

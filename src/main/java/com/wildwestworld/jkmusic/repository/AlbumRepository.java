@@ -15,15 +15,19 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",uses = {FileRepository.class,MusicRepository.class})
 
+
 public interface AlbumRepository {
     //将Music类转化为MusicDto
     @Mapping(target="musicDtoList",source="musicList")
+
+
     AlbumDto albumToDto(Album album);
 
 
 
     //将dto转化为Vo
     @Mapping(target="musicVoList",source="musicDtoList")
+
     AlbumVo albumToVo(AlbumDto albumDto);
 
     //将Dto转换为User实体类Entity

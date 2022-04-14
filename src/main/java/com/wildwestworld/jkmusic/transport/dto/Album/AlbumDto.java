@@ -2,6 +2,8 @@ package com.wildwestworld.jkmusic.transport.dto.Album;
 
 import com.wildwestworld.jkmusic.emuns.AlbumState;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
+import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import lombok.Data;
@@ -24,6 +26,9 @@ public class AlbumDto {
     private FileDto photo;
 
     private List<MusicDto> musicDtoList;
+
+    private List<ArtistDto> albumArtistList;
+
 
     //    根据布尔值的真与假判断是否被推荐
     private Boolean recommended;

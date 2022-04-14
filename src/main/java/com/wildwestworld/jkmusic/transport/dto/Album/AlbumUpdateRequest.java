@@ -26,4 +26,5 @@ public class AlbumUpdateRequest {
 
     private List<String> musicIdList;
 
+    private List<String> albumArtistIdList;
 }
