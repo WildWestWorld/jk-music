@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.transport.vo;
 
+import com.wildwestworld.jkmusic.emuns.AlbumState;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class AlbumVo {
 
     private  String name;
 
-    private ArtistState artistState;
+    private AlbumState albumState;
 
     private String description;
 
