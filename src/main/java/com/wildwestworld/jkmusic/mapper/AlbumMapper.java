@@ -26,9 +26,17 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     int batchInsertAlbumMusic(@Param("album") Album entity, @Param("needInsertIdList") List<String> needInsertIdList);
 
+    int batchInsertAlbumArtist(@Param("album") Album entity, @Param("needInsertIdList") List<String> needInsertIdList);
+
     int batchDeleteById(@Param("album")Album entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
 
+    int batchDeleteAlbumArtistById(@Param("album")Album entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
+
+
     int deleteAllAlbumMusicById(@Param("album")Album entity);
+
+    int deleteAllAlbumArtistById(@Param("album")Album entity);
+
 
     //获取插入后才能自动生成的id
     @Override

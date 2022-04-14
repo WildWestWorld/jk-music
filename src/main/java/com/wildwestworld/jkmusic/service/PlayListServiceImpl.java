@@ -132,11 +132,11 @@ public class PlayListServiceImpl implements PlayListService{
 
 
 
-        if (playListUpdateRequest.getMusicIdList() !=null) {
+        if (playListUpdateRequest.getMusicIdList() !=null & CollUtil.isNotEmpty(playListUpdateRequest.getMusicIdList() )) {
 
 
             List<String> originIdList;
-            if(playList.getMusicList() != null) {
+            if(playList.getMusicList() != null & CollUtil.isNotEmpty(playList.getMusicList()  )) {
                 //方案1:
                 //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
 

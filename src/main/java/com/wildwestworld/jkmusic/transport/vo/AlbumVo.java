@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.transport.vo;
 
 import com.wildwestworld.jkmusic.emuns.AlbumState;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
+import com.wildwestworld.jkmusic.entity.Artist;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,6 +24,7 @@ public class AlbumVo {
 
     private List<MusicVo> musicVoList;
 
+    private List<ArtistVo> albumArtistList;
 
     //    根据布尔值的真与假判断是否被推荐
     private Boolean recommended;

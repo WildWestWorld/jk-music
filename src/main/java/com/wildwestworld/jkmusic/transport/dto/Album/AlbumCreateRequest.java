@@ -27,4 +27,6 @@ public class AlbumCreateRequest {
 
     private List<String> musicIdList;
 
+
+    private List<String> albumArtistIdList;
 }
