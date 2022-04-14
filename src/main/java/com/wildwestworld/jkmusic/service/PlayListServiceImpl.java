@@ -188,7 +188,7 @@ public class PlayListServiceImpl implements PlayListService{
     @Override
     public void deletePlayListByID(String id) {
         PlayList playList = playListMapper.selectPlayListById(id);
-        if (playList.getMusicList() !=null) {
+        if (playList.getMusicList() !=null & !CollUtil.isEmpty(playList.getMusicList())) {
             playListMapper.deleteAllPlayListMusicById(playList);
         }
         playListMapper.deleteById(id);

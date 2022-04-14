@@ -1,6 +1,8 @@
 package com.wildwestworld.jkmusic.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.Album;
 import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.entity.Music;
@@ -15,6 +17,9 @@ import java.util.List;
 @Mapper
 public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> getAlbumList(@Param("name") String name);
+
+    IPage<Album> getPage(Page<Album> page , @Param("name") String name, @Param("orderRecommend") Boolean orderRecommend);
+
 
     Album selectAlbumById(@Param("id") String id);
 

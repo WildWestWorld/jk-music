@@ -8,28 +8,24 @@ import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 
 import java.util.List;
 
 public interface AlbumService {
-//    IPage<ArtistDto> getArtistPage(Integer pageNum, Integer pageSize, String searchWord, Boolean orderRecommend);
-//
+    IPage<AlbumDto> getAlbumPage(Integer pageNum, Integer pageSize, String searchWord, Boolean orderRecommend);
+
     List<AlbumDto> getAlbumList(String searchWord);
 
+    AlbumDto createAlbum(AlbumCreateRequest albumCreateRequest);
 
-      AlbumDto createAlbum(AlbumCreateRequest albumCreateRequest);
-//
-      AlbumDto updateAlbumById(String id, AlbumUpdateRequest albumUpdateRequest);
-//
-//    ArtistDto changeToRecommend(String id, ArtistRecommendRequest artistRecommendRequest);
-//
-//    ArtistDto cancelRecommend(String id);
-//
-      void deleteAlbumByID(String id);
-//
-//    void changeArtistStateToPublic(String id);
-//
-//    void changeArtistStateToClosed(String id);
-//
-//    void changeArtistStateToWaited(String id);
+    AlbumDto updateAlbumById(String id, AlbumUpdateRequest albumUpdateRequest);
+
+    void deleteAlbumByID(String id);
+
+    void changeAlbumStateToPublic(String id);
+
+    void changeAlbumStateToClosed(String id);
+
+    void changeAlbumStateToWaited(String id);
 }

@@ -1,6 +1,8 @@
 package com.wildwestworld.jkmusic.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.repository.AlbumRepository;
 import com.wildwestworld.jkmusic.repository.AlbumRepository;
 import com.wildwestworld.jkmusic.service.AlbumService;
@@ -11,8 +13,10 @@ import com.wildwestworld.jkmusic.transport.dto.Album.AlbumUpdateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import com.wildwestworld.jkmusic.transport.vo.AlbumVo;
 import com.wildwestworld.jkmusic.transport.vo.ArtistVo;
+import com.wildwestworld.jkmusic.transport.vo.PlayListVo;
 import com.wildwestworld.jkmusic.utils.Result;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +64,53 @@ public class AlbumController {
         albumService.deleteAlbumByID(id);
         return Result.success();
     }
+
+
+    //根据ID修改music的state改为已上架状态
+    @PostMapping("/{id}/public")
+    Result<?> changeAlbumStateToPublic(@PathVariable String id){
+        albumService.changeAlbumStateToPublic(id);
+        return Result.success();
+    }
+
+    //根据ID修改music的state改为已下架状态
+    @PostMapping("/{id}/closed")
+    Result<?> changeAlbumStateToClosed(@PathVariable String id){
+        albumService.changeAlbumStateToClosed(id);
+        return Result.success();
+    }
+
+    //根据ID修改music的state改为待上架状态
+    @PostMapping("/{id}/waited")
+    Result<?> changeAlbumStateToWaited(@PathVariable String id){
+        albumService.changeAlbumStateToWaited(id);
+        return Result.success();
+    }
+
+
+
+    @GetMapping("/page")
+    public IPage<AlbumVo> getAlbumPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                             @RequestParam(defaultValue = "10") Integer pageSize,
+                                             @RequestParam(defaultValue = "") String searchWord,
+                                             @RequestParam(defaultValue = "false") Boolean orderRecommend){
+        IPage<AlbumDto> albumDtoPage = albumService.getAlbumPage(pageNum, pageSize, searchWord,orderRecommend);
+
+
+        List<AlbumDto> albumDtoList = albumDtoPage.getRecords();
+
+        List<AlbumVo> albumVoList = albumDtoList.stream().map(albumRepository::albumToVo).collect(Collectors.toList());
+
+
+        IPage<AlbumVo> albumVoPage =new Page<>(pageNum,pageSize);
+        albumVoPage.setRecords(albumVoList);
+        albumVoPage.setCurrent(albumDtoPage.getCurrent());
+        albumVoPage.setTotal(albumDtoPage.getTotal());
+        albumVoPage.setSize(albumDtoPage.getSize());
+
+        return albumVoPage;
+
+    }
+
+
 }
