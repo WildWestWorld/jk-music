@@ -113,20 +113,20 @@ public class PlayListServiceImpl implements PlayListService{
         }
 
         //如果playListUpdateRequest的RecommendFactor不是空的
-        if (StrUtil.isNotEmpty(playListUpdateRequest.getRecommendFactor().toString())){
+        if (playListUpdateRequest.getRecommendFactor() !=null){
             playList.setRecommendFactor(playListUpdateRequest.getRecommendFactor());
         }
 
         //如果playListUpdateRequest的Recommended不是空的
 
-        if (StrUtil.isNotEmpty(playListUpdateRequest.getRecommended().toString())){
+        if (playListUpdateRequest.getRecommended() !=null){
             playList.setRecommended(playListUpdateRequest.getRecommended());
         }
 
 
         //如果playListUpdateRequest的special不是空的
 
-        if (StrUtil.isNotEmpty(playListUpdateRequest.getSpecial().toString())){
+        if (playListUpdateRequest.getSpecial() !=null){
             playList.setSpecial(playListUpdateRequest.getSpecial());
         }
 

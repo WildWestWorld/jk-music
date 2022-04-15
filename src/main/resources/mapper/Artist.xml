@@ -27,7 +27,32 @@
         <collection property="musicList" javaType="ArrayList" column="id" select="getMusicList">
 
         </collection>
+
+        <collection property="albumList" javaType="ArrayList" column="id" select="getAlbumList">
+
+        </collection>
+
     </resultMap>
+
+    <resultMap id="ArtistMapFromMusic" type="com.wildwestworld.jkmusic.entity.Artist">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
+        <result property="photoId" column="photo_id"/>
+        <result property="artistState" column="artist_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+
+    </resultMap>
+
 
 
     <resultMap id="userMap" type="com.wildwestworld.jkmusic.entity.User">
@@ -53,6 +78,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="fileId" column="file_id"/>
+        <result property="photoId" column="photo_id"/>
 
         <result property="description" column="description"/>
         <result property="musicState" column="music_state"/>
@@ -65,7 +91,52 @@
             <!--            <result property="name" column="r_name"  />-->
             <!--            <result property="title" column="r_title" />-->
         </association >
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+        <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistListFromMusic">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
     </resultMap>
+
+
+
+
+
+
+    <resultMap id="AlbumMap" type="com.wildwestworld.jkmusic.entity.Album">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="photoId" column="photo_id"/>
+        <result property="albumState" column="album_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+        <collection property="musicList" javaType="ArrayList" column="id" select="getMusicListFromAlbum">
+
+        </collection>
+
+
+
+    </resultMap>
+
+
+
 
     <!--    子查询-->
     <select id="getFileList" resultType="com.wildwestworld.jkmusic.entity.File">
@@ -112,6 +183,23 @@
         where  am.artist_id =#{id}
     </select>
 
+    <select id="getMusicListFromAlbum" resultMap="musicMap">
+        select *
+        from `music` as m
+        left join `file` as f on m.file_id=f.id
+        left join `album_music` as alm on m.id =alm.music_id
+        where  alm.album_id =#{id}
+    </select>
+
+
+    <!--    子查询 -->
+    <select id="getAlbumList" resultMap="AlbumMap">
+        select *
+        from `album` as a
+        left join `album_artist` as ala on a.id =ala.album_id
+        where  ala.artist_id =#{id}
+    </select>
+
 
 
 
@@ -135,6 +223,66 @@
         select * from  `artist` where `artist`.name like concat ('%',#{name},'%')
 
     </select>
+
+    <select id="getArtistListFromMusic" resultMap="ArtistMapFromMusic">
+        select *
+        from `artist` as a
+        left join `artist_music` as am on a.id =am.artist_id
+        where  am.music_id =#{id}
+    </select>
+
+
+    <select id="selectArtistById" resultMap="ArtistMap">
+        select * from  `artist` where `artist`.id =#{id}
+
+    </select>
+
+    <insert id="batchInsertArtistMusic"  >
+        insert into artist_music(artist_id, music_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{artist.id},#{item})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteByIdFromArtistMusic"  >
+        delete from `artist_music` where artist_id = #{artist.id} AND music_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+    <insert id="batchInsertArtistAlbum"  >
+        insert into album_artist(album_id,artist_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{artist.id})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteArtistAlbumById"  >
+        delete from `album_artist` where artist_id  = #{artist.id} AND album_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllArtistMusicById"  >
+        delete from `artist_music` where artist_id = #{artist.id} AND music_id in
+        <foreach collection="artist.musicList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+
+
+    <delete id="deleteAllArtistAlbumById"  >
+        delete from `album_artist` where artist_id = #{artist.id} AND album_id in
+        <foreach collection="artist.albumList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 
     <!--    <select id="userList" resultMap="userMap">-->
     <!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->

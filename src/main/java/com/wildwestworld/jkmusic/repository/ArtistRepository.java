@@ -16,7 +16,7 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",uses = FileRepository.class)
+@Mapper(componentModel = "spring",uses = {FileRepository.class})
 @DecoratedWith(ArtistRepositoryDecorator.class)
 public interface ArtistRepository {
     //将Music类转化为MusicDto
