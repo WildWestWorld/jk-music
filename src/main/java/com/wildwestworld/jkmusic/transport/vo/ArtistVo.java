@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.transport.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.ArtistState;
+import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,6 +22,8 @@ public class ArtistVo {
     private FileVo photo;
 
     private List<MusicVo> musicVoList;
+
+    private List<AlbumVo> albumVoList;
 
 
     //    根据布尔值的真与假判断是否被推荐

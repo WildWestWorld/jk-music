@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -49,6 +50,16 @@ public class ArtistServiceImpl implements ArtistService{
         artistEntity.setArtistState(state);
         //将实体类插入数据
         artistMapper.insert(artistEntity);
+
+
+        if (CollUtil.isNotEmpty(artistCreateRequest.getMusicIdList())) {
+            artistMapper.batchInsertArtistMusic(artistEntity, artistCreateRequest.getMusicIdList());
+        }
+
+        if (CollUtil.isNotEmpty(artistCreateRequest.getMusicIdList())) {
+            artistMapper.batchInsertArtistAlbum(artistEntity, artistCreateRequest.getAlbumIdList());
+        }
+
         //然后转化为Dto
         ArtistDto artistDto = artistRepository.artistToDto(artistEntity);
         return artistDto;
@@ -67,7 +78,7 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public ArtistDto updateArtistById(String id, ArtistUpdateRequest artistUpdateRequest) {
-        Artist artist = artistMapper.selectById(id);
+        Artist artist = artistMapper.selectArtistById(id);
         if(artist == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
             throw new BizException(BizExceptionType.Artist_NOT_FOUND);
@@ -102,18 +113,100 @@ public class ArtistServiceImpl implements ArtistService{
         }
 
         //如果userUpdateRequest的RecommendFactor不是空的
-        if (StrUtil.isNotEmpty(artistUpdateRequest.getRecommendFactor().toString())){
+        if (artistUpdateRequest.getRecommendFactor() !=null){
             artist.setRecommendFactor(artistUpdateRequest.getRecommendFactor());
         }
         //如果userUpdateRequest的Recommended不是空的
 
-        if (StrUtil.isNotEmpty(artistUpdateRequest.getRecommended().toString())){
+        if (artistUpdateRequest.getRecommended() !=null){
             artist.setRecommended(artistUpdateRequest.getRecommended());
         }
+
+
+
+        //更新艺人与音乐的关系
+        if (artistUpdateRequest.getMusicIdList() != null & CollUtil.isNotEmpty(artistUpdateRequest.getMusicIdList())) {
+            List<String> originIdList;
+            if (artist.getMusicList() != null & CollUtil.isNotEmpty(artist.getMusicList())) {
+                //方案1:
+                //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                List<String> IdList = artist.getMusicList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                originIdList=IdList;
+            }else {
+                List<String> IdList = null;
+                originIdList=IdList;
+            }
+
+            //也就是需要新增的Id
+            //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+            //需要插入的Id数组
+            List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getMusicIdList(), originIdList);
+
+
+            //需要删除的Id数组
+            List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getMusicIdList());
+
+
+
+
+            if (needDeleteIdList.size() != 0) {
+                artistMapper.batchDeleteByIdFromArtistMusic(artist, needDeleteIdList);
+            }
+
+
+            if (needInsertIdList.size() != 0) {
+                artistMapper.batchInsertArtistMusic(artist, needInsertIdList);
+            }
+
+        }
+
+//更新艺人与专辑的关系
+        if (artistUpdateRequest.getAlbumIdList() != null & CollUtil.isNotEmpty(artistUpdateRequest.getAlbumIdList())) {
+            List<String> originIdList;
+            if (artist.getAlbumList() != null & CollUtil.isNotEmpty(artist.getAlbumList())) {
+                //方案1:
+                //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                List<String> IdList = artist.getAlbumList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                originIdList=IdList;
+            }else {
+                List<String> IdList = null;
+                originIdList=IdList;
+            }
+
+            //也就是需要新增的Id
+            //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+            //需要插入的Id数组
+            List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getAlbumIdList(), originIdList);
+
+
+            //需要删除的Id数组
+            List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getAlbumIdList());
+
+            if (needDeleteIdList.size() != 0) {
+                artistMapper.batchDeleteArtistAlbumById(artist, needDeleteIdList);
+            }
+
+
+            if (needInsertIdList.size() != 0) {
+                artistMapper.batchInsertArtistAlbum(artist, needInsertIdList);
+            }
+
+        }
+
+
+
+
+
         //更新user
         artistMapper.updateById(artist);
         //再次查询user
-        Artist updateArtist = artistMapper.selectById(id);
+        Artist updateArtist = artistMapper.selectArtistById(id);
 
         ArtistDto artistDto = artistRepository.artistToDto(updateArtist);
         return artistDto;
@@ -122,6 +215,17 @@ public class ArtistServiceImpl implements ArtistService{
     //删除Music
     @Override
     public void deleteArtistByID(String id) {
+
+        Artist artist = artistMapper.selectArtistById(id);
+
+        if (artist.getMusicList() !=null & !CollUtil.isEmpty(artist.getMusicList()) ) {
+            artistMapper.deleteAllArtistMusicById(artist);
+        }
+
+        if (artist.getMusicList() !=null & !CollUtil.isEmpty(artist.getAlbumList()) ) {
+            artistMapper.deleteAllArtistAlbumById(artist);
+        }
+
         artistMapper.deleteById(id);
     }
 
