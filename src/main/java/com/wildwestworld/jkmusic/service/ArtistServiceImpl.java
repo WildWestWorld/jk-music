@@ -125,78 +125,92 @@ public class ArtistServiceImpl implements ArtistService{
 
 
         //更新艺人与音乐的关系
-        if (artistUpdateRequest.getMusicIdList() != null & CollUtil.isNotEmpty(artistUpdateRequest.getMusicIdList())) {
-            List<String> originIdList;
-            if (artist.getMusicList() != null & CollUtil.isNotEmpty(artist.getMusicList())) {
-                //方案1:
-                //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+        if (artistUpdateRequest.getMusicIdList() != null ) {
+            if (CollUtil.isNotEmpty(artistUpdateRequest.getMusicIdList())) {
+                List<String> originIdList;
+                if (artist.getMusicList() != null & CollUtil.isNotEmpty(artist.getMusicList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
 
-                List<String> IdList = artist.getMusicList().stream().map(item -> item.getId()).collect(Collectors.toList());
-                //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
-                originIdList=IdList;
-            }else {
-                List<String> IdList = null;
-                originIdList=IdList;
-            }
+                    List<String> IdList = artist.getMusicList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
 
-            //也就是需要新增的Id
-            //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
 
-            //需要插入的Id数组
-            List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getMusicIdList(), originIdList);
-
-
-            //需要删除的Id数组
-            List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getMusicIdList());
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getMusicIdList(), originIdList);
 
 
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getMusicIdList());
 
 
-            if (needDeleteIdList.size() != 0) {
-                artistMapper.batchDeleteByIdFromArtistMusic(artist, needDeleteIdList);
-            }
+                if (needDeleteIdList.size() != 0) {
+                    artistMapper.batchDeleteByIdFromArtistMusic(artist, needDeleteIdList);
+                }
 
 
-            if (needInsertIdList.size() != 0) {
-                artistMapper.batchInsertArtistMusic(artist, needInsertIdList);
+                if (needInsertIdList.size() != 0) {
+                    artistMapper.batchInsertArtistMusic(artist, needInsertIdList);
+                }
+            }else{
+
+                if (artist.getMusicList() != null & CollUtil.isNotEmpty(artist.getMusicList())) {
+                    artistMapper.deleteAllArtistMusicById(artist);
+                }
             }
 
         }
 
+
+
 //更新艺人与专辑的关系
-        if (artistUpdateRequest.getAlbumIdList() != null & CollUtil.isNotEmpty(artistUpdateRequest.getAlbumIdList())) {
-            List<String> originIdList;
-            if (artist.getAlbumList() != null & CollUtil.isNotEmpty(artist.getAlbumList())) {
-                //方案1:
-                //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+        if (artistUpdateRequest.getAlbumIdList() != null ) {
+            if (CollUtil.isNotEmpty(artistUpdateRequest.getAlbumIdList())) {
+                List<String> originIdList;
+                if (artist.getAlbumList() != null & CollUtil.isNotEmpty(artist.getAlbumList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
 
-                List<String> IdList = artist.getAlbumList().stream().map(item -> item.getId()).collect(Collectors.toList());
-                //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
-                originIdList=IdList;
-            }else {
-                List<String> IdList = null;
-                originIdList=IdList;
+                    List<String> IdList = artist.getAlbumList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getAlbumIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getAlbumIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    artistMapper.batchDeleteArtistAlbumById(artist, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    artistMapper.batchInsertArtistAlbum(artist, needInsertIdList);
+                }
+
+
+            }else{
+                if (artist.getAlbumList() != null & CollUtil.isNotEmpty(artist.getAlbumList())) {
+                    artistMapper.deleteAllArtistAlbumById(artist);
+                }
             }
-
-            //也就是需要新增的Id
-            //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
-
-            //需要插入的Id数组
-            List<String> needInsertIdList = CollUtil.subtractToList(artistUpdateRequest.getAlbumIdList(), originIdList);
-
-
-            //需要删除的Id数组
-            List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, artistUpdateRequest.getAlbumIdList());
-
-            if (needDeleteIdList.size() != 0) {
-                artistMapper.batchDeleteArtistAlbumById(artist, needDeleteIdList);
-            }
-
-
-            if (needInsertIdList.size() != 0) {
-                artistMapper.batchInsertArtistAlbum(artist, needInsertIdList);
-            }
-
         }
 
 
