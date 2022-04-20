@@ -28,7 +28,7 @@ public class MusicVo {
 
     private FileVo file;
 
-    private AlbumVo albumVo;
+    private List<AlbumVo> albumVoList;
 
     private List<ArtistVo> artistVoList;
 

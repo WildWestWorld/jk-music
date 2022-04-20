@@ -21,14 +21,14 @@ import java.util.List;
 public interface MusicRepository {
     //将Music类转化为MusicDto
     @Mapping(target="artistDtoList",source="artistList")
-    @Mapping(target="albumDto",source="album")
+    @Mapping(target="albumDtoList",source="albumList")
 
     MusicDto musicToDto(Music music);
 
 
     //将dto转化为Vo
     @Mapping(target="artistVoList",source="artistDtoList")
-    @Mapping(target="albumVo",source="albumDto")
+    @Mapping(target="albumVoList",source="albumDtoList")
 
     MusicVo musicToVo(MusicDto musicDto);
 
