@@ -26,12 +26,19 @@
 
         </association >
 
+
+        <association  property="album"  column="id"  select="getAlbumByMusicId">
+
+        </association >
+
         <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
             <!--            分页查询无法嵌套，所以得用子查询-->
             <!--            <result property="id" column="r_id"  />-->
             <!--            <result property="name" column="r_name"  />-->
             <!--            <result property="title" column="r_title" />-->
         </collection>
+
+
     </resultMap>
 
     <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
@@ -55,6 +62,25 @@
 <!--        <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">-->
 
 <!--        </collection>-->
+    </resultMap>
+
+
+    <resultMap id="AlbumMap" type="com.wildwestworld.jkmusic.entity.Album">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="photoId" column="photo_id"/>
+        <result property="albumState" column="album_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
     </resultMap>
 
 
@@ -86,6 +112,8 @@
         where  f.id =#{photo_id}
     </select>
 
+
+
     <select id="userList" resultMap="musicMap">
         select * from  `music`
 
@@ -96,6 +124,13 @@
         from `artist` as a
         left join `artist_music` as am on a.id =am.artist_id
         where  am.music_id =#{id}
+    </select>
+
+    <select id="getAlbumByMusicId" resultMap="AlbumMap">
+        select *
+        from `album` as al
+        left join `album_music` as alm on al.id =alm.album_id
+        where  alm.music_id =#{id}
     </select>
 
 
