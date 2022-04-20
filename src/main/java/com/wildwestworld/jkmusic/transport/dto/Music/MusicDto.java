@@ -3,6 +3,7 @@ package com.wildwestworld.jkmusic.transport.dto.Music;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
+import com.wildwestworld.jkmusic.entity.Album;
 import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
@@ -31,9 +32,12 @@ public class MusicDto {
 
     private FileDto photo;
 
-    private AlbumDto albumDto;
+    private List<AlbumDto> albumDtoList;
+
 
     private List<ArtistDto> artistDtoList;
+
+
 
     private Date createdTime;
 

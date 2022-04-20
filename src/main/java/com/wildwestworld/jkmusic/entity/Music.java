@@ -38,5 +38,5 @@ public class Music extends AbstractEntity{
 
 
     @TableField(exist = false)
-    private Album album;
+    private List<Album> albumList;
 }
