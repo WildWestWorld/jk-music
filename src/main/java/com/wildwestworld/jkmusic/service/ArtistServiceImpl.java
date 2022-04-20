@@ -24,6 +24,7 @@ import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
+    @Transactional
     public ArtistDto updateArtistById(String id, ArtistUpdateRequest artistUpdateRequest) {
         Artist artist = artistMapper.selectArtistById(id);
         if(artist == null){
@@ -228,6 +230,8 @@ public class ArtistServiceImpl implements ArtistService{
 
     //删除Music
     @Override
+    @Transactional
+
     public void deleteArtistByID(String id) {
 
         Artist artist = artistMapper.selectArtistById(id);

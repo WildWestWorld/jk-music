@@ -21,6 +21,7 @@ import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class AlbumServiceImpl implements AlbumService{
     AlbumMapper albumMapper;
 
     @Override
+    @Transactional
     public AlbumDto createAlbum(AlbumCreateRequest albumCreateRequest) {
         //先给他转化成Entity
         Album albumEntity = albumRepository.createAlbumEntity(albumCreateRequest);
@@ -71,6 +73,7 @@ public class AlbumServiceImpl implements AlbumService{
 
 
     @Override
+    @Transactional
     public AlbumDto updateAlbumById(String id, AlbumUpdateRequest albumUpdateRequest) {
         //后续需要进行修改
         Album album = albumMapper.selectAlbumById(id);
@@ -216,6 +219,7 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    @Transactional
     public void deleteAlbumByID(String id) {
         Album album = albumMapper.selectAlbumById(id);
 

@@ -24,6 +24,7 @@ import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListUpdateRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -52,6 +53,7 @@ public class PlayListServiceImpl implements PlayListService{
     }
 
     @Override
+    @Transactional
     public PlayListDto createPlayList(PlayListCreateRequest playListCreateRequest) {
         PlayList playListEntity = playListRepository.createPlayListEntity(playListCreateRequest);
         System.out.println(playListEntity);
@@ -79,6 +81,7 @@ public class PlayListServiceImpl implements PlayListService{
     }
 
     @Override
+    @Transactional
     public PlayListDto updatePlayListById(String id, PlayListUpdateRequest playListUpdateRequest) {
 
         PlayList playList = playListMapper.selectPlayListById(id);
@@ -191,6 +194,7 @@ public class PlayListServiceImpl implements PlayListService{
 
 
     @Override
+    @Transactional
     public void deletePlayListByID(String id) {
         PlayList playList = playListMapper.selectPlayListById(id);
         if (playList.getMusicList() !=null & !CollUtil.isEmpty(playList.getMusicList())) {

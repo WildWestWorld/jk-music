@@ -17,6 +17,7 @@ import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,6 +34,7 @@ public class MusicServiceImpl implements MusicService{
     private  StorageService storageService;
     //创建MUSIC
     @Override
+    @Transactional
     public MusicDto createMusic(MusicCreateRequest musicCreateRequest) {
         //先给他转化成Entity
         Music musicEntity = musicRepository.createMusicEntity(musicCreateRequest);
@@ -54,6 +56,7 @@ public class MusicServiceImpl implements MusicService{
 
     //更新Music
     @Override
+    @Transactional
     public MusicDto updateMusicById(String id, MusicUpdateRequest musicUpdateRequest) {
         Music music = musicMapper.selectMusicById(id);
         if(music == null){
@@ -124,6 +127,7 @@ public class MusicServiceImpl implements MusicService{
 
     //删除Music
     @Override
+    @Transactional
     public void deleteMusicByID(String id) {
 
         Music music = musicMapper.selectMusicById(id);

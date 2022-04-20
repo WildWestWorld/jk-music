@@ -3,6 +3,7 @@ package com.wildwestworld.jkmusic.transport.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import lombok.Data;
@@ -22,9 +23,12 @@ public class MusicVo {
 
 
 
+
     private FileVo photo;
 
     private FileVo file;
+
+    private AlbumVo albumVo;
 
     private List<ArtistVo> artistVoList;
 
