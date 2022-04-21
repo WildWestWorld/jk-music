@@ -1,6 +1,8 @@
 package com.wildwestworld.jkmusic.utils;
 
 
+import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.github.ksuid.KsuidGenerator;
 
@@ -12,7 +14,8 @@ public class KsuidIdentifierGenerator implements IdentifierGenerator {
     //重写下面这个方法前，得重写该方法才行
     @Override
     public Number nextId(Object entity) {
-        return null;
+//        long workerId = NetUtil.ipv4ToLong(NetUtil.getLocalhostStr());
+        return IdUtil.getSnowflake(0,0).nextId();
     }
 
     @Override
