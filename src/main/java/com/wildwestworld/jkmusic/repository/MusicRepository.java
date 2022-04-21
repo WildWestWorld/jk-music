@@ -33,20 +33,20 @@ public interface MusicRepository {
     MusicVo musicToVo(MusicDto musicDto);
 
     //将Dto转换为User实体类Entity
-    @Mapping(target="artistList",source="artistIdList")
+//    @Mapping(target="artistList",source="artistIdList")
     Music createMusicEntity (MusicCreateRequest musicCreateRequest);
 
-    @Mapping(target="artistList",source="artistIdList")
+//    @Mapping(target="artistList",source="artistIdList")
     Music UpdateMusicEntity (MusicUpdateRequest musicUpdateRequest);
 
-    default List<Artist> mapArtistList(List<String> artistIdList){
-        List<Artist> artistList = new ArrayList();
-        for (String id : artistIdList) {
-            Artist artist = new Artist();
-            artist.setId(id);
-            artistList.add(artist);
-        }
-        return  artistList;
-    }
+//    default List<Artist> mapArtistList(List<String> artistIdList){
+//        List<Artist> artistList = new ArrayList();
+//        for (String id : artistIdList) {
+//            Artist artist = new Artist();
+//            artist.setId(id);
+//            artistList.add(artist);
+//        }
+//        return  artistList;
+//    }
 
 }

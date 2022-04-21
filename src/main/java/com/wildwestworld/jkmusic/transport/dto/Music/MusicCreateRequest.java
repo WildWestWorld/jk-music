@@ -19,6 +19,9 @@ public class MusicCreateRequest {
 
     private String photoId;
 
+    private List<String> albumIdList;
+
+
     @NotBlank(message = "歌曲文件/歌曲ID不能为空")
     private String fileId;
 

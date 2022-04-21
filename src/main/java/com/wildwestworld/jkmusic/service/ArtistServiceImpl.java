@@ -57,7 +57,7 @@ public class ArtistServiceImpl implements ArtistService{
             artistMapper.batchInsertArtistMusic(artistEntity, artistCreateRequest.getMusicIdList());
         }
 
-        if (CollUtil.isNotEmpty(artistCreateRequest.getMusicIdList())) {
+        if (CollUtil.isNotEmpty(artistCreateRequest.getAlbumIdList())) {
             artistMapper.batchInsertArtistAlbum(artistEntity, artistCreateRequest.getAlbumIdList());
         }
 
@@ -240,7 +240,7 @@ public class ArtistServiceImpl implements ArtistService{
             artistMapper.deleteAllArtistMusicById(artist);
         }
 
-        if (artist.getMusicList() !=null & !CollUtil.isEmpty(artist.getAlbumList()) ) {
+        if (artist.getAlbumList()!=null & !CollUtil.isEmpty(artist.getAlbumList()) ) {
             artistMapper.deleteAllArtistAlbumById(artist);
         }
 
