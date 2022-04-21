@@ -158,6 +158,47 @@
         </foreach>
     </delete>
 
+    <insert id="batchInsertMusicArtist"  >
+        insert into artist_music(artist_id,music_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{music.id})
+        </foreach>
+    </insert>
 
+    <delete id="batchDeleteMusicArtistById"  >
+        delete from `artist_music` where music_id  = #{music.id} AND artist_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllMusicArtistById"  >
+        delete from `artist_music` where music_id = #{music.id} AND artist_id in
+        <foreach collection="music.artistList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertMusicAlbum"  >
+        insert into album_music(album_id,music_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{music.id})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteMusicAlbumById"  >
+        delete from `album_music` where music_id  = #{music.id} AND album_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllMusicAlbumById"  >
+        delete from `album_music` where music_id = #{music.id} AND album_id in
+        <foreach collection="music.albumList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -45,10 +46,21 @@ public class MusicServiceImpl implements MusicService{
         //将实体类插入数据
         musicMapper.insert(musicEntity);
 
+
+
         System.out.println(musicEntity.getId());
 
 
-        musicMapper.insertArtistMusic(musicEntity);
+//        musicMapper.insertArtistMusic(musicEntity);
+
+        if (CollUtil.isNotEmpty(musicCreateRequest.getArtistIdList())) {
+            musicMapper.batchInsertMusicArtist(musicEntity, musicCreateRequest.getArtistIdList());
+        }
+
+        if (CollUtil.isNotEmpty(musicCreateRequest.getAlbumIdList())) {
+            musicMapper.batchInsertMusicAlbum(musicEntity, musicCreateRequest.getAlbumIdList());
+        }
+
         //然后转化为Dto
         MusicDto musicDto = musicRepository.musicToDto(musicEntity);
         return musicDto;
@@ -103,21 +115,106 @@ public class MusicServiceImpl implements MusicService{
             music.setPhotoId(musicUpdateRequest.getPhotoId());
 
         }
+//更新音乐与歌手的关系
+        if (musicUpdateRequest.getArtistIdList() != null ) {
+            if (CollUtil.isNotEmpty(musicUpdateRequest.getArtistIdList())) {
+                List<String> originIdList;
+                if (music.getArtistList() != null & CollUtil.isNotEmpty(music.getArtistList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
 
+                    List<String> IdList = music.getArtistList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(musicUpdateRequest.getArtistIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, musicUpdateRequest.getArtistIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    musicMapper.batchDeleteMusicArtistById(music, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    musicMapper.batchInsertMusicArtist(music, needInsertIdList);
+                }
+
+
+            }else{
+                if (music.getAlbumList() != null & CollUtil.isNotEmpty(music.getAlbumList())) {
+                    musicMapper.deleteAllMusicArtistById(music);
+                }
+            }
+        }
+
+
+//更新音乐与专辑的关系
+        if (musicUpdateRequest.getAlbumIdList() != null ) {
+            if (CollUtil.isNotEmpty(musicUpdateRequest.getAlbumIdList())) {
+                List<String> originIdList;
+                if (music.getAlbumList() != null & CollUtil.isNotEmpty(music.getAlbumList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                    List<String> IdList = music.getAlbumList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(musicUpdateRequest.getAlbumIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, musicUpdateRequest.getAlbumIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    musicMapper.batchDeleteMusicAlbumById(music, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    musicMapper.batchInsertMusicAlbum(music, needInsertIdList);
+                }
+
+
+            }else{
+                if (music.getAlbumList() != null & CollUtil.isNotEmpty(music.getAlbumList())) {
+                    musicMapper.deleteAllMusicAlbumById(music);
+                }
+            }
+        }
 
 
         //更新user
         musicMapper.updateById(music);
-        if (musicUpdateRequest.getArtistIdList() !=null) {
-            if (music.getArtistList().size() !=0){
-                musicMapper.deleteAllById(music);
-            }
-
-            Music musicEntity = musicRepository.UpdateMusicEntity(musicUpdateRequest);
-            musicEntity.setId(id);
-
-            musicMapper.insertArtistMusic(musicEntity);
-        }
+//        if (musicUpdateRequest.getArtistIdList() !=null) {
+//            if (music.getArtistList().size() !=0){
+//                musicMapper.deleteAllById(music);
+//            }
+//
+//            Music musicEntity = musicRepository.UpdateMusicEntity(musicUpdateRequest);
+//            musicEntity.setId(id);
+//
+//            musicMapper.insertArtistMusic(musicEntity);
+//        }
         //再次查询user
         Music updateMusic = musicMapper.selectMusicById(id);
 
@@ -131,9 +228,14 @@ public class MusicServiceImpl implements MusicService{
     public void deleteMusicByID(String id) {
 
         Music music = musicMapper.selectMusicById(id);
-        if (music.getArtistList().size() !=0){
-            musicMapper.deleteAllById(music);
+        if (music.getArtistList() !=null & !CollUtil.isEmpty(music.getArtistList()) ) {
+            musicMapper.deleteAllMusicArtistById(music);
         }
+
+        if (music.getAlbumList()!=null & !CollUtil.isEmpty(music.getAlbumList()) ) {
+            musicMapper.deleteAllMusicAlbumById(music);
+        }
+
         musicMapper.deleteById(music);
     }
 
