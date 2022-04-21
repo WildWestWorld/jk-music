@@ -116,7 +116,9 @@ public class AlbumServiceImpl implements AlbumService{
             album.setRecommended(albumUpdateRequest.getRecommended());
         }
 
-
+        if (albumUpdateRequest.getPhotoId()  != null & StrUtil.isNotEmpty(albumUpdateRequest.getPhotoId())) {
+            album.setPhotoId(albumUpdateRequest.getPhotoId());
+        }
 
 //更新专辑与音乐的关系
         if (albumUpdateRequest.getMusicIdList() != null  ) {
