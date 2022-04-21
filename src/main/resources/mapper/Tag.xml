@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wildwestworld.jkmusic.mapper.TagMapper">
+
+
+    <resultMap id="musicMap" type="com.wildwestworld.jkmusic.entity.Music">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fileId" column="file_id"/>
+        <result property="photoId" column="photo_id"/>
+
+        <result property="description" column="description"/>
+        <result property="musicState" column="music_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <!--column="file_id"传入查询的参数，传入的参数得是原表的属性-->
+        <association  property="file"  column="file_id"  select="getFileList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </association >
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+        <!--        <association  property="album"  column="id"  select="getAlbumByMusicId">-->
+
+        <!--        </association >-->
+
+        <collection property="albumList" javaType="ArrayList" column="id"  select="getAlbumByMusicId">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
+
+        <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
+
+    </resultMap>
+
+
+    <resultMap id="TagMap" type="com.wildwestworld.jkmusic.entity.Tag">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+
+    </resultMap>
+
+
+
+    <select id="getPage" resultMap="TagMap">
+        select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
+
+    </select>
+
+
+    <select id="getTagList" resultMap="TagMap">
+        select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
+
+    </select>
+
+</mapper>

@@ -1,0 +1,25 @@
+package com.wildwestworld.jkmusic.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.entity.Music;
+import com.wildwestworld.jkmusic.entity.Tag;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface TagMapper extends BaseMapper<Tag> {
+    IPage<Tag> getPage(Page<Tag> page , @Param("name") String name);
+
+    List<Tag> getTagList(@Param("name") String name);
+
+    //获取插入后才能自动生成的id
+    @Override
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insert(Tag tag);
+}

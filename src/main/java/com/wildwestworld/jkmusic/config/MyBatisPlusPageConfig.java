@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 
+//该文件用于设置mybatis的分页
 public class MyBatisPlusPageConfig {
     @Bean
     public MybatisPlusInterceptor innerInterceptor() {
