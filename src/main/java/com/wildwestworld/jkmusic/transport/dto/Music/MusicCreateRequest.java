@@ -21,6 +21,7 @@ public class MusicCreateRequest {
 
     private List<String> albumIdList;
 
+    private List<String> tagIdList;
 
     @NotBlank(message = "歌曲文件/歌曲ID不能为空")
     private String fileId;

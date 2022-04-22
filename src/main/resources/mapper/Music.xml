@@ -47,6 +47,13 @@
         </collection>
 
 
+        <collection property="tagList" javaType="ArrayList" column="id"  select="getTagList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
     </resultMap>
 
     <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
@@ -91,6 +98,17 @@
 
     </resultMap>
 
+    <resultMap id="TagMap" type="com.wildwestworld.jkmusic.entity.Tag">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+    </resultMap>
+
+
 
     <select id="getPage" resultMap="musicMap">
         select * from  `music` where `music`.name like concat ('%',#{name},'%')
@@ -132,6 +150,13 @@
         from `artist` as a
         left join `artist_music` as am on a.id =am.artist_id
         where  am.music_id =#{id}
+    </select>
+
+    <select id="getTagList" resultMap="TagMap">
+        select *
+        from `tag` as t
+        left join `tag_music` as tm on t.id =tm.tag_id
+        where  tm.music_id =#{id}
     </select>
 
     <select id="getAlbumByMusicId" resultMap="AlbumMap">
@@ -200,5 +225,29 @@
             #{item.id}
         </foreach>
     </delete>
+
+
+    <insert id="batchInsertMusicTag"  >
+        insert into tag_music(tag_id,music_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{music.id})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteMusicTagById"  >
+        delete from `tag_music` where music_id  = #{music.id} AND tag_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllMusicTagById"  >
+        delete from `tag_music` where music_id = #{music.id} AND tag_id in
+        <foreach collection="music.tagList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
 
 </mapper>

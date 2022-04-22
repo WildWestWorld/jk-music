@@ -61,6 +61,12 @@ public class MusicServiceImpl implements MusicService{
             musicMapper.batchInsertMusicAlbum(musicEntity, musicCreateRequest.getAlbumIdList());
         }
 
+
+        if (CollUtil.isNotEmpty(musicCreateRequest.getTagIdList())) {
+            musicMapper.batchInsertMusicTag(musicEntity, musicCreateRequest.getTagIdList());
+        }
+
+
         //然后转化为Dto
         MusicDto musicDto = musicRepository.musicToDto(musicEntity);
         return musicDto;
@@ -202,6 +208,48 @@ public class MusicServiceImpl implements MusicService{
             }
         }
 
+//更新音乐与标签的关系
+        if (musicUpdateRequest.getTagIdList() != null ) {
+            if (CollUtil.isNotEmpty(musicUpdateRequest.getTagIdList())) {
+                List<String> originIdList;
+                if (music.getTagList() != null & CollUtil.isNotEmpty(music.getTagList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                    List<String> IdList = music.getTagList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(musicUpdateRequest.getTagIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, musicUpdateRequest.getTagIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    musicMapper.batchDeleteMusicTagById(music, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    musicMapper.batchInsertMusicTag(music, needInsertIdList);
+                }
+
+
+            }else{
+                if (music.getTagList() != null & CollUtil.isNotEmpty(music.getTagList())) {
+                    musicMapper.deleteAllMusicTagById(music);
+                }
+            }
+        }
 
         //更新user
         musicMapper.updateById(music);
@@ -235,6 +283,11 @@ public class MusicServiceImpl implements MusicService{
         if (music.getAlbumList()!=null & !CollUtil.isEmpty(music.getAlbumList()) ) {
             musicMapper.deleteAllMusicAlbumById(music);
         }
+
+        if (music.getTagList()!=null & !CollUtil.isEmpty(music.getTagList()) ) {
+            musicMapper.deleteAllMusicTagById(music);
+        }
+
 
         musicMapper.deleteById(music);
     }

@@ -22,6 +22,7 @@ public interface MusicRepository {
     //将Music类转化为MusicDto
     @Mapping(target="artistDtoList",source="artistList")
     @Mapping(target="albumDtoList",source="albumList")
+    @Mapping(target="tagDtoList",source="tagList")
 
     MusicDto musicToDto(Music music);
 
@@ -29,6 +30,7 @@ public interface MusicRepository {
     //将dto转化为Vo
     @Mapping(target="artistVoList",source="artistDtoList")
     @Mapping(target="albumVoList",source="albumDtoList")
+    @Mapping(target="tagVoList",source="tagDtoList")
 
     MusicVo musicToVo(MusicDto musicDto);
 
