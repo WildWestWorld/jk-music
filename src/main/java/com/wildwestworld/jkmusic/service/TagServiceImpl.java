@@ -19,6 +19,7 @@ import com.wildwestworld.jkmusic.transport.dto.Tag.TagCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Tag.TagDto;
 import com.wildwestworld.jkmusic.transport.dto.Tag.TagUpdateRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -45,6 +46,7 @@ public class TagServiceImpl implements TagService{
 
 
     @Override
+    @Transactional
     public TagDto createTag(TagCreateRequest tagCreateRequest) {
         //先给他转化成Entity
         Tag tagEntity = tagRepository.createTagEntity(tagCreateRequest);
@@ -60,9 +62,9 @@ public class TagServiceImpl implements TagService{
 
 //        tagMapper.insertArtistTag(tagEntity);
 
-//        if (CollUtil.isNotEmpty(tagCreateRequest.getArtistIdList())) {
-//            tagMapper.batchInsertTagArtist(tagEntity, tagCreateRequest.getArtistIdList());
-//        }
+        if (CollUtil.isNotEmpty(tagCreateRequest.getMusicIdList())) {
+            tagMapper.batchInsertTagMusic(tagEntity, tagCreateRequest.getMusicIdList());
+        }
 //
 //        if (CollUtil.isNotEmpty(tagCreateRequest.getAlbumIdList())) {
 //            tagMapper.batchInsertTagAlbum(tagEntity, tagCreateRequest.getAlbumIdList());
@@ -74,8 +76,10 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
+    @Transactional
+
     public TagDto updateTagById(String id, TagUpdateRequest tagUpdateRequest) {
-        Tag tag = tagMapper.selectById(id);
+        Tag tag = tagMapper.selectTagById(id);
         if(tag == null){
             //自定义的异常类  自定义的异常类的信息在exception里面
             throw new BizException(BizExceptionType.Tag_NOT_FOUND);
@@ -88,21 +92,69 @@ public class TagServiceImpl implements TagService{
         }
 
 
+
+//更新音乐与歌手的关系
+        if (tagUpdateRequest.getMusicIdList() != null ) {
+            if (CollUtil.isNotEmpty(tagUpdateRequest.getMusicIdList())) {
+                List<String> originIdList;
+                if (tag.getMusicList() != null & CollUtil.isNotEmpty(tag.getMusicList())) {
+                    //方案1:
+                    //根据前端传过来的给的tagList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                    List<String> IdList = tag.getMusicList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(tagUpdateRequest.getMusicIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, tagUpdateRequest.getMusicIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    tagMapper.batchDeleteTagMusicById(tag, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    tagMapper.batchInsertTagMusic(tag, needInsertIdList);
+                }
+
+
+            }else{
+                if (tag.getMusicList() != null & CollUtil.isNotEmpty(tag.getMusicList())) {
+                    tagMapper.deleteAllTagMusicById(tag);
+                }
+            }
+        }
+
+
         //更新user
         tagMapper.updateById(tag);
 
         //再次查询user
-        Tag updateTag = tagMapper.selectById(id);
+        Tag updateTag = tagMapper.selectTagById(id);
 
         TagDto tagDto = tagRepository.tagToDto(updateTag);
         return tagDto;
     }
 
     @Override
+    @Transactional
     public void deleteTagByID(String id) {
-        Tag tag = tagMapper.selectById(id);
+        Tag tag = tagMapper.selectTagById(id);
 
-
+        if (tag.getMusicList() !=null & !CollUtil.isEmpty(tag.getMusicList()) ) {
+            tagMapper.deleteAllTagMusicById(tag);
+        }
         tagMapper.deleteById(tag);
     }
 

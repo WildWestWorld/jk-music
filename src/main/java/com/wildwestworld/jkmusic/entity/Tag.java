@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @TableName("tag")
 @Data
@@ -18,6 +19,9 @@ public class Tag {
 
 
     private String name;
+
+    @TableField(exist = false)
+    private List<Music> musicList;
 
 
     @TableField(fill = FieldFill.INSERT)
