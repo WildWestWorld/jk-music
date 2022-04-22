@@ -7,43 +7,33 @@
     <resultMap id="musicMap" type="com.wildwestworld.jkmusic.entity.Music">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="fileId" column="file_id"/>
-        <result property="photoId" column="photo_id"/>
+<!--        <result property="fileId" column="file_id"/>-->
+<!--        <result property="photoId" column="photo_id"/>-->
 
-        <result property="description" column="description"/>
+<!--        <result property="description" column="description"/>-->
         <result property="musicState" column="music_state"/>
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
         <!--column="file_id"传入查询的参数，传入的参数得是原表的属性-->
-        <association  property="file"  column="file_id"  select="getFileList">
-            <!--            分页查询无法嵌套，所以得用子查询-->
-            <!--            <result property="id" column="r_id"  />-->
-            <!--            <result property="name" column="r_name"  />-->
-            <!--            <result property="title" column="r_title" />-->
-        </association >
 
-        <association  property="photo"  column="photo_id"  select="getPhotoFile">
 
-        </association >
+<!--        <association  property="photo"  column="photo_id"  select="getPhotoFile">-->
+
+<!--        </association >-->
 
 
         <!--        <association  property="album"  column="id"  select="getAlbumByMusicId">-->
 
         <!--        </association >-->
 
-        <collection property="albumList" javaType="ArrayList" column="id"  select="getAlbumByMusicId">
-            <!--            分页查询无法嵌套，所以得用子查询-->
-            <!--            <result property="id" column="r_id"  />-->
-            <!--            <result property="name" column="r_name"  />-->
-            <!--            <result property="title" column="r_title" />-->
-        </collection>
+
 
 
         <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
-            <!--            分页查询无法嵌套，所以得用子查询-->
-            <!--            <result property="id" column="r_id"  />-->
-            <!--            <result property="name" column="r_name"  />-->
-            <!--            <result property="title" column="r_title" />-->
+<!--            &lt;!&ndash;            分页查询无法嵌套，所以得用子查询&ndash;&gt;-->
+<!--            &lt;!&ndash;            <result property="id" column="r_id"  />&ndash;&gt;-->
+<!--            &lt;!&ndash;            <result property="name" column="r_name"  />&ndash;&gt;-->
+<!--            &lt;!&ndash;            <result property="title" column="r_title" />&ndash;&gt;-->
         </collection>
 
 
@@ -58,11 +48,49 @@
         <result property="updatedTime" column="updated_time"/>
 
 
+        <collection property="musicList" javaType="ArrayList" column="id"  select="getMusicList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
 
     </resultMap>
 
 
+    <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+<!--        <result property="remark" column="remark"/>-->
+<!--        <result property="photoId" column="photo_id"/>-->
+        <result property="artistState" column="artist_state"/>
+<!--        <result property="createdTime" column="created_time"/>-->
+<!--        <result property="updatedTime" column="updated_time"/>-->
 
+<!--        <association  property="photo"  column="photo_id"  select="getPhotoFile">-->
+
+<!--        </association >-->
+
+    </resultMap>
+
+    <!--子查询-->
+
+    <select id="getMusicList" resultMap="musicMap">
+        select *
+        from `music` as m
+
+        left join `tag_music` as tm on m.id =tm.music_id
+        where  tm.tag_id =#{id}
+    </select>
+
+    <select id="getArtistList" resultMap="ArtistMap">
+        select *
+        from `artist` as a
+        left join `artist_music` as am on a.id =am.artist_id
+        where  am.music_id =#{id}
+    </select>
+
+<!--下面这些都是正常的查询-->
     <select id="getPage" resultMap="TagMap">
         select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
 
@@ -73,5 +101,32 @@
         select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
 
     </select>
+
+    <select id="selectTagById" resultMap="TagMap">
+        select * from  `tag` where `tag`.id =#{id}
+
+    </select>
+
+
+    <insert id="batchInsertTagMusic"  >
+        insert into tag_music(tag_id,music_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{tag.id},#{item})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteTagMusicById"  >
+        delete from `tag_music` where  tag_id = #{tag.id} AND music_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllTagMusicById"  >
+        delete from `tag_music` where tag_id = #{tag.id} AND music_id in
+        <foreach collection="tag.musicList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 
 </mapper>

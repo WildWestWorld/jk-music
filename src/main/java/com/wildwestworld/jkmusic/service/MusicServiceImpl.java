@@ -152,7 +152,7 @@ public class MusicServiceImpl implements MusicService{
 
 
             }else{
-                if (music.getAlbumList() != null & CollUtil.isNotEmpty(music.getAlbumList())) {
+                if (music.getArtistList() != null & CollUtil.isNotEmpty(music.getArtistList())) {
                     musicMapper.deleteAllMusicArtistById(music);
                 }
             }
