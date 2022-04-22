@@ -21,6 +21,9 @@ public class MusicUpdateRequest {
 
     private List<String> albumIdList;
 
+    private List<String> tagIdList;
+
+
     @NotBlank(message = "更新的歌曲文件/歌曲ID不能为空")
     private String fileId;
     @NotNull(message = "更新的歌手不能为空")

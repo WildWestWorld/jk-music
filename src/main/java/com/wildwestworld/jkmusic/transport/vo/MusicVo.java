@@ -6,6 +6,7 @@ import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
+import com.wildwestworld.jkmusic.transport.dto.Tag.TagDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -31,6 +32,9 @@ public class MusicVo {
     private List<AlbumVo> albumVoList;
 
     private List<ArtistVo> artistVoList;
+
+
+    private List<TagVo> tagVoList;
 
 
     //      注解@JsonFormat主要是后台到前台的时间格式的转换

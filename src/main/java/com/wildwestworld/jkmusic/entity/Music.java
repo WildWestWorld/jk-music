@@ -39,4 +39,7 @@ public class Music extends AbstractEntity{
 
     @TableField(exist = false)
     private List<Album> albumList;
+
+    @TableField(exist = false)
+    private List<Tag> tagList;
 }
