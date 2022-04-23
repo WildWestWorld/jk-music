@@ -32,6 +32,9 @@ public class PlayList extends AbstractEntity{
     @TableField(exist = false)
     private List<Music> musicList;
 
+    @TableField(exist = false)
+    private List<Tag> tagList;
+
     //    根据布尔值的真与假判断是否被推荐
     private Boolean recommended;
 

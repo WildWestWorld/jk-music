@@ -86,6 +86,11 @@ public class PlayListServiceImpl implements PlayListService{
         playListEntity.setCreatorId(currentUserId);
         //将实体类插入数据
         playListMapper.insert(playListEntity);
+
+
+        if (CollUtil.isNotEmpty(playListCreateRequest.getTagIdList())) {
+            playListMapper.batchInsertPlayListTag(playListEntity, playListCreateRequest.getTagIdList());
+        }
         //然后转化为Dto
         PlayListDto playListDto = playListRepository.playListToDto(playListEntity);
         return playListDto;
@@ -173,7 +178,7 @@ public class PlayListServiceImpl implements PlayListService{
                 List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, playListUpdateRequest.getMusicIdList());
 
                 if (needDeleteIdList.size() != 0) {
-                    playListMapper.batchDeleteById(playList, needDeleteIdList);
+                    playListMapper.batchDeletePlayListMusicById(playList, needDeleteIdList);
                 }
 
 
@@ -188,7 +193,48 @@ public class PlayListServiceImpl implements PlayListService{
             }
         }
 
+//歌单与标签的关系
+        if (playListUpdateRequest.getTagIdList() !=null ) {
+            if( CollUtil.isNotEmpty(playListUpdateRequest.getTagIdList() )) {
 
+                List<String> originIdList;
+                if (playList.getTagList() != null & CollUtil.isNotEmpty(playList.getTagList())) {
+                    //方案1:
+                    //根据前端传过来的给的musicList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                    List<String> IdList = playList.getTagList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(playListUpdateRequest.getTagIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, playListUpdateRequest.getTagIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    playListMapper.batchDeletePlayListTagById(playList, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    playListMapper.batchInsertPlayListTag(playList, needInsertIdList);
+                }
+
+            }else{
+                if (playList.getTagList() != null  & CollUtil.isNotEmpty(playList.getTagList())) {
+                    playListMapper.deleteAllPlayListTagById(playList);
+                }
+            }
+        }
 
 
         //更新user
@@ -211,6 +257,10 @@ public class PlayListServiceImpl implements PlayListService{
         if (playList.getMusicList() !=null & !CollUtil.isEmpty(playList.getMusicList())) {
             playListMapper.deleteAllPlayListMusicById(playList);
         }
+        if (playList.getTagList() !=null & !CollUtil.isEmpty(playList.getTagList())) {
+            playListMapper.deleteAllPlayListTagById(playList);
+        }
+
         playListMapper.deleteById(id);
     }
 

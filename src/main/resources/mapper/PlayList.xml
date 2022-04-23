@@ -32,6 +32,13 @@
         <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">
 
         </collection>
+
+        <collection property="tagList" javaType="ArrayList" column="id"  select="getTagList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
     </resultMap>
 
 
@@ -124,6 +131,15 @@
         <!--        </collection>-->
     </resultMap>
 
+    <resultMap id="TagMap" type="com.wildwestworld.jkmusic.entity.Tag">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+    </resultMap>
 
     <!--    子查询-->
     <select id="getFileList" resultType="com.wildwestworld.jkmusic.entity.File">
@@ -184,6 +200,13 @@
         where  pm.playlist_id =#{id}
     </select>
 
+    <select id="getTagList" resultMap="TagMap">
+        select *
+        from `tag` as t
+        left join `tag_playlist` as tp on t.id =tp.tag_id
+        where  tp.playlist_id =#{id}
+    </select>
+
 
 <!--        以下是正常操作-->
     <select id="getPage" resultMap="PlayListMap">
@@ -225,7 +248,7 @@
 
 
 
-    <delete id="batchDeleteById"  >
+    <delete id="batchDeletePlayListMusicById"  >
         delete from `playlist_music` where playlist_id = #{playList.id} AND music_id in
         <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
             #{item}
@@ -236,6 +259,28 @@
     <delete id="deleteAllPlayListMusicById"  >
         delete from `playlist_music` where playlist_id = #{playList.id} AND music_id in
         <foreach collection="playList.musicList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+
+    <insert id="batchInsertPlayListTag"  >
+        insert into tag_playlist(tag_id,playlist_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{playList.id})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeletePlayListTagById"  >
+        delete from `tag_playlist` where playlist_id = #{playList.id} AND tag_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllPlayListTagById"  >
+        delete from `tag_playlist` where playlist_id = #{playList.id} AND tag_id in
+        <foreach collection="playList.tagList"  item="item"   open="(" separator="," close=")">
             #{item.id}
         </foreach>
     </delete>

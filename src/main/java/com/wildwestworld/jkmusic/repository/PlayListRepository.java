@@ -23,9 +23,13 @@ import java.util.List;
 @Mapper(componentModel = "spring",uses = {FileRepository.class,MusicRepository.class})
 public interface PlayListRepository {
     //将user类转化为UserDto
+    @Mapping(target="tagList",source="tagList")
+
     PlayListDto playListToDto(PlayList playList);
 
     //将dto转化为Vo
+    @Mapping(target="tagList",source="tagList")
+
     PlayListVo playListToVo(PlayListDto playListDto);
 
     PlayList createPlayListEntity (PlayListCreateRequest playListCreateRequest);
