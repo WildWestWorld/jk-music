@@ -44,7 +44,7 @@ public class AlbumServiceImpl implements AlbumService{
         Album albumEntity = albumRepository.createAlbumEntity(albumCreateRequest);
         System.out.println(albumEntity);
         //放入枚举类型的state
-        AlbumState albumState = AlbumState.valueOf("待上架");
+        AlbumState albumState = AlbumState.valueOf("已上架");
         albumEntity.setAlbumState(albumState);
         //将实体类插入数据
         albumMapper.insert(albumEntity);
