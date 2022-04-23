@@ -41,7 +41,7 @@ public class MusicServiceImpl implements MusicService{
         Music musicEntity = musicRepository.createMusicEntity(musicCreateRequest);
         System.out.println(musicEntity);
         //放入枚举类型的state
-        MusicState state = MusicState.valueOf("待上架");
+        MusicState state = MusicState.valueOf("已上架");
         musicEntity.setMusicState(state);
         //将实体类插入数据
         musicMapper.insert(musicEntity);

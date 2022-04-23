@@ -47,7 +47,7 @@ public class ArtistServiceImpl implements ArtistService{
         Artist artistEntity = artistRepository.createArtistEntity(artistCreateRequest);
         System.out.println(artistEntity);
         //放入枚举类型的state
-        ArtistState state = ArtistState.valueOf("待上架");
+        ArtistState state = ArtistState.valueOf("已上架");
         artistEntity.setArtistState(state);
         //将实体类插入数据
         artistMapper.insert(artistEntity);
