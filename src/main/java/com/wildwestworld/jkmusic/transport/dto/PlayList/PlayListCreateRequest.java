@@ -31,4 +31,6 @@ public class PlayListCreateRequest {
     private String coverId;
 
     private List<String> musicIdList;
+
+    private List<String> tagIdList;
 }

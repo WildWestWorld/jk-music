@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.Album;
 import com.wildwestworld.jkmusic.entity.Music;
 import com.wildwestworld.jkmusic.entity.PlayList;
+import com.wildwestworld.jkmusic.entity.Tag;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,10 +27,17 @@ public interface PlayListMapper extends BaseMapper<PlayList> {
 
     int batchInsertPlayListMusic(@Param("playList")PlayList entity,@Param("needInsertIdList") List<String> needInsertIdList);
 
-    int batchDeleteById(@Param("playList")PlayList entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
+    int batchDeletePlayListMusicById(@Param("playList")PlayList entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
 
 
     int deleteAllPlayListMusicById(@Param("playList") PlayList entity);
+
+
+    int batchInsertPlayListTag(@Param("playList") PlayList entity, @Param("needInsertIdList") List<String> needInsertIdList);
+
+    int batchDeletePlayListTagById(@Param("playList")PlayList entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
+
+    int deleteAllPlayListTagById(@Param("playList")PlayList entity);
 
 
     //获取插入后才能自动生成的id

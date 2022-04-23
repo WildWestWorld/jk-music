@@ -3,6 +3,7 @@ package com.wildwestworld.jkmusic.transport.vo;
 import com.wildwestworld.jkmusic.emuns.PlayListState;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
+import com.wildwestworld.jkmusic.transport.dto.Tag.TagDto;
 import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
 import lombok.Data;
 
@@ -29,6 +30,9 @@ public class PlayListVo extends BaseVo  {
     private UserDto creator;
 
     private List<MusicVo> musicList;
+
+    private List<TagDto> tagList;
+
 
     //    根据布尔值的真与假判断是否被推荐
     private Boolean recommended;
