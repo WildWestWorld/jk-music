@@ -66,9 +66,9 @@ public class TagServiceImpl implements TagService{
             tagMapper.batchInsertTagMusic(tagEntity, tagCreateRequest.getMusicIdList());
         }
 //
-//        if (CollUtil.isNotEmpty(tagCreateRequest.getAlbumIdList())) {
-//            tagMapper.batchInsertTagAlbum(tagEntity, tagCreateRequest.getAlbumIdList());
-//        }
+        if (CollUtil.isNotEmpty(tagCreateRequest.getPlayListIdList())) {
+            tagMapper.batchInsertTagPlayList(tagEntity, tagCreateRequest.getPlayListIdList());
+        }
 
         //然后转化为Dto
         TagDto tagDto = tagRepository.tagToDto(tagEntity);
@@ -137,6 +137,51 @@ public class TagServiceImpl implements TagService{
         }
 
 
+//更新音乐与歌单的关系
+        if (tagUpdateRequest.getPlayListIdList() != null ) {
+            if (CollUtil.isNotEmpty(tagUpdateRequest.getPlayListIdList())) {
+                List<String> originIdList;
+                if (tag.getPlayList() != null & CollUtil.isNotEmpty(tag.getPlayList())) {
+                    //方案1:
+                    //根据前端传过来的给的tagList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
+
+                    List<String> IdList = tag.getPlayList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(tagUpdateRequest.getPlayListIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, tagUpdateRequest.getPlayListIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    tagMapper.batchDeleteTagPlayListById(tag, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    tagMapper.batchInsertTagPlayList(tag, needInsertIdList);
+                }
+
+
+            }else{
+                if (tag.getPlayList() != null & CollUtil.isNotEmpty(tag.getPlayList())) {
+                    tagMapper.deleteAllTagPlayListById(tag);
+                }
+            }
+        }
+
+
+
         //更新user
         tagMapper.updateById(tag);
 
@@ -154,6 +199,10 @@ public class TagServiceImpl implements TagService{
 
         if (tag.getMusicList() !=null & !CollUtil.isEmpty(tag.getMusicList()) ) {
             tagMapper.deleteAllTagMusicById(tag);
+        }
+
+        if (tag.getPlayList() !=null & !CollUtil.isEmpty(tag.getPlayList()) ) {
+            tagMapper.deleteAllTagPlayListById(tag);
         }
         tagMapper.deleteById(tag);
     }

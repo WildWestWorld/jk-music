@@ -15,4 +15,7 @@ public class TagCreateRequest {
     private String name;
 
     private List<String> musicIdList;
+
+    private List<String> playListIdList;
+
 }

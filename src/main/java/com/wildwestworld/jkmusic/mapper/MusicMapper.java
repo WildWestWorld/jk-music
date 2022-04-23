@@ -41,11 +41,15 @@ public interface MusicMapper extends BaseMapper<Music> {
 
     int deleteAllMusicAlbumById(@Param("music")Music entity);
 
+
+
     int batchInsertMusicTag(@Param("music") Music entity, @Param("needInsertIdList") List<String> needInsertIdList);
 
     int batchDeleteMusicTagById(@Param("music")Music entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
 
     int deleteAllMusicTagById(@Param("music")Music entity);
+
+
 
 
     //获取插入后才能自动生成的id

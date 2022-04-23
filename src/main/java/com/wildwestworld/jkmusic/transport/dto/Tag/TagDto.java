@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.entity.Music;
+import com.wildwestworld.jkmusic.entity.PlayList;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
+import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,4 +28,5 @@ public class TagDto {
     private List<MusicDto> musicList;
 
 
+    private List<PlayListDto> playList;
 }

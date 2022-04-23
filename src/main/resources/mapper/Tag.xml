@@ -4,6 +4,33 @@
 <mapper namespace="com.wildwestworld.jkmusic.mapper.TagMapper">
 
 
+    <resultMap id="TagMap" type="com.wildwestworld.jkmusic.entity.Tag">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+        <collection property="musicList" javaType="ArrayList" column="id"  select="getMusicList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
+        <collection property="playList" javaType="ArrayList" column="id"  select="getPlayList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
+    </resultMap>
+
+
+
+
     <resultMap id="musicMap" type="com.wildwestworld.jkmusic.entity.Music">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -40,22 +67,6 @@
     </resultMap>
 
 
-    <resultMap id="TagMap" type="com.wildwestworld.jkmusic.entity.Tag">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-
-        <result property="createdTime" column="created_time"/>
-        <result property="updatedTime" column="updated_time"/>
-
-
-        <collection property="musicList" javaType="ArrayList" column="id"  select="getMusicList">
-            <!--            分页查询无法嵌套，所以得用子查询-->
-            <!--            <result property="id" column="r_id"  />-->
-            <!--            <result property="name" column="r_name"  />-->
-            <!--            <result property="title" column="r_title" />-->
-        </collection>
-
-    </resultMap>
 
 
     <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
@@ -75,6 +86,14 @@
 
     <!--子查询-->
 
+    <select id="getPlayList" resultType="com.wildwestworld.jkmusic.entity.PlayList">
+        select *
+        from `playlist` as pl
+
+        left join `tag_playlist` as tp on pl.id =tp.playlist_id
+        where  tp.tag_id =#{id}
+    </select>
+
     <select id="getMusicList" resultMap="musicMap">
         select *
         from `music` as m
@@ -82,6 +101,7 @@
         left join `tag_music` as tm on m.id =tm.music_id
         where  tm.tag_id =#{id}
     </select>
+
 
     <select id="getArtistList" resultMap="ArtistMap">
         select *
@@ -98,6 +118,11 @@
 
 
     <select id="getTagList" resultMap="TagMap">
+        select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
+
+    </select>
+
+    <select id="getTagSelectionList" resultType="com.wildwestworld.jkmusic.entity.Tag">
         select * from  `tag` where `tag`.name like concat ('%',#{name},'%')
 
     </select>
@@ -128,5 +153,28 @@
             #{item.id}
         </foreach>
     </delete>
+
+    <insert id="batchInsertTagPlayList"  >
+        insert into tag_playlist(tag_id,playlist_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{tag.id},#{item})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteTagPlayListById"  >
+        delete from `tag_playlist` where  tag_id = #{tag.id} AND playlist_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllTagPlayListById"  >
+        delete from `tag_playlist` where tag_id = #{tag.id} AND playlist_id in
+        <foreach collection="tag.playList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+
 
 </mapper>
