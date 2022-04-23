@@ -34,6 +34,31 @@
 
     </resultMap>
 
+
+    <resultMap id="ArtistSelectionMap" type="com.wildwestworld.jkmusic.entity.Artist">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
+        <result property="photoId" column="photo_id"/>
+        <result property="artistState" column="artist_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+
+        <association  property="photo"  column="photo_id"  select="getPhotoFile">
+
+        </association >
+
+
+
+
+    </resultMap>
+
+
+
+
+
     <resultMap id="ArtistMapFromMusic" type="com.wildwestworld.jkmusic.entity.Artist">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -220,6 +245,12 @@
     </select>
 
     <select id="getArtistList" resultMap="ArtistMap">
+        select * from  `artist` where `artist`.name like concat ('%',#{name},'%')
+
+    </select>
+
+
+    <select id="getArtistSelectionList" resultMap="ArtistSelectionMap">
         select * from  `artist` where `artist`.name like concat ('%',#{name},'%')
 
     </select>

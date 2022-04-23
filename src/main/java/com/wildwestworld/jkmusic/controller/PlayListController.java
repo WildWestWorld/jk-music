@@ -44,6 +44,14 @@ public class PlayListController {
         return playListVoList;
     }
 
+    @GetMapping("/selection")
+    public List<PlayListVo> getPlaySelectionList(@RequestParam(defaultValue = "")String searchWord){
+
+        List<PlayListDto> playListDtoList = playListService.getPlaySelectionList(searchWord);
+        List<PlayListVo> playListVoList = playListDtoList.stream().map(playListRepository::playListToVo).collect(Collectors.toList());
+        return playListVoList;
+    }
+
     @PostMapping
     public PlayListVo createPlayList(@Validated @RequestBody PlayListCreateRequest playListCreateRequest){
         PlayListDto playList = playListService.createPlayList(playListCreateRequest);

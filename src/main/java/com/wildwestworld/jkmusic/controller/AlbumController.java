@@ -42,6 +42,14 @@ public class AlbumController {
         return albumVoList;
     }
 
+    @GetMapping("/selection")
+    public List<AlbumVo> getAlbumSelectionList(@RequestParam(defaultValue = "")String searchWord){
+
+        List<AlbumDto> albumList = albumService.getAlbumSelectionList(searchWord);
+        List<AlbumVo> albumVoList = albumList.stream().map(albumRepository::albumToVo).collect(Collectors.toList());
+        return albumVoList;
+    }
+
     @PostMapping
     public AlbumVo createAlbum(@Validated @RequestBody AlbumCreateRequest albumCreateRequest){
         AlbumDto albumDto = albumService.createAlbum(albumCreateRequest);

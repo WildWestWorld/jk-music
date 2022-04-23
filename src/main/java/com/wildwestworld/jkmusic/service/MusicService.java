@@ -17,7 +17,10 @@ public interface MusicService {
 
     List<MusicDto> getMusicList(String searchWord);
 
-    void changeMusicStateToPublic(String id);
+    List<MusicDto> getMusicSelectionList(String searchWord);
+
+
+ void changeMusicStateToPublic(String id);
 
     void changeMusicStateToClosed(String id);
 

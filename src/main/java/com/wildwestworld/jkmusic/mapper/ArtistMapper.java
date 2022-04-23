@@ -17,6 +17,9 @@ public interface ArtistMapper extends BaseMapper<Artist> {
 
     List<Artist> getArtistList(@Param("name") String name);
 
+    List<Artist> getArtistSelectionList(@Param("name") String name);
+
+
     Artist selectArtistById(@Param("id") String id);
 
     int batchInsertArtistMusic(@Param("artist") Artist entity, @Param("needInsertIdList") List<String> needInsertIdList);

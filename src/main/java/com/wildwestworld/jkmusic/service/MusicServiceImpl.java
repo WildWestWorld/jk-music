@@ -295,14 +295,26 @@ public class MusicServiceImpl implements MusicService{
     //获取全部music
     @Override
     public List<MusicDto> getMusicList(String searchWord) {
-        LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();
-        wrapper.like(Music::getName,searchWord);
+//        LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();
+//        wrapper.like(Music::getName,searchWord);
 
         List<Music> musicList = musicMapper.getMusicList(searchWord);
 
         List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
         return musicDtoList;
     }
+
+    @Override
+    public List<MusicDto> getMusicSelectionList(String searchWord) {
+//        LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();
+//        wrapper.like(Music::getName,searchWord);
+
+        List<Music> musicList = musicMapper.getMusicSelectionList(searchWord);
+
+        List<MusicDto> musicDtoList = musicList.stream().map(musicRepository::musicToDto).collect(Collectors.toList());
+        return musicDtoList;
+    }
+
 
     @Override
     public void changeMusicStateToPublic(String id) {

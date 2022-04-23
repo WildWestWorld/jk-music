@@ -18,6 +18,9 @@ import java.util.List;
 public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> getAlbumList(@Param("name") String name);
 
+    List<Album> getAlbumSelectionList(@Param("name") String name);
+
+
     IPage<Album> getPage(Page<Album> page , @Param("name") String name, @Param("orderRecommend") Boolean orderRecommend);
 
 
