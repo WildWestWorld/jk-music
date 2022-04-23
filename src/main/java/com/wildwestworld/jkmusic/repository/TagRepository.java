@@ -11,7 +11,7 @@ import com.wildwestworld.jkmusic.transport.vo.TagVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",uses = {MusicRepository.class})
+@Mapper(componentModel = "spring",uses = {MusicRepository.class,PlayListRepository.class})
 
 public interface TagRepository {
     TagDto tagToDto(Tag tag);

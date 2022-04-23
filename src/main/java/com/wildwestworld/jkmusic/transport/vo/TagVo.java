@@ -1,5 +1,6 @@
 package com.wildwestworld.jkmusic.transport.vo;
 
+import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,6 +14,9 @@ public class TagVo {
 
 
     private List<MusicVo> musicList;
+
+    private List<PlayListVo> playList;
+
 
     private Date createdTime;
 

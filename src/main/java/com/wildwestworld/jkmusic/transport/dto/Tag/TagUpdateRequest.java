@@ -12,4 +12,6 @@ public class TagUpdateRequest {
 
     private List<String> musicIdList;
 
+    private List<String> playListIdList;
+
 }
