@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.repository.MusicRepository;
 import com.wildwestworld.jkmusic.service.MusicService;
+import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
+import com.wildwestworld.jkmusic.transport.vo.ArtistVo;
 import com.wildwestworld.jkmusic.transport.vo.MusicVo;
 import com.wildwestworld.jkmusic.utils.Result;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +36,13 @@ public class MusicController {
         return musicVoList;
     }
 
+    @GetMapping("/selection")
+    public List<MusicVo> getMusicSelectionList(@RequestParam(defaultValue = "")String searchWord){
+
+        List<MusicDto> musicList = musicService.getMusicSelectionList(searchWord);
+        List<MusicVo> musicVoList = musicList.stream().map(musicRepository::musicToVo).collect(Collectors.toList());
+        return musicVoList;
+    }
 
     @PostMapping
     public MusicVo createMusic(@Validated @RequestBody MusicCreateRequest musicCreateRequest){

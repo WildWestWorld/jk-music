@@ -42,6 +42,14 @@ public class ArtistController {
         return artistVoList;
     }
 
+    @GetMapping("/selection")
+    public List<ArtistVo> getArtistSelectionList(@RequestParam(defaultValue = "")String searchWord){
+
+        List<ArtistDto> artistList = artistService.getArtistSelectionList(searchWord);
+        List<ArtistVo> artistVoList = artistList.stream().map(artistRepository::artistToVo).collect(Collectors.toList());
+        return artistVoList;
+    }
+
     @PostMapping
     public ArtistVo createArtist(@Validated @RequestBody ArtistCreateRequest artistCreateRequest){
         ArtistDto artistDto = artistService.createArtist(artistCreateRequest);

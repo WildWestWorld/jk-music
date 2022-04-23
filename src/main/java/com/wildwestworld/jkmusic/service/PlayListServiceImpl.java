@@ -43,10 +43,21 @@ public class PlayListServiceImpl implements PlayListService{
 
     @Override
     public List<PlayListDto> getPlayList(String searchWord) {
-        LambdaQueryWrapper<PlayList> wrapper = Wrappers.<PlayList>lambdaQuery();
-        wrapper.like(PlayList::getName,searchWord);
+//        LambdaQueryWrapper<PlayList> wrapper = Wrappers.<PlayList>lambdaQuery();
+//        wrapper.like(PlayList::getName,searchWord);
 
         List<PlayList> playList = playListMapper.getPlayList(searchWord);
+
+        List<PlayListDto> playListDtoList = playList.stream().map(playListRepository::playListToDto).collect(Collectors.toList());
+        return playListDtoList;
+    }
+
+    @Override
+    public List<PlayListDto> getPlaySelectionList(String searchWord) {
+//        LambdaQueryWrapper<PlayList> wrapper = Wrappers.<PlayList>lambdaQuery();
+//        wrapper.like(PlayList::getName,searchWord);
+
+        List<PlayList> playList = playListMapper.getPlaySelectionList(searchWord);
 
         List<PlayListDto> playListDtoList = playList.stream().map(playListRepository::playListToDto).collect(Collectors.toList());
         return playListDtoList;

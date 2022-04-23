@@ -78,6 +78,14 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
+    public List<ArtistDto> getArtistSelectionList(String searchWord) {
+        List<Artist> artistList = artistMapper.getArtistSelectionList(searchWord);
+
+        List<ArtistDto> artistDtoList = artistList.stream().map(artistRepository::artistToDto).collect(Collectors.toList());
+        return artistDtoList;
+    }
+
+    @Override
     @Transactional
     public ArtistDto updateArtistById(String id, ArtistUpdateRequest artistUpdateRequest) {
         Artist artist = artistMapper.selectArtistById(id);

@@ -56,6 +56,35 @@
 
     </resultMap>
 
+
+    <resultMap id="musicSelectionMap" type="com.wildwestworld.jkmusic.entity.Music">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fileId" column="file_id"/>
+        <result property="photoId" column="photo_id"/>
+
+        <result property="description" column="description"/>
+        <result property="musicState" column="music_state"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+
+        <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistSelectionList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+
+
+
+
+    </resultMap>
+
+
+
+
     <resultMap id="ArtistMap" type="com.wildwestworld.jkmusic.entity.Artist">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -120,6 +149,12 @@
 
     </select>
 
+
+    <select id="getMusicSelectionList" resultMap="musicSelectionMap">
+        select * from  `music` where `music`.name like concat ('%',#{name},'%')
+
+    </select>
+
     <select id="selectMusicById" resultMap="musicMap">
         select * from  `music` where `music`.id =#{id}
 
@@ -151,6 +186,14 @@
         left join `artist_music` as am on a.id =am.artist_id
         where  am.music_id =#{id}
     </select>
+
+    <select id="getArtistSelectionList" resultType="com.wildwestworld.jkmusic.entity.Artist">
+        select *
+        from `artist` as a
+        left join `artist_music` as am on a.id =am.artist_id
+        where  am.music_id =#{id}
+    </select>
+
 
     <select id="getTagList" resultMap="TagMap">
         select *

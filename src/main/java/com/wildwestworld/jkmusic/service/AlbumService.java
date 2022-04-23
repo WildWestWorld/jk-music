@@ -17,6 +17,9 @@ public interface AlbumService {
 
     List<AlbumDto> getAlbumList(String searchWord);
 
+    List<AlbumDto> getAlbumSelectionList(String searchWord);
+
+
     AlbumDto createAlbum(AlbumCreateRequest albumCreateRequest);
 
     AlbumDto updateAlbumById(String id, AlbumUpdateRequest albumUpdateRequest);

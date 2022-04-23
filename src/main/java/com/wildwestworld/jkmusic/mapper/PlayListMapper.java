@@ -17,6 +17,10 @@ public interface PlayListMapper extends BaseMapper<PlayList> {
 
     List<PlayList> getPlayList(@Param("name") String name);
 
+    List<PlayList> getPlaySelectionList(@Param("name") String name);
+
+
+
     PlayList selectPlayListById(@Param("id") String id);
 
 

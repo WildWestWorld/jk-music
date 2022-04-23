@@ -18,6 +18,8 @@ public interface ArtistService {
 
     List<ArtistDto> getArtistList(String searchWord);
 
+    List<ArtistDto> getArtistSelectionList(String searchWord);
+
 
     ArtistDto createArtist(ArtistCreateRequest artistCreateRequest);
 

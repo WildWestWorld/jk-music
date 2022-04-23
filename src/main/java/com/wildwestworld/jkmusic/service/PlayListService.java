@@ -16,6 +16,8 @@ import java.util.List;
 public interface PlayListService {
      List<PlayListDto> getPlayList(String searchWord);
 
+     List<PlayListDto> getPlaySelectionList(String searchWord);
+
 
      IPage<PlayListDto> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend);
 

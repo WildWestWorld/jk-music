@@ -19,6 +19,9 @@ public interface MusicMapper extends BaseMapper<Music> {
 
     List<Music> getMusicList(@Param("name") String name);
 
+    List<Music> getMusicSelectionList(@Param("name") String name);
+
+
     Music selectMusicById(@Param("id") String id);
 
     int insertArtistMusic(Music entity);

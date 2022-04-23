@@ -71,6 +71,13 @@ public class AlbumServiceImpl implements AlbumService{
             return albumDtoList;
     }
 
+    @Override
+    public List<AlbumDto> getAlbumSelectionList(String searchWord) {
+        List<Album> albumList = albumMapper.getAlbumSelectionList(searchWord);
+
+        List<AlbumDto> albumDtoList = albumList.stream().map(albumRepository::albumToDto).collect(Collectors.toList());
+        return albumDtoList;
+    }
 
     @Override
     @Transactional

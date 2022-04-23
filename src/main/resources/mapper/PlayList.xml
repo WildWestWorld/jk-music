@@ -35,6 +35,32 @@
     </resultMap>
 
 
+    <resultMap id="PlayListSelectionMap" type="com.wildwestworld.jkmusic.entity.PlayList">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="playListState" column="playlist_state"/>
+        <result property="coverId" column="cover_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+        <result property="recommended" column="recommended"/>
+        <result property="recommendFactor" column="recommend_factor"/>
+        <result property="special" column="special"/>
+
+
+
+
+        <association  property="creator"  column="creator_id"  select="getCreatorUserSelection">
+
+        </association >
+
+
+
+    </resultMap>
+
+
     <resultMap id="userMap" type="com.wildwestworld.jkmusic.entity.User">
         <result property="id" column="id"/>
         <result property="username" column="username"/>
@@ -135,6 +161,13 @@
         where  u.id =#{creator_id}
     </select>
 
+    <select id="getCreatorUserSelection" resultType="com.wildwestworld.jkmusic.entity.User">
+        select *
+        from `user` as u
+        where  u.id =#{creator_id}
+    </select>
+
+
     <select id="getArtistList" resultMap="ArtistMap">
         select *
         from `artist` as a
@@ -170,6 +203,12 @@
         select * from  `playlist` where `playlist`.name like concat ('%',#{name},'%')
 
     </select>
+
+    <select id="getPlaySelectionList" resultMap="PlayListSelectionMap">
+        select * from  `playlist` where `playlist`.name like concat ('%',#{name},'%')
+
+    </select>
+
 
     <select id="selectPlayListById" resultMap="PlayListMap">
         select * from  `playlist` where `playlist`.id =#{id}
