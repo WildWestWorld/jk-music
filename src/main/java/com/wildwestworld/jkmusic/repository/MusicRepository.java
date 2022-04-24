@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.repository;
 
 import com.wildwestworld.jkmusic.entity.Artist;
 import com.wildwestworld.jkmusic.entity.Music;
+import com.wildwestworld.jkmusic.entity.Tag;
 import com.wildwestworld.jkmusic.mapper.FileMapper;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
@@ -15,14 +16,12 @@ import java.util.List;
 
 //专门用于Music实体类的dto 和vo 的转化，和与sql语句无关的方法
 @Mapper(componentModel = "spring",uses = {FileRepository.class})
-
-
-
+//@DecoratedWith(MusicRepositoryDecorator.class)
 public interface MusicRepository {
     //将Music类转化为MusicDto
     @Mapping(target="artistDtoList",source="artistList")
     @Mapping(target="albumDtoList",source="albumList")
-    @Mapping(target="tagDtoList",source="tagList")
+//    @Mapping(target="tagDtoList",source="tagList")
 
     MusicDto musicToDto(Music music);
 
@@ -30,7 +29,7 @@ public interface MusicRepository {
     //将dto转化为Vo
     @Mapping(target="artistVoList",source="artistDtoList")
     @Mapping(target="albumVoList",source="albumDtoList")
-    @Mapping(target="tagVoList",source="tagDtoList")
+//    @Mapping(target="tagVoList",source="tagDtoList")
 
     MusicVo musicToVo(MusicDto musicDto);
 

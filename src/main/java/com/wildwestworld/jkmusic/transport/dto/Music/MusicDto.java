@@ -39,7 +39,7 @@ public class MusicDto {
 
     private List<ArtistDto> artistDtoList;
 
-    private List<TagDto> tagDtoList;
+    private List<Tag> tagList;
 
 
     private Date createdTime;
