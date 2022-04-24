@@ -3,6 +3,7 @@ package com.wildwestworld.jkmusic.transport.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.entity.Tag;
 import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
@@ -34,7 +35,7 @@ public class MusicVo {
     private List<ArtistVo> artistVoList;
 
 
-    private List<TagVo> tagVoList;
+    private List<Tag> tagList;
 
 
     //      注解@JsonFormat主要是后台到前台的时间格式的转换
