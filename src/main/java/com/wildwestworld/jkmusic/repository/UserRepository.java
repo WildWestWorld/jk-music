@@ -3,6 +3,8 @@ package com.wildwestworld.jkmusic.repository;
 import com.wildwestworld.jkmusic.entity.User;
 import com.wildwestworld.jkmusic.transport.dto.User.UserCreateByRequest;
 import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
+import com.wildwestworld.jkmusic.transport.dto.User.UserSimpleDto;
+import com.wildwestworld.jkmusic.transport.vo.RoleVo;
 import com.wildwestworld.jkmusic.transport.vo.UserVo;
 import org.mapstruct.Mapper;
 
@@ -12,6 +14,9 @@ import org.mapstruct.Mapper;
 public interface UserRepository  {
     //将user类转化为UserDto
     UserDto toDto(User user);
+
+    UserVo userToVo(UserSimpleDto userSimpleDto);
+
 
     //将dto转化为Vo
     UserVo toVo(UserDto userDto);
