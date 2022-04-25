@@ -90,7 +90,7 @@ public class RoleServiceImpl implements RoleService{
         //如果musicUpdateRequest的Name不是空的
         if (StrUtil.isNotEmpty(roleUpdateRequest.getTitle())){
             //设置名字
-            role.setName(roleUpdateRequest.getTitle());
+            role.setTitle(roleUpdateRequest.getTitle());
         }
 
 
