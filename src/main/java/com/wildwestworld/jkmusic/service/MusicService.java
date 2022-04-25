@@ -20,7 +20,7 @@ public interface MusicService {
     List<MusicDto> getMusicSelectionList(String searchWord);
 
 
- void changeMusicStateToPublic(String id);
+    void changeMusicStateToPublic(String id);
 
     void changeMusicStateToClosed(String id);
 

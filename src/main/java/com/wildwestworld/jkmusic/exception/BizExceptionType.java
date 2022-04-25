@@ -24,7 +24,9 @@ public enum BizExceptionType {
         Artist_NOT_FOUND(40404001,"歌手未找到"),
         PlayList_NOT_FOUND(40405001,"歌单未找到"),
         Album_NOT_FOUND(40406001,"专辑未找到"),
-        Tag_NOT_FOUND(40407001,"标签未找到");
+        Tag_NOT_FOUND(40407001,"标签未找到"),
+        Role_NOT_FOUND(40408001,"角色未找到");
+
 
     private Integer code;
 

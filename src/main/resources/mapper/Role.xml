@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wildwestworld.jkmusic.mapper.RoleMapper">
+
+
+    <resultMap id="RoleMap" type="com.wildwestworld.jkmusic.entity.Role">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+
+
+
+<!--        <association  property="cover"  column="cover_id"  select="getCoverFile">-->
+
+<!--        </association >-->
+
+
+<!--        <association  property="creator"  column="creator_id"  select="getCreatorUser">-->
+
+<!--        </association >-->
+
+
+
+<!--        <collection property="musicList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getMusicList">-->
+
+<!--        </collection>-->
+
+        <collection property="userList" javaType="ArrayList" column="id"  select="getUserList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
+    </resultMap>
+<!--子查询-->
+
+
+    <select id="getUserList" resultType="com.wildwestworld.jkmusic.entity.User">
+        select *
+        from `user` as u
+        left join `user_role` as ur on u.id =ur.user_id
+        where  ur.role_id =#{id}
+    </select>
+
+<!--下面的是正常的查询-->
+    <select id="getPage" resultMap="RoleMap">
+        select * from  `role` where `role`.name like concat ('%',#{name},'%')
+
+    </select>
+
+    <select id="getRoleList" resultMap="RoleMap">
+        select * from  `role` where `role`.name like concat ('%',#{name},'%')
+
+    </select>
+
+
+
+    <select id="selectRoleById" resultMap="RoleMap">
+        select * from  `role` where `role`.id =#{id}
+
+    </select>
+
+
+    <insert id="batchInsertRoleUser"  >
+        insert into user_role(user_id,role_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            ( #{item},#{role.id})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteRoleUserById"  >
+        delete from `user_role` where role_id  = #{role.id} AND  user_id in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllRoleUserById"  >
+        delete from `user_role` where role_id = #{role.id} AND user_id in
+        <foreach collection="role.userList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+
+
+
+</mapper>
