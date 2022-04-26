@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 //用于请求 用于POST
 //用于生成账号
@@ -21,4 +22,6 @@ public class UserCreateByRequest {
     private String password;
     private String nickname;
     private String gender;
+    private List<String> RoleIdList;
+
 }

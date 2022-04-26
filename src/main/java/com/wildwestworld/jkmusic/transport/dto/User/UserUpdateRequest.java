@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 //用于请求 用于POST
 @Data
@@ -18,5 +19,8 @@ public class UserUpdateRequest {
     private String nickname;
 
     private String gender;
+
+    private List<String> RoleIdList;
+
 
 }

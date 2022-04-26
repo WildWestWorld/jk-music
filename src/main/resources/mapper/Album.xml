@@ -87,7 +87,7 @@
         <result property="lastLoginIp" column="last_login_ip"/>
         <result property="lastLoginTime" column="last_login_time"/>
 
-        <collection property="roles" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
+        <collection property="roleList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
             <!--            分页查询无法嵌套，所以得用子查询-->
             <!--            <result property="id" column="r_id"  />-->
             <!--            <result property="name" column="r_name"  />-->

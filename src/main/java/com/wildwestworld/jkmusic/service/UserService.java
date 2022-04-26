@@ -18,20 +18,24 @@ import java.util.List;
 //loadUserByUsername可以利用username从数据库调取相关的信息
 public interface UserService extends UserDetailsService  {
 
-    List<UserDto> list();
+    List<UserDto> getUserList(String searchWord);
 
 
-    UserDto create(UserCreateByRequest userCreateByRequest);
+    UserDto createUser(UserCreateByRequest userCreateByRequest);
+
+    UserDto updateUserByID(String id, UserUpdateRequest userUpdateRequest);
+
+    void  deleteUserByID(String id);
+
+    IPage<UserDto> getPage(Integer pageNum, Integer pageSize, String searchWord);
+
 
     @Override
     User loadUserByUsername(String username) throws UsernameNotFoundException;
 
     UserDto getUserByID(String id);
 
-    UserDto updateUserByID(String id, UserUpdateRequest userUpdateRequest);
-    void  deleteUserByID(String id);
 
-    IPage<UserDto> getPage(Integer pageNum, Integer pageSize, String searchWord);
 
 
     String createToken(TokenCreateRequest tokenCreateRequest);

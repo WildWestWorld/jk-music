@@ -14,12 +14,14 @@
         <result property="lastLoginIp" column="last_login_ip"/>
         <result property="lastLoginTime" column="last_login_time"/>
 
-        <collection property="roles" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
+        <collection property="roleList" javaType="ArrayList" column="id" ofType="com.wildwestworld.jkmusic.entity.Role" select="getRoleList">
 <!--            分页查询无法嵌套，所以得用子查询-->
 <!--            <result property="id" column="r_id"  />-->
 <!--            <result property="name" column="r_name"  />-->
 <!--            <result property="title" column="r_title" />-->
         </collection>
+
+
     </resultMap>
 
     <select id="getPage" resultMap="userMap">
@@ -35,8 +37,8 @@
     </select>
 
 
-    <select id="userList" resultMap="userMap">
-        select * from  `user`
+    <select id="getUserList" resultMap="userMap">
+        select * from  `user`where `user`.username like concat ('%',#{name},'%')
 
     </select>
 
@@ -44,6 +46,33 @@
         select * from  `user` where `user`.username = (#{username})
 
     </select>
+
+    <select id="selectUserById" resultMap="userMap">
+        select * from  `user` where `user`.id =#{id}
+
+    </select>
+
+    <insert id="batchInsertUserRole"  >
+        insert into user_role(user_id,role_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            (#{user.id} ,#{item})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteUserRoleById"  >
+        delete from `user_role` where user_id  = #{user.id} AND role_id  in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllUserRoleById"  >
+        delete from `user_role` where user_id  = #{user.id} AND role_id  in
+        <foreach collection="user.roleList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
 
 <!--    <select id="userList" resultMap="userMap">-->
 <!--        SELECT `user`.* ,ur.role_id,ur.user_id, r.id as r_id,r.name as r_name ,r.title as r_title   from `user`-->

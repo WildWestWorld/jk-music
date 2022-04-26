@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.Role;
+import com.wildwestworld.jkmusic.entity.Tag;
 import com.wildwestworld.jkmusic.entity.User;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,9 +19,23 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-    List<User> userList ();
+    User selectUserById(@Param("id") String id);
+
+
+    List<User> getUserList (@Param("name") String name);
+
+
     IPage<User> getPage(Page<User> page , @Param("username") String username);
+
+
     User getCurrentUser (@Param("username") String username);
+
+
+    int batchInsertUserRole(@Param("user") User entity, @Param("needInsertIdList") List<String> needInsertIdList);
+
+    int batchDeleteUserRoleById(@Param("user")User entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
+
+    int deleteAllUserRoleById(@Param("user")User entity);
 
 
     //获取插入后才能自动生成的id
