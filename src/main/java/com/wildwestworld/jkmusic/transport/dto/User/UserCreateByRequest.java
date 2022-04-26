@@ -23,7 +23,7 @@ public class UserCreateByRequest {
     @NotBlank(message = "昵称不能为空")
     @Size(min = 2,max = 64,message = "昵称长度应该在2个字符到64个字符之间")
     private String nickname;
-    private String gender;
-    private List<String> roleIdList;
+    private String gender ;
+    private List<String> roleIdList ;
 
 }
