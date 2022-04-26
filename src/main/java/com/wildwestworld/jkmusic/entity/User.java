@@ -68,7 +68,7 @@ public class User extends AbstractEntity implements UserDetails {
 
 
     @TableField(exist = false)
-    private List<Role> roles;
+    private List<Role> roleList;
 
 
 
@@ -82,7 +82,7 @@ public class User extends AbstractEntity implements UserDetails {
         //函数的返回值 List 必须是GrantedAuthority属性的所以 我们要自己新建一个GrantedAuthority属性的list
         List<GrantedAuthority> authorities = new ArrayList<>();
         //遍历User里面的roles
-        for (Role role : roles) {
+        for (Role role : roleList) {
             //既然返回值需要GrantedAuthority所以我们就采用专门存储角色的SimpleGrantedAuthority
             //SimpleGrantedAuthority存储的是role的名字
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.getName());

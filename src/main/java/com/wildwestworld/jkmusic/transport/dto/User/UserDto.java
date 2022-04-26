@@ -17,7 +17,7 @@ public class UserDto {
     private String nickname;
 
     @TableField(exist = false)
-    private List<RoleDto> roles;
+    private List<RoleDto> roleList;
 
     private Gender gender;
 

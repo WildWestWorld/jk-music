@@ -26,13 +26,12 @@ public class UserController {
     UserService userService;
     @Resource
     UserRepository userRepository;
-    @Resource
-    UserMapper userMapper;
+
 
     @GetMapping
-   public List<UserVo> list(){
+   public List<UserVo> getUserList(@RequestParam(defaultValue = "")String searchWord){
 
-        List<UserDto> userDtoList = userService.list();
+        List<UserDto> userDtoList = userService.getUserList(searchWord);
         List<UserVo> userVoList = userDtoList.stream().map(userRepository::toVo).collect(Collectors.toList());
         return userVoList;
    }
@@ -45,8 +44,8 @@ public class UserController {
 //需要使用@Validated 配套
 // @Validated放在使用该类的Controller层的方法上
    @PostMapping
-    public UserVo create(@Validated @RequestBody UserCreateByRequest userCreateByRequest){
-        return userRepository.toVo(userService.create(userCreateByRequest));
+    public UserVo createUser(@Validated @RequestBody UserCreateByRequest userCreateByRequest){
+        return userRepository.toVo(userService.createUser(userCreateByRequest));
    }
 
    @GetMapping("/{id}")
@@ -56,7 +55,9 @@ public class UserController {
 
    @PutMapping("/{id}")
     UserVo updateUserByID(@PathVariable String id,@Validated @RequestBody UserUpdateRequest userUpdateRequest){
-        return userRepository.toVo(userService.updateUserByID(id,userUpdateRequest));
+       UserDto userDto = userService.updateUserByID(id, userUpdateRequest);
+       UserVo userVo = userRepository.toVo(userDto);
+       return userVo;
    }
    //Result文件在utils里面 就是个简单的返回值，无聊可以看看
    @DeleteMapping("/{id}")
