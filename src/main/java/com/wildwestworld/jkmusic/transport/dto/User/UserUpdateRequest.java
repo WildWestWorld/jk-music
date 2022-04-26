@@ -15,12 +15,13 @@ public class UserUpdateRequest {
 
     @Size(min = 4,max = 64,message = "用户名长度应该在4个字符到64个字符之间")
     private String username;
-
+    @NotBlank(message = "昵称不能为空")
+    @Size(min = 2,max = 64,message = "昵称长度应该在2个字符到64个字符之间")
     private String nickname;
 
     private String gender;
 
-    private List<String> RoleIdList;
+    private List<String> roleIdList;
 
 
 }
