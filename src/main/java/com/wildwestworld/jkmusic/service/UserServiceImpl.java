@@ -80,6 +80,11 @@ public class UserServiceImpl  implements UserService{
 
         if (CollUtil.isNotEmpty(userCreateByRequest.getRoleIdList())) {
             userMapper.batchInsertUserRole(userEntity, userCreateByRequest.getRoleIdList());
+        }else{
+            List<String> roleIdList = userCreateByRequest.getRoleIdList();
+            roleIdList.add("1");
+            userMapper.batchInsertUserRole(userEntity, roleIdList);
+
         }
 //
 //        if (CollUtil.isNotEmpty(tagCreateRequest.getPlayListIdList())) {
