@@ -70,7 +70,8 @@ public class User extends AbstractEntity implements UserDetails {
     @TableField(exist = false)
     private List<Role> roleList;
 
-
+    @TableField(exist = false)
+    private List<PlayList> playList;
 
     //以下方法皆因UserDetails
     //后期会和role进行绑定

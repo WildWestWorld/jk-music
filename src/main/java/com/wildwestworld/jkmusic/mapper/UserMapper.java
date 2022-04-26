@@ -38,6 +38,13 @@ public interface UserMapper extends BaseMapper<User> {
     int deleteAllUserRoleById(@Param("user")User entity);
 
 
+    int batchInsertUserPlayList(@Param("user") User entity, @Param("needInsertIdList") List<String> needInsertIdList);
+
+    int batchDeleteUserPlayListById(@Param("user")User entity,@Param("needDeleteIdList") List<String> needDeleteIdList);
+
+    int deleteAllUserPlayListById(@Param("user")User entity);
+
+
     //获取插入后才能自动生成的id
     @Override
     @Options(useGeneratedKeys = true, keyProperty = "id")

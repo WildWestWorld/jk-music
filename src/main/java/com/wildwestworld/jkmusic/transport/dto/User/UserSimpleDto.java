@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.transport.dto.User;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.wildwestworld.jkmusic.emuns.Gender;
+import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import com.wildwestworld.jkmusic.transport.dto.Role.RoleDto;
 import lombok.Data;
 
@@ -16,8 +17,10 @@ public class UserSimpleDto {
 
     private String nickname;
 
-    @TableField(exist = false)
-    private List<RoleDto> roles;
+    private List<RoleDto> roleList;
+
+    private List<PlayListDto> playList;
+
 
     private Gender gender;
 

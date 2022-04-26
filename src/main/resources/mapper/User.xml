@@ -21,13 +21,15 @@
 <!--            <result property="title" column="r_title" />-->
         </collection>
 
-
+        <collection property="playList" javaType="ArrayList" column="id" select="getPlayList">
+            <!--            分页查询无法嵌套，所以得用子查询-->
+            <!--            <result property="id" column="r_id"  />-->
+            <!--            <result property="name" column="r_name"  />-->
+            <!--            <result property="title" column="r_title" />-->
+        </collection>
     </resultMap>
 
-    <select id="getPage" resultMap="userMap">
-        select * from  `user` where `user`.username like concat ('%',#{username},'%')
-   
-    </select>
+
 <!--    子查询-->
     <select id="getRoleList" resultType="com.wildwestworld.jkmusic.entity.Role">
         select *
@@ -36,6 +38,20 @@
         where  ur.user_id =#{id}
     </select>
 
+    <select id="getPlayList" resultType="com.wildwestworld.jkmusic.entity.PlayList">
+        select *
+        from `playlist` as pl
+
+        left join `user_playlist` as up on pl.id =up.playlist_id
+        where  up.user_id =#{id}
+    </select>
+
+<!--正常查询-->
+
+    <select id="getPage" resultMap="userMap">
+        select * from  `user` where `user`.username like concat ('%',#{username},'%')
+
+    </select>
 
     <select id="getUserList" resultMap="userMap">
         select * from  `user`where `user`.username like concat ('%',#{name},'%')
@@ -70,6 +86,29 @@
     <delete id="deleteAllUserRoleById"  >
         delete from `user_role` where user_id  = #{user.id} AND role_id  in
         <foreach collection="user.roleList"  item="item"   open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+
+    <insert id="batchInsertUserPlayList"  >
+        insert into user_playlist(user_id,playlist_id) values
+        <foreach collection="needInsertIdList" item="item" separator=",">
+            (#{user.id} ,#{item})
+        </foreach>
+    </insert>
+
+    <delete id="batchDeleteUserPlayListById"  >
+        delete from `user_playlist` where user_id  = #{user.id} AND playlist_id  in
+        <foreach collection="needDeleteIdList"  item="item"   open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteAllUserPlayListById"  >
+        delete from `user_playlist` where user_id  = #{user.id} AND playlist_id  in
+        <foreach collection="user.playList"  item="item"   open="(" separator="," close=")">
             #{item.id}
         </foreach>
     </delete>

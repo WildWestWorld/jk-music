@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,15 +82,15 @@ public class UserServiceImpl  implements UserService{
         if (CollUtil.isNotEmpty(userCreateByRequest.getRoleIdList())) {
             userMapper.batchInsertUserRole(userEntity, userCreateByRequest.getRoleIdList());
         }else{
-            List<String> roleIdList = userCreateByRequest.getRoleIdList();
+            List<String> roleIdList = new ArrayList<>();
             roleIdList.add("1");
             userMapper.batchInsertUserRole(userEntity, roleIdList);
 
         }
 //
-//        if (CollUtil.isNotEmpty(tagCreateRequest.getPlayListIdList())) {
-//            tagMapper.batchInsertTagPlayList(tagEntity, tagCreateRequest.getPlayListIdList());
-//        }
+        if (CollUtil.isNotEmpty(userCreateByRequest.getPlayListIdList())) {
+            userMapper.batchInsertUserPlayList(userEntity, userCreateByRequest.getPlayListIdList());
+        }
 
 
 
@@ -270,7 +271,48 @@ public class UserServiceImpl  implements UserService{
             }
         }
 
+//更新用户与歌单的关系
+        if (userUpdateRequest.getPlayListIdList() != null ) {
+            if (CollUtil.isNotEmpty(userUpdateRequest.getPlayListIdList())) {
+                List<String> originIdList;
+                if (user.getPlayList() != null & CollUtil.isNotEmpty(user.getPlayList())) {
+                    //方案1:
+                    //根据前端传过来的给的userList的长度来更新数据，一样长就全都更新，短了就更新后删除差值数量的数据，长了就更新后再新增
 
+                    List<String> IdList = user.getPlayList().stream().map(item -> item.getId()).collect(Collectors.toList());
+                    //新增的Id List - 原始的Id List = 两个List不同的id/我们需要新增的IdList
+                    originIdList = IdList;
+                } else {
+                    List<String> IdList = null;
+                    originIdList = IdList;
+                }
+
+                //也就是需要新增的Id
+                //CollUtil.subtractToList(A,B)比较数组，A数组-B数组，然后优先保留A数组内容
+
+                //需要插入的Id数组
+                List<String> needInsertIdList = CollUtil.subtractToList(userUpdateRequest.getPlayListIdList(), originIdList);
+
+
+                //需要删除的Id数组
+                List<String> needDeleteIdList = CollUtil.subtractToList(originIdList, userUpdateRequest.getPlayListIdList());
+
+                if (needDeleteIdList.size() != 0) {
+                    userMapper.batchDeleteUserPlayListById(user, needDeleteIdList);
+                }
+
+
+                if (needInsertIdList.size() != 0) {
+                    userMapper.batchInsertUserPlayList(user, needInsertIdList);
+                }
+
+
+            }else{
+                if (user.getPlayList() != null & CollUtil.isNotEmpty(user.getPlayList())) {
+                    userMapper.deleteAllUserPlayListById(user);
+                }
+            }
+        }
 
 
 
@@ -294,6 +336,9 @@ public class UserServiceImpl  implements UserService{
             userMapper.deleteAllUserRoleById(user);
         }
 
+        if (user.getPlayList() !=null & !CollUtil.isEmpty(user.getPlayList()) ) {
+            userMapper.deleteAllUserPlayListById(user);
+        }
 
         //根据id删除
         userMapper.deleteById(id);

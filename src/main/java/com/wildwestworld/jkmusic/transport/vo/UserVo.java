@@ -22,4 +22,7 @@ public class UserVo {
     private Boolean enabled;
 
     private List<RoleVo> roleList;
+
+    private List<PlayListVo> playList;
+
 }

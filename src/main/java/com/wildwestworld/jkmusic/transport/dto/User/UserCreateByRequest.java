@@ -25,5 +25,6 @@ public class UserCreateByRequest {
     private String nickname;
     private String gender ;
     private List<String> roleIdList ;
+    private List<String> playListIdList ;
 
 }
