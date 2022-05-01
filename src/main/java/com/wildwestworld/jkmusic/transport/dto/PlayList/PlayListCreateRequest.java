@@ -27,7 +27,7 @@ public class PlayListCreateRequest {
     //    根据布尔值的真与假判断是否为特色歌单
     private Boolean special=false;
 
-    @NotNull(message = "请上传封面")
+
     private String coverId;
 
     private List<String> musicIdList;

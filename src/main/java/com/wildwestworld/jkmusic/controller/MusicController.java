@@ -44,6 +44,13 @@ public class MusicController {
         return musicVoList;
     }
 
+    @GetMapping("/{id}")
+    public MusicVo getMusicById(@PathVariable String id){
+        MusicDto musicDto = musicService.getMusicByID(id);
+        MusicVo musicVo = musicRepository.musicToVo(musicDto);
+        return musicVo;
+    }
+
     @PostMapping
     public MusicVo createMusic(@Validated @RequestBody MusicCreateRequest musicCreateRequest){
         MusicDto musicDto = musicService.createMusic(musicCreateRequest);

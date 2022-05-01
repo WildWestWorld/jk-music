@@ -304,6 +304,14 @@ public class MusicServiceImpl implements MusicService{
         return musicDtoList;
     }
 
+
+    @Override
+    public MusicDto getMusicByID(String id) {
+        Music music = musicMapper.selectMusicById(id);
+        MusicDto musicDto = musicRepository.musicToDto(music);
+        return musicDto;
+    }
+
     @Override
     public List<MusicDto> getMusicSelectionList(String searchWord) {
 //        LambdaQueryWrapper<Music> wrapper = Wrappers.<Music>lambdaQuery();

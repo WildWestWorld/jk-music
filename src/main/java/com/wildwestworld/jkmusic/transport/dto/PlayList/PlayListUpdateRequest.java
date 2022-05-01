@@ -24,7 +24,7 @@ public class PlayListUpdateRequest {
     //    根据布尔值的真与假判断是否为特色歌单
     private Boolean special;
 
-    @NotNull(message = "更新的封面不能为空")
+
     private String coverId;
 
     private List<String> musicIdList;
