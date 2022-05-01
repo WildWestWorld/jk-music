@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicDto;
 import com.wildwestworld.jkmusic.transport.dto.Music.MusicUpdateRequest;
+import com.wildwestworld.jkmusic.transport.dto.User.UserDto;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface MusicService {
 
     List<MusicDto> getMusicSelectionList(String searchWord);
 
+    MusicDto getMusicByID(String id);
 
     void changeMusicStateToPublic(String id);
 
