@@ -112,6 +112,7 @@
 
         </association >
 
+
         <!--column="file_id"传入查询的参数，传入的参数得是原表的属性-->
         <association  property="file"  column="file_id"  select="getFileList">
             <!--            分页查询无法嵌套，所以得用子查询-->
@@ -119,6 +120,8 @@
             <!--            <result property="name" column="r_name"  />-->
             <!--            <result property="title" column="r_title" />-->
         </association >
+
+
 
         <collection property="artistList" javaType="ArrayList" column="id"  select="getArtistList">
             <!--            分页查询无法嵌套，所以得用子查询-->

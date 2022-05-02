@@ -19,6 +19,9 @@ public class MusicUpdateRequest {
 
     private String photoId;
 
+    private String lycId;
+
+
     private List<String> albumIdList;
 
     private List<String> tagIdList;

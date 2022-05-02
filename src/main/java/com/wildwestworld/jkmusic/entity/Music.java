@@ -33,6 +33,13 @@ public class Music extends AbstractEntity{
     @TableField(exist = false)
     private File file;
 
+
+    @TableField("lyc_id")
+    private String lycId;
+
+    @TableField(exist = false)
+    private File lyc;
+
     @TableField(exist = false)
     private List<Artist> artistList;
 

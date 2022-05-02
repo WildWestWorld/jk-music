@@ -9,7 +9,7 @@
         <result property="name" column="name"/>
         <result property="fileId" column="file_id"/>
         <result property="photoId" column="photo_id"/>
-
+        <result property="lycId" column="lyc_id"/>
         <result property="description" column="description"/>
         <result property="musicState" column="music_state"/>
         <result property="createdTime" column="created_time"/>
@@ -26,6 +26,9 @@
 
         </association >
 
+        <association  property="lyc"  column="lyc_id"  select="getLycFile">
+
+        </association >
 
 <!--        <association  property="album"  column="id"  select="getAlbumByMusicId">-->
 
@@ -62,6 +65,7 @@
         <result property="name" column="name"/>
         <result property="fileId" column="file_id"/>
         <result property="photoId" column="photo_id"/>
+        <result property="lycId" column="lyc_id"/>
 
         <result property="description" column="description"/>
         <result property="musicState" column="music_state"/>
@@ -174,6 +178,11 @@
     </select>
 
 
+    <select id="getLycFile" resultType="com.wildwestworld.jkmusic.entity.File">
+        select *
+        from `file` as f
+        where  f.id =#{lyc_id}
+    </select>
 
     <select id="userList" resultMap="musicMap">
         select * from  `music`

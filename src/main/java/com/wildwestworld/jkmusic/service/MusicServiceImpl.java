@@ -113,7 +113,6 @@ public class MusicServiceImpl implements MusicService{
 
 
         //如果userUpdateRequest的FileId不是空的
-        System.out.println(StrUtil.isNotEmpty(musicUpdateRequest.getPhotoId()));
         if (StrUtil.isNotEmpty(musicUpdateRequest.getPhotoId())) {
             //设置昵称
             music.setPhotoId(musicUpdateRequest.getPhotoId());
@@ -121,6 +120,15 @@ public class MusicServiceImpl implements MusicService{
             music.setPhotoId(musicUpdateRequest.getPhotoId());
 
         }
+
+        //如果userUpdateRequest的FileId不是空的
+        if (StrUtil.isNotEmpty(musicUpdateRequest.getLycId())) {
+            //设置昵称
+            music.setLycId(musicUpdateRequest.getLycId());
+        }else{
+            music.setLycId(musicUpdateRequest.getLycId());
+        }
+
 //更新音乐与歌手的关系
         if (musicUpdateRequest.getArtistIdList() != null ) {
             if (CollUtil.isNotEmpty(musicUpdateRequest.getArtistIdList())) {
