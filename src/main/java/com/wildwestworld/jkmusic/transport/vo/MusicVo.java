@@ -24,11 +24,12 @@ public class MusicVo {
     private String description;
 
 
-
-
     private FileVo photo;
 
     private FileVo file;
+
+    private FileVo lyc;
+
 
     private List<AlbumVo> albumVoList;
 

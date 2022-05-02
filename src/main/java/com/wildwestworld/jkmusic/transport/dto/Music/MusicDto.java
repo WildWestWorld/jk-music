@@ -1,10 +1,12 @@
 package com.wildwestworld.jkmusic.transport.dto.Music;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wildwestworld.jkmusic.emuns.MusicState;
 import com.wildwestworld.jkmusic.entity.Album;
 import com.wildwestworld.jkmusic.entity.Artist;
+import com.wildwestworld.jkmusic.entity.File;
 import com.wildwestworld.jkmusic.entity.Tag;
 import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
@@ -33,6 +35,11 @@ public class MusicDto {
     private String photoId;
 
     private FileDto photo;
+
+    private String lycId;
+
+
+    private FileDto lyc;
 
     private List<AlbumDto> albumDtoList;
 
