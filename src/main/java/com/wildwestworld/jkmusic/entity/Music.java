@@ -33,8 +33,7 @@ public class Music extends AbstractEntity{
     @TableField(exist = false)
     private File file;
 
-
-    @TableField("lyc_id")
+    @TableField(value = "lyc_id",updateStrategy = FieldStrategy.IGNORED)
     private String lycId;
 
     @TableField(exist = false)
