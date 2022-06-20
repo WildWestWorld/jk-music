@@ -11,7 +11,7 @@ import java.io.IOException;
 public interface FileService {
     FileUploadDto initUpload(FileUploadRequest fileUploadRequest) throws IOException;
 
-    FileDto finishUpload(String id);
+    FileDto finishUpload(String id) throws IOException;
 
     Storage getDefaultStorage();
 }

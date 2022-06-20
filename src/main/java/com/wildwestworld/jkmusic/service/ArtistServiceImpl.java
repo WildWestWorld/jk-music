@@ -68,6 +68,13 @@ public class ArtistServiceImpl implements ArtistService{
 
 
     @Override
+    public ArtistDto getArtistById(String id) {
+        Artist artist = artistMapper.selectArtistById(id);
+        ArtistDto artistDto = artistRepository.artistToDto(artist);
+        return artistDto;
+    }
+
+    @Override
     public List<ArtistDto> getArtistList(String searchWord) {
 
 

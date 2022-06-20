@@ -7,6 +7,8 @@ import com.wildwestworld.jkmusic.transport.dto.File.FileDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.io.IOException;
+
 //该类是为了重写dto，让fileDto多放进去一个属性url
 public abstract class FileRepositoryDecorator implements FileRepository {
     @Autowired
@@ -17,7 +19,7 @@ public abstract class FileRepositoryDecorator implements FileRepository {
     private StorageService storageService;
 
     @Override
-    public FileDto fileToDto(File file) {
+    public FileDto fileToDto(File file) throws IOException {
         FileDto fileDto =delegate.fileToDto(file);
         if(fileDto==null){
             return null;

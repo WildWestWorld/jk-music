@@ -21,6 +21,8 @@ public interface ArtistService {
     List<ArtistDto> getArtistSelectionList(String searchWord);
 
 
+    ArtistDto getArtistById(String id);
+
     ArtistDto createArtist(ArtistCreateRequest artistCreateRequest);
 
     ArtistDto updateArtistById(String id, ArtistUpdateRequest artistUpdateRequest);

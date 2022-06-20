@@ -59,7 +59,7 @@ public class FileServiceImpl implements FileService{
     }
 
     @Override
-    public FileDto finishUpload(String id) {
+    public FileDto finishUpload(String id) throws IOException {
         File file = fileMapper.selectById(id);
         if(file == null){
             throw new BizException(BizExceptionType.File_NOT_FOUND);

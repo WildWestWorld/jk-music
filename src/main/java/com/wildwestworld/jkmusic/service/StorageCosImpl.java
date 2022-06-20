@@ -9,6 +9,7 @@ import com.qcloud.cos.auth.BasicSessionCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
+import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.region.Region;
 import com.tencent.cloud.CosStsClient;
 import com.tencent.cloud.Response;
@@ -96,7 +97,12 @@ public class StorageCosImpl implements StorageService{
     }
 
     @Override
-    public String getFileUrl(String fileKey) {
+    public String getFileUrl(String fileKey) throws IOException {
+
+
+//        String token =getXToken();
+//
+//        System.out.println(token);
         //    方法来源：https://cloud.tencent.com/document/product/436/35217
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
 // 详细代码参见本页：简单操作 -> 创建 COSClient
@@ -114,11 +120,14 @@ public class StorageCosImpl implements StorageService{
 
 // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
         Map<String, String> params = new HashMap<String, String>();
-//        params.put("param1", "value1");
+//        params.put("x-cos-security-token", token);
 
 // 填写本次请求的头部，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的头部
         Map<String, String> headers = new HashMap<String, String>();
-//        headers.put("header1", "value1");
+//        headers.put("x-cos-security-token", token);
+
+
+
 
 // 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
         HttpMethodName method = HttpMethodName.GET;
@@ -166,4 +175,21 @@ public class StorageCosImpl implements StorageService{
         return new COSClient(cred, clientConfig);
     }
 
+//(废弃，无用)
+    public String getXToken() throws IOException {
+        try {
+
+            //此时我们就请求了腾讯的服务器，下面就是把请求后的数据给放进fileUploadDto里面
+            Response response = CosStsClient.getCredential(getCosStsConfig());
+
+             String sessionToken =response.credentials.sessionToken;
+
+
+            return sessionToken;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BizException(BizExceptionType.INNER_ERROR);
+
+        }
+    }
 }

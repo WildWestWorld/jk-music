@@ -235,7 +235,7 @@
 
         <choose>
             <when test="orderRecommend">
-                ORDER BY `artist`.recommend_factor DESC
+                ORDER BY `artist`.recommend_factor DESC,updated_time DESC
 
             </when>
 

@@ -7,11 +7,13 @@ import com.wildwestworld.jkmusic.transport.vo.FileVo;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
+import java.io.IOException;
+
 //专门用于File实体类的dto 和vo 的转化，和与sql语句无关的方法
 @Mapper(componentModel = "spring")
 @DecoratedWith(FileRepositoryDecorator.class)
 public interface FileRepository {
     File createFileEntity (FileUploadRequest fileUploadRequest);
-    FileDto fileToDto(File file);
+    FileDto fileToDto(File file) throws IOException;
     FileVo fileToVo(FileDto fileDto);
 }
