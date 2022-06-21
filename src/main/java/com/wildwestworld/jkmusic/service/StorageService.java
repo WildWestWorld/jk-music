@@ -7,5 +7,7 @@ import java.io.IOException;
 public interface StorageService {
      FileUploadDto initFileUploadCos() throws IOException;
 
-     String getFileUrl(String fileKey);
+     String getFileUrl(String fileKey) throws IOException;
+
+
 }

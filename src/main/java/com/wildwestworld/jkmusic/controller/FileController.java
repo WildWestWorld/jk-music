@@ -33,7 +33,7 @@ public class FileController {
     }
 
     @PostMapping("/{id}/upload_finish")
-    public FileVo finishUpload(@PathVariable String id){
+    public FileVo finishUpload(@PathVariable String id) throws IOException {
         FileDto fileDto = fileService.finishUpload(id);
         FileVo fileVo = fileRepository.fileToVo(fileDto);
         return fileVo;

@@ -50,6 +50,13 @@ public class ArtistController {
         return artistVoList;
     }
 
+    @GetMapping("/{id}")
+    public ArtistVo getArtistById(@PathVariable String id){
+        ArtistDto artistDto = artistService.getArtistById(id);
+        ArtistVo artistVo = artistRepository.artistToVo(artistDto);
+        return artistVo;
+    }
+
     @PostMapping
     public ArtistVo createArtist(@Validated @RequestBody ArtistCreateRequest artistCreateRequest){
         ArtistDto artistDto = artistService.createArtist(artistCreateRequest);
