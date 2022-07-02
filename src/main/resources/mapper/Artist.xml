@@ -156,7 +156,9 @@
 
         </collection>
 
+        <collection property="albumArtistList" javaType="ArrayList" column="id" select="getAlbumArtistList">
 
+        </collection>
 
     </resultMap>
 
@@ -225,7 +227,12 @@
         where  ala.artist_id =#{id}
     </select>
 
-
+    <select id="getAlbumArtistList" resultMap="ArtistMap">
+        select *
+        from `artist` as a
+        left join `album_artist` as ala on a.id =ala.artist_id
+        where  ala.album_id =#{id}
+    </select>
 
 
     <!--        以下是正常操作-->
