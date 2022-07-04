@@ -79,6 +79,15 @@ public class AlbumServiceImpl implements AlbumService{
         return albumDtoList;
     }
 
+
+    @Override
+    public AlbumDto getAlbumById(String id) {
+
+        Album album = albumMapper.selectAlbumById(id);
+        AlbumDto albumDto = albumRepository.albumToDto(album);
+        return albumDto;
+    }
+
     @Override
     @Transactional
     public AlbumDto updateAlbumById(String id, AlbumUpdateRequest albumUpdateRequest) {

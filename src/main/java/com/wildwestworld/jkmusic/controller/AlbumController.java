@@ -50,6 +50,13 @@ public class AlbumController {
         return albumVoList;
     }
 
+    @GetMapping("/{id}")
+    public AlbumVo getAlbumById(@PathVariable String id){
+        AlbumDto albumDto = albumService.getAlbumById(id);
+        AlbumVo albumVo = albumRepository.albumToVo(albumDto);
+        return albumVo;
+    }
+
     @PostMapping
     public AlbumVo createAlbum(@Validated @RequestBody AlbumCreateRequest albumCreateRequest){
         AlbumDto albumDto = albumService.createAlbum(albumCreateRequest);
