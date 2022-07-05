@@ -63,6 +63,14 @@ public class PlayListServiceImpl implements PlayListService{
         return playListDtoList;
     }
 
+
+    @Override
+    public PlayListDto getPlayListById(String id) {
+        PlayList playList = playListMapper.selectPlayListById(id);
+        PlayListDto playListDto = playListRepository.playListToDto(playList);
+        return playListDto;
+    }
+
     @Override
     @Transactional
     public PlayListDto createPlayList(PlayListCreateRequest playListCreateRequest) {

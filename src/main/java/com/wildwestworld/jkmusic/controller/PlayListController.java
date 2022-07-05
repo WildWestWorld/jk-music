@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wildwestworld.jkmusic.entity.PlayList;
 import com.wildwestworld.jkmusic.repository.PlayListRepository;
 import com.wildwestworld.jkmusic.service.PlayListService;
+import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
@@ -15,6 +16,7 @@ import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListCreateRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListDto;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.PlayList.PlayListUpdateRequest;
+import com.wildwestworld.jkmusic.transport.vo.AlbumVo;
 import com.wildwestworld.jkmusic.transport.vo.ArtistVo;
 import com.wildwestworld.jkmusic.transport.vo.MusicVo;
 import com.wildwestworld.jkmusic.transport.vo.PlayListVo;
@@ -50,6 +52,14 @@ public class PlayListController {
         List<PlayListDto> playListDtoList = playListService.getPlaySelectionList(searchWord);
         List<PlayListVo> playListVoList = playListDtoList.stream().map(playListRepository::playListToVo).collect(Collectors.toList());
         return playListVoList;
+    }
+
+
+    @GetMapping("/{id}")
+    public PlayListVo getAlbumById(@PathVariable String id){
+        PlayListDto playListDto = playListService.getPlayListById(id);
+        PlayListVo playListVo = playListRepository.playListToVo(playListDto);
+        return playListVo;
     }
 
     @PostMapping
