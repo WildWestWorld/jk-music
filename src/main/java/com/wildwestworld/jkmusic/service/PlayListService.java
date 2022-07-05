@@ -2,6 +2,7 @@ package com.wildwestworld.jkmusic.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wildwestworld.jkmusic.entity.PlayList;
+import com.wildwestworld.jkmusic.transport.dto.Album.AlbumDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistDto;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistRecommendRequest;
 import com.wildwestworld.jkmusic.transport.dto.Artist.ArtistUpdateRequest;
@@ -18,8 +19,9 @@ public interface PlayListService {
 
      List<PlayListDto> getPlaySelectionList(String searchWord);
 
-
      IPage<PlayListDto> getPlayListPage(Integer pageNum, Integer pageSize, String searchWord,Boolean orderRecommend);
+
+     PlayListDto getPlayListById(String id);
 
      PlayListDto createPlayList(PlayListCreateRequest playListCreateRequest);
 
